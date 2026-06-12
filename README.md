@@ -36,25 +36,25 @@
 
 ### 故事设定
 
-![故事设定](screenshots/local-polish-settings.png)
+![故事设定](screenshots/readme/story-settings.png)
 
 ### 角色小传
 
-![角色小传](screenshots/local-polish-characters-generated.png)
+![角色小传](screenshots/readme/characters.png)
 
 ### 分集大纲
 
-![分集大纲](screenshots/local-current-outline-generated.png)
+![分集大纲](screenshots/readme/episode-outline.png)
 
 ### 剧本文本编辑器
 
-![剧本文本编辑器](screenshots/local-polish-body-generated.png)
+![剧本文本编辑器](screenshots/readme/script-body.png)
 
 ### 改写与改编项目列表
 
-![剧本改写列表](screenshots/local-final-rewrite-list.png)
+![剧本改写列表](screenshots/readme/rewrite-list.png)
 
-![小说改编列表](screenshots/local-polished-adapt-list.png)
+![小说改编列表](screenshots/readme/adapt-list.png)
 
 ## 技术栈
 
