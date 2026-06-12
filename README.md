@@ -1,65 +1,86 @@
-# MiaoMuse
+# 妙喵剧本 AI 创作平台
 
-MiaoMuse is a local AI-assisted script creation workspace for short drama writing. It combines project management, story setup, character biographies, phase outlines, episode outlines, streaming body generation, rewrite import, novel adaptation import, Word export, wallet-style usage tracking, and local API configuration in one Go + Vue application.
+<div align="center">
 
-The project is designed as a self-hosted creative tool: your scripts, drafts, generated content, and model configuration stay on your own machine unless you connect an external model provider.
+本项目是一个本地优先的 AI 短剧剧本创作工作台，覆盖原创剧本、剧本改写、小说改编、分集大纲、正文生成、Word 导出、钱包展示和本地 API 配置等完整流程。
 
-![MiaoMuse workspace](screenshots/readme/workspace.png)
+<br />
 
-## Features
+<strong>项目咨询 / 合作 / 定制开发</strong>
 
-- Original script creation workflow: story settings, characters, rough outline, episode outline, and script body.
-- Streaming AI generation for characters, outlines, episode outlines, and episode body text.
-- Body editor with per-episode cards, batch generation ranges, expand mode, auto-scroll while streaming, and Word export.
-- Script rewrite and web novel adaptation entry points with upload-driven project creation.
-- Project lists for original, rewrite, and adaptation workspaces with consistent card actions.
-- Local wallet-style usage UI for generation cost visibility.
-- Settings page for profile display, account security, contact info, and AI provider configuration.
-- OpenAI-compatible API configuration through the UI or environment variables.
+<h2>微信：soe303</h2>
 
-## Preview
+<br />
 
-### Story Setup
+![妙喵剧本 AI 工作台](screenshots/readme/workspace.png)
 
-![Story setup](screenshots/local-polish-settings.png)
+</div>
 
-### Character Biographies
+## 项目亮点
 
-![Character biographies](screenshots/local-polish-characters-generated.png)
+| 能力 | 说明 |
+| --- | --- |
+| 本地优先 | 剧本草稿、生成内容、项目配置和数据默认保存在本机，方便私有化使用。 |
+| 原创剧本 | 支持故事设定、角色小传、阶段大纲、分集大纲、正文生成等完整创作链路。 |
+| AI 流式生成 | 角色、大纲、分集和正文均支持流式生成，生成过程可视化反馈更及时。 |
+| 改写与改编 | 提供剧本改写、网文改编入口，可通过上传文本快速创建项目。 |
+| 编辑与导出 | 正文编辑器支持分集卡片、批量生成区间、展开模式、自动滚动和 Word 导出。 |
+| 商业化 UI | 内置钱包、积分、会员、充值、额度展示等产品界面，便于二次开发和演示。 |
+| API 可配置 | 支持 OpenAI 兼容接口，可在页面中配置 API 地址、模型和 Key。 |
 
-### Episode Outlines
+## 界面预览
 
-![Episode outlines](screenshots/local-current-outline-generated.png)
+### 创作工作台
 
-### Script Body Editor
+![创作工作台](screenshots/readme/workspace.png)
 
-![Script body editor](screenshots/local-polish-body-generated.png)
+### 故事设定
 
-### Rewrite And Adaptation Lists
+![故事设定](screenshots/local-polish-settings.png)
 
-![Rewrite list](screenshots/local-final-rewrite-list.png)
+### 角色小传
 
-![Adaptation list](screenshots/local-polished-adapt-list.png)
+![角色小传](screenshots/local-polish-characters-generated.png)
 
-## Tech Stack
+### 分集大纲
 
-- Frontend: Vue 3, Vite, lucide-vue-next
-- Backend: Go HTTP server
-- Storage: local SQLite/data files created at runtime
-- AI integration: OpenAI-compatible chat/completions or responses-style providers through configurable base URL, model, and API key
+![分集大纲](screenshots/local-current-outline-generated.png)
 
-## Quick Start
+### 剧本文本编辑器
 
-### 1. Start The Backend
+![剧本文本编辑器](screenshots/local-polish-body-generated.png)
+
+### 改写与改编项目列表
+
+![剧本改写列表](screenshots/local-final-rewrite-list.png)
+
+![小说改编列表](screenshots/local-polished-adapt-list.png)
+
+## 技术栈
+
+| 模块 | 技术 |
+| --- | --- |
+| 前端 | Vue 3、Vite、lucide-vue-next |
+| 后端 | Go HTTP Server |
+| 数据 | 本地 SQLite / 运行时数据文件 |
+| AI 接入 | OpenAI 兼容的 Chat Completions / Responses 风格接口 |
+
+## 快速启动
+
+### 1. 启动后端
 
 ```powershell
 cd backend
 go run .
 ```
 
-The backend listens on `http://localhost:18080` by default.
+后端默认监听：
 
-### 2. Start The Frontend
+```text
+http://localhost:18080
+```
+
+### 2. 启动前端
 
 ```powershell
 cd frontend
@@ -67,22 +88,31 @@ npm install
 npm run dev
 ```
 
-Open:
+浏览器打开：
 
 ```text
 http://localhost:5173
 ```
 
-## AI Configuration
+## AI 配置
 
-MiaoMuse does not include a built-in production API key. Configure your own provider in one of these ways:
+项目不内置生产 API Key，需要使用你自己的大模型服务。支持两种配置方式。
 
-1. Open the app, go to `设置 -> API 配置`, then fill in:
-   - API 地址, for example `https://api.openai.com/v1`
-   - 模型, for example `gpt-4o-mini`
-   - API Key
+### 方式一：在页面配置
 
-2. Or set environment variables before starting the backend:
+进入应用后打开：
+
+```text
+设置 -> API 配置
+```
+
+填写以下内容：
+
+- API 地址：例如 `https://api.openai.com/v1`
+- 模型：例如 `gpt-4o-mini`
+- API Key：你的服务商密钥
+
+### 方式二：通过环境变量配置
 
 ```powershell
 $env:OPENAI_BASE_URL="https://api.openai.com/v1"
@@ -91,11 +121,46 @@ $env:OPENAI_API_KEY="your-api-key"
 go run .
 ```
 
-Saved UI configuration is written to `ai-config.local.json`, which is ignored by Git.
+页面保存的 API 配置会写入 `ai-config.local.json`，该文件已被 Git 忽略，避免误提交密钥。
 
-## Local Files And Git Safety
+## 常用命令
 
-The repository intentionally ignores local runtime and secret files:
+| 操作 | 命令 |
+| --- | --- |
+| 构建前端 | `cd frontend && npm run build` |
+| 构建后端 | `cd backend && go build ./...` |
+| 运行后端测试 | `cd backend && go test ./...` |
+
+PowerShell 中也可以分两行执行：
+
+```powershell
+cd frontend
+npm run build
+```
+
+```powershell
+cd backend
+go build ./...
+```
+
+```powershell
+cd backend
+go test ./...
+```
+
+## 项目目录
+
+```text
+backend/      Go 后端服务、接口、AI 任务编排和本地数据读写
+frontend/     Vue 3 前端应用
+docs/         产品说明、系统设计、业务逻辑和参考文档
+screenshots/  项目截图和 README 预览图
+scripts/      文档与参考资源生成脚本
+```
+
+## 本地文件与安全说明
+
+以下运行时文件和敏感文件已被 `.gitignore` 忽略：
 
 - `api.txt`
 - `ai-config.local.json`
@@ -107,41 +172,8 @@ The repository intentionally ignores local runtime and secret files:
 - `logs/`
 - `test-results/`
 
-Use `api.example.txt` only as a placeholder format reference. Do not commit real model keys.
+`api.example.txt` 仅作为格式示例，不要提交真实 API Key。
 
-## Useful Commands
+## 说明
 
-Build frontend:
-
-```powershell
-cd frontend
-npm run build
-```
-
-Build backend:
-
-```powershell
-cd backend
-go build ./...
-```
-
-Run backend tests:
-
-```powershell
-cd backend
-go test ./...
-```
-
-## Project Structure
-
-```text
-backend/      Go API server and AI task orchestration
-frontend/     Vue 3 application
-docs/         Product notes, generated references, system design notes
-screenshots/  UI screenshots and README previews
-scripts/      Reference-generation helper scripts
-```
-
-## Notes
-
-This is a local-first creative writing tool. Some commercial/product flows such as wallet balance, membership, recharge, and quota display are implemented as product UI and local simulation scaffolding, while actual payment integration is intentionally not included.
+这是一个本地优先的短剧 AI 创作工具。钱包余额、会员、充值、额度等模块主要用于产品界面展示和本地模拟，未接入真实支付系统。需要私有化部署、功能定制或商业化改造，可以通过微信 `soe303` 联系。
