@@ -5,6 +5,7 @@ ai-config.local.json
 frontend/dist/
 frontend/node_modules/
 logs/
+test-results/
 target-upload/
 需求.txt
 dummy-script.txt
