@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0" />
+<title>剧本改写</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    width:2050px;
+    height:968px;
+    overflow:hidden;
+    background:#17181c;
+    font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    color:#fff;
+  }
+  .page{
+    position:relative;
+    width:2050px;
+    height:968px;
+    background:#17181c;
+  }
+  .sidebar{
+    position:absolute;
+    left:0;top:0;
+    width:86px;height:968px;
+    background:#1b1c20;
+  }
+  .main{
+    position:absolute;
+    left:86px;top:0;
+    width:1964px;height:968px;
+    border-top-left-radius:26px;
+    border-bottom-left-radius:26px;
+    overflow:hidden;
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(255,255,255,0.045) 0px,
+        rgba(255,255,255,0.045) 1px,
+        transparent 1px,
+        transparent 6px),
+      #000;
+  }
+  .logo{
+    position:absolute;
+    left:31px;top:42px;
+    width:25px;height:18px;
+  }
+  .logo:before,.logo:after{
+    content:"";
+    position:absolute;
+    height:4px;
+    background:#fff;
+    border-radius:10px;
+  }
+  .logo:before{width:24px;left:1px;top:0}
+  .logo:after{width:25px;left:0;bottom:0}
+  .logo i{
+    position:absolute;
+    width:20px;height:4px;
+    left:0;top:7px;
+    background:#fff;border-radius:10px;
+  }
+  .nav{
+    position:absolute;
+    left:0;top:124px;
+    width:86px;
+  }
+  .nav-item{
+    position:relative;
+    width:86px;height:50px;
+    margin-bottom:1px;
+  }
+  .nav-item svg{
+    position:absolute;
+    left:33px;top:15px;
+    width:21px;height:21px;
+    stroke:#fff;
+    fill:none;
+    stroke-width:2.6;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .nav-item.active{
+    height:46px;
+    margin:12px 0 12px 0;
+  }
+  .nav-item.active .active-bg{
+    position:absolute;
+    left:20px;top:0;
+    width:46px;height:46px;
+    background:#fff;
+    border-radius:6px;
+  }
+  .nav-item.active svg{
+    left:32px;top:12px;
+    width:23px;height:23px;
+    stroke:#050505;
+    stroke-width:2.5;
+  }
+  .divider{
+    position:absolute;
+    left:20px;top:285px;
+    width:46px;height:1px;
+    background:#56575b;
+  }
+  .nav.lower{top:315px}
+  .nav.lower .nav-item{height:51px;margin-bottom:0}
+  .credits{
+    position:absolute;
+    left:18px;bottom:94px;
+    font-size:20px;
+    color:#e7e7e7;
+    font-weight:700;
+    letter-spacing:-2px;
+    text-shadow:0 0 1px rgba(255,255,255,.5);
+  }
+  .credits span{
+    font-size:12px;
+    letter-spacing:-1px;
+    vertical-align:baseline;
+    margin-left:2px;
+  }
+  .avatar{
+    position:absolute;
+    left:23px;bottom:20px;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 58% 38%,#d5a35d 0 4px,transparent 5px),
+      radial-gradient(circle at 48% 45%,#2a2017 0 14px,transparent 15px),
+      radial-gradient(circle at 50% 50%,#f8a51a 0 21px,transparent 22px);
+    border:2px solid #ffb01f;
+    box-shadow:0 0 0 1px rgba(0,0,0,.45) inset;
+  }
+  .avatar:after{
+    content:"";
+    position:absolute;
+    right:-8px;bottom:1px;
+    width:18px;height:18px;
+    background:#ffc634;
+    clip-path:polygon(50% 0,92% 25%,92% 75%,50% 100%,8% 75%,8% 25%);
+    border:1px solid #fff1a8;
+  }
+  .title{
+    position:absolute;
+    left:110px;top:36px;
+    font-size:27px;
+    line-height:34px;
+    font-weight:800;
+    color:#fff;
+    letter-spacing:.5px;
+  }
+  .search{
+    position:absolute;
+    left:817px;top:30px;
+    width:500px;height:40px;
+    background:#191b1f;
+    border:1px solid #2d3037;
+    border-radius:5px;
+  }
+  .search .placeholder{
+    position:absolute;
+    left:13px;top:7px;
+    font-size:17px;
+    color:#878b96;
+    line-height:24px;
+    font-weight:400;
+  }
+  .search .box{
+    position:absolute;
+    right:7px;top:8px;
+    width:24px;height:24px;
+    border:1px solid #50535d;
+    border-radius:5px;
+  }
+  .search svg{
+    position:absolute;
+    right:12px;top:13px;
+    width:14px;height:14px;
+    stroke:#7e828c;
+    fill:none;
+    stroke-width:1.7;
+    stroke-linecap:round;
+  }
+  .help{
+    position:absolute;
+    right:50px;top:43px;
+    font-size:15px;
+    font-weight:700;
+    color:#fff;
+  }
+  .empty{
+    position:absolute;
+    left:0;top:0;
+    width:1964px;height:968px;
+  }
+  .file-icon{
+    position:absolute;
+    left:952px;top:367px;
+    width:74px;height:74px;
+  }
+  .file-icon svg{
+    width:74px;height:74px;
+    stroke:#a6a8b2;
+    fill:none;
+    stroke-width:5.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .empty h2{
+    position:absolute;
+    left:0;top:468px;
+    width:1964px;
+    margin:0;
+    text-align:center;
+    font-size:23px;
+    line-height:31px;
+    font-weight:800;
+    color:#f6f6f7;
+    letter-spacing:.2px;
+  }
+  .empty p{
+    position:absolute;
+    left:0;top:515px;
+    width:1964px;
+    margin:0;
+    text-align:center;
+    font-size:16px;
+    line-height:24px;
+    color:#aeb3c0;
+    font-weight:400;
+  }
+  .upload{
+    position:absolute;
+    left:923px;top:558px;
+    width:116px;height:41px;
+    background:#fff;
+    border:0;
+    border-radius:6px;
+    color:#000;
+    font-size:15px;
+    font-weight:500;
+    line-height:41px;
+    text-align:center;
+  }
+  .footer{
+    position:absolute;
+    left:0;bottom:26px;
+    width:1964px;
+    text-align:center;
+    color:#b3b5bd;
+    font-size:14px;
+    line-height:20px;
+  }
+  .footer .info{
+    display:inline-block;
+    width:16px;height:16px;
+    border:1px solid #777a83;
+    border-radius:50%;
+    line-height:15px;
+    text-align:center;
+    font-size:12px;
+    margin-right:6px;
+    color:#a7a9b1;
+  }
+  .bot{
+    position:absolute;
+    right:38px;bottom:204px;
+    width:54px;height:52px;
+  }
+  .bot .halo{
+    position:absolute;
+    left:3px;top:12px;
+    width:49px;height:34px;
+    border-radius:18px;
+    background:#6035e8;
+    box-shadow:0 0 10px #7c4cff,0 0 2px 3px rgba(119,73,255,.65) inset;
+  }
+  .bot .face{
+    position:absolute;
+    left:10px;top:18px;
+    width:37px;height:22px;
+    background:#fff;
+    border-radius:9px;
+  }
+  .bot .face:before,.bot .face:after{
+    content:"";
+    position:absolute;
+    top:8px;
+    width:5px;height:5px;
+    background:#6a48de;
+    border-radius:50%;
+  }
+  .bot .face:before{left:9px}
+  .bot .face:after{right:9px}
+  .bot .mouth{
+    position:absolute;
+    left:25px;top:35px;
+    width:8px;height:2px;
+    background:#fff;
+    border-radius:3px;
+  }
+  .bot .antenna{
+    position:absolute;
+    left:26px;top:0;
+    width:2px;height:15px;
+    background:#9a70ff;
+  }
+  .bot .antenna:before{
+    content:"";
+    position:absolute;
+    left:-4px;top:-3px;
+    width:10px;height:10px;
+    background:#a982ff;
+    border-radius:50%;
+  }
+  .bot .ear-l,.bot .ear-r{
+    position:absolute;
+    top:23px;
+    width:7px;height:14px;
+    border:2px solid #bba9ff;
+    border-radius:5px;
+  }
+  .bot .ear-l{left:2px}
+  .bot .ear-r{right:1px}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo"><i></i></div>
+
+    <div class="nav">
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M6 4h8l4 4v12H8V8H6z"/><path d="M14 4v5h5"/><path d="M5 7H3v11h5"/></svg>
+      </div>
+      <div class="nav-item active">
+        <div class="active-bg"></div>
+        <svg viewBox="0 0 24 24"><path d="M16.5 3.5l4 4-13 13-4-4z"/><path d="M14 6l4 4"/><path d="M4 4l5 5"/><path d="M20 20l-5-5"/><path d="M3 12l4-4"/><path d="M17 16l4-4"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M5 5v14"/><path d="M9 5v14"/><path d="M13 5l6 14"/><path d="M5 5h4"/><path d="M5 19h4"/></svg>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="nav lower">
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-4 8-8 9-4-1-8-4-8-9V7z"/><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M15 15l3 3"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 3c1 4-3 5-3 9a5 5 0 0 0 10 0c0-4-4-6-4-9"/><path d="M8 14c-2 2-2 6 2 7"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l4-5h10l4 5-9 12z"/><path d="M3 9h18"/><path d="M8 4l4 17"/><path d="M16 4l-4 17"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16"/><path d="M16 15h4"/><circle cx="19" cy="15" r="2"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M4 20v-2a4 4 0 0 1 4-4h3"/><circle cx="9" cy="8" r="4"/><path d="M17 20v-2a4 4 0 0 0-3-3.8"/><path d="M16 4a4 4 0 0 1 0 8"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 0 1 0 4H21a1.7 1.7 0 0 0-1.6 1z"/></svg>
+      </div>
+    </div>
+
+    <div class="credits">1000<span>☯</span></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">剧本改写</div>
+
+    <div class="search">
+      <div class="placeholder">根据名称、核心梗概进行搜索</div>
+      <div class="box"></div>
+      <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5 5"/></svg>
+    </div>
+
+    <div class="help">使用教程</div>
+
+    <section class="empty">
+      <div class="file-icon">
+        <svg viewBox="0 0 80 80">
+          <path d="M18 4h40l16 16v52a5 5 0 0 1-5 5H18a5 5 0 0 1-5-5V9a5 5 0 0 1 5-5z"/>
+          <path d="M58 4v16h16"/>
+          <circle cx="39" cy="47" r="10"/>
+          <path d="M47 55l10 10"/>
+        </svg>
+      </div>
+      <h2>您暂无改写剧本</h2>
+      <p>点击按钮上传完整剧本，即刻进行剧本拆解</p>
+      <div class="upload">上传文件</div>
+    </section>
+
+    <div class="bot">
+      <div class="antenna"></div>
+      <div class="halo"></div>
+      <div class="ear-l"></div>
+      <div class="ear-r"></div>
+      <div class="face"></div>
+      <div class="mouth"></div>
+    </div>
+
+    <div class="footer"><span class="info">i</span>您拥有剧本所有权与控制，我们承诺不利用数据进行任何商业用途</div>
+  </main>
+</div>
+</body>
+</html>

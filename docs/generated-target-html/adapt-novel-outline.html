@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1605, height=1125, initial-scale=1.0">
+<title>小说章纲</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1605px;height:1125px;overflow:hidden;background:#000;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:#fff}
+.page{position:relative;width:1605px;height:1125px;background:#000}
+.sidebar{position:absolute;left:0;top:0;width:108px;height:1125px;background:#191a1f;color:#fff;z-index:5}
+.logo{position:absolute;left:39px;top:49px;font-size:42px;font-weight:900;line-height:38px;letter-spacing:-5px;color:#f5f5f5;font-style:italic}
+.side-item{position:absolute;left:24px;width:58px;height:58px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff}
+.side-item svg{width:30px;height:30px;stroke:#fff;stroke-width:2.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.side-item.active{background:#fff;color:#050505}
+.side-item.active svg{stroke:#050505}
+.i1{top:148px}.i2{top:210px}.i3{top:266px}.i4{top:389px}.i5{top:452px}.i6{top:515px}.i7{top:577px}.i8{top:639px}.i9{top:702px}
+.divider{position:absolute;left:24px;top:357px;width:59px;height:1px;background:#5b5b61}
+.count{position:absolute;left:26px;bottom:113px;font-size:26px;font-weight:800;color:#e7e7e7;letter-spacing:-3px}
+.count small{font-size:13px;letter-spacing:-2px;margin-left:2px;color:#bfbfbf}
+.avatar{position:absolute;left:29px;bottom:25px;width:49px;height:49px;border-radius:50%;border:2px solid #34363c;background:
+radial-gradient(circle at 55% 35%,#f2c36c 0 9px,transparent 10px),
+radial-gradient(circle at 50% 38%,#40210f 0 18px,transparent 19px),
+linear-gradient(135deg,#16243c,#111 55%,#85551f);overflow:hidden}
+.avatar:after{content:"";position:absolute;left:7px;top:8px;width:33px;height:33px;border-radius:50%;background:linear-gradient(135deg,#252525 0 40%,#d99b37 41% 55%,#191919 56%);opacity:.9}
+
+.main{position:absolute;left:108px;top:0;width:1497px;height:1125px;border-top-left-radius:32px;border-bottom-left-radius:32px;overflow:hidden;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 1px,transparent 1px 6px),
+#030303}
+.header{position:absolute;left:33px;top:44px;height:42px;display:flex;align-items:center}
+.starbox{width:31px;height:31px;border-radius:8px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;margin-right:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.star{font-size:22px;color:#b29cff;text-shadow:0 0 8px rgba(131,94,255,.8);line-height:1}
+.title{font-size:30px;font-weight:800;color:#838a92;letter-spacing:.5px}
+
+.tabs{position:absolute;left:107px;top:120px;height:48px;display:flex;align-items:center}
+.tab{height:48px;padding:0 22px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;background:#181a20}
+.tab:first-child{border-top-left-radius:7px;border-bottom-left-radius:7px}
+.tab:last-child{border-top-right-radius:7px;border-bottom-right-radius:7px}
+.tab.active{width:110px;padding:0;border-radius:7px;background:linear-gradient(135deg,#9bf27d 0%,#11a0ff 100%);box-shadow:none;margin-right:20px;color:#fff}
+.tab:not(.active)+.tab{margin-left:0}
+.actions{position:absolute;right:109px;top:120px;width:119px;height:48px;border-radius:5px;background:rgba(24,26,32,.92);display:flex}
+.action{width:59px;height:48px;display:flex;align-items:center;justify-content:center;color:#8e8f94}
+.action svg{width:24px;height:24px;stroke:#898a8e;stroke-width:2.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+.card{position:absolute;background:rgba(24,26,32,.90);color:#7a828d;font-weight:700;overflow:hidden}
+.card.top{top:210px;width:550px;height:337px;border-radius:0;padding:0 20px 18px 20px}
+.card.left{left:107px}
+.card.right{left:712px}
+.card.bottom{left:107px;top:603px;width:550px;height:408px;border-radius:13px;padding:18px 20px;background:#1b1c21;color:#c4c5c8}
+.card p{margin:0 0 7px 0;font-size:18px;line-height:1.55;letter-spacing:-.6px}
+.card.top p{font-size:18px;line-height:1.55;color:#5f6977}
+.card .lead{color:#6f7f93;font-weight:900}
+.card.bottom .chapter{font-size:21px;line-height:1.35;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:-.4px}
+.card.bottom .summary{font-size:18px;line-height:1.55;color:#fff;font-weight:900;margin-bottom:12px;letter-spacing:-.5px}
+.card.bottom p{font-size:18px;line-height:1.55;color:#c7c7c9;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+.scale{position:absolute;left:1320px;top:209px;width:72px;height:123px;color:#fff}
+.scale .n1{position:absolute;left:11px;top:0;font-size:20px;font-weight:800}
+.scale .n10{position:absolute;left:0;top:99px;font-size:20px;font-weight:800}
+.scale .vline{position:absolute;right:5px;top:10px;width:1px;height:102px;background:#b7b7b7}
+.scale .h{position:absolute;right:5px;height:1px;background:#b7b7b7}
+.scale .h.long{width:39px}.scale .h.short{width:16px}
+.scale .h1{top:10px}.scale .h2{top:22px}.scale .h3{top:34px}.scale .h4{top:45px}.scale .h5{top:57px}.scale .h6{top:68px}.scale .h7{top:80px}.scale .h8{top:91px}.scale .h9{top:102px}.scale .h10{top:112px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="sidebar">
+    <div class="logo">S</div>
+    <div class="side-item i1">
+      <svg viewBox="0 0 32 32"><path d="M8 8h11a4 4 0 0 1 4 4v9"/><path d="M8 8v14h15"/><path d="M5 5v16a4 4 0 0 0 4 4h18"/><path d="M13 13h5M13 17h7"/></svg>
+    </div>
+    <div class="side-item i2">
+      <svg viewBox="0 0 32 32"><path d="M7 23 23 7a4 4 0 0 1 2 2L9 25a4 4 0 0 1-2-2Z"/><path d="M5 10l7 7M20 20l7 7M21 6l5 5M6 21l5 5"/></svg>
+    </div>
+    <div class="side-item active i3">
+      <svg viewBox="0 0 32 32"><path d="M8 6h4v20H8z"/><path d="M14 6h4v20h-4z"/><path d="M20 7l4-1 4 19-4 1z"/></svg>
+    </div>
+    <div class="divider"></div>
+    <div class="side-item i4">
+      <svg viewBox="0 0 32 32"><path d="M16 4 6 9v8c0 6 4.5 9.5 10 11 5.5-1.5 10-5 10-11V9L16 4Z"/><path d="M19 14a4 4 0 1 0-1 5l4 3"/></svg>
+    </div>
+    <div class="side-item i5">
+      <svg viewBox="0 0 32 32"><path d="M17 4c1 7-6 8-6 15a7 7 0 0 0 14 0c0-5-4-7-5-11-1 4-4 5-7 7"/></svg>
+    </div>
+    <div class="side-item i6">
+      <svg viewBox="0 0 32 32"><path d="M16 27 4 12l5-7h14l5 7-12 15Z"/><path d="M4 12h24M9 5l7 22M23 5l-7 22M9 5l7 7 7-7"/></svg>
+    </div>
+    <div class="side-item i7">
+      <svg viewBox="0 0 32 32"><rect x="5" y="8" width="22" height="18" rx="2"/><path d="M5 13h22"/><path d="M22 19h5"/><circle cx="23" cy="19" r="2"/></svg>
+    </div>
+    <div class="side-item i8">
+      <svg viewBox="0 0 32 32"><circle cx="11" cy="11" r="4"/><path d="M4 26v-3a6 6 0 0 1 12 0v3"/><circle cx="22" cy="13" r="4"/><path d="M20 20a6 6 0 0 1 8 5v2"/></svg>
+    </div>
+    <div class="side-item i9">
+      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="4"/><path d="M16 3v4M16 25v4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M3 16h4M25 16h4M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/><path d="M12 4.5 10 7l-3 .5-.5 3L4 12M20 4.5 22 7l3 .5.5 3L28 12M12 27.5 10 25l-3-.5-.5-3L4 20M20 27.5 22 25l3-.5.5-3L28 20"/></svg>
+    </div>
+    <div class="count">463<small>∞</small></div>
+    <div class="avatar"></div>
+  </div>
+
+  <main class="main">
+    <div class="header">
+      <div class="starbox"><div class="star">✦</div></div>
+      <div class="title">剧本名称</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">小说章纲</div>
+      <div class="tab">故事梗概</div>
+      <div class="tab">人物小传</div>
+      <div class="tab">分集大纲</div>
+      <div class="tab">剧本正文</div>
+    </div>
+
+    <div class="actions">
+      <div class="action"><svg viewBox="0 0 32 32"><path d="M10 9H5V4"/><path d="M6 9a10 10 0 1 1-1 11"/></svg></div>
+      <div class="action"><svg viewBox="0 0 32 32"><path d="M22 9h5V4"/><path d="M26 9a10 10 0 1 0 1 11"/></svg></div>
+    </div>
+
+    <section class="card top left">
+      <p class="lead">秦川在旧宅为母设灵堂，陈虎带人秦沈临风之前前来灭口。秦川跪在遗像前未动，陈虎端翻香炉挑衅。香灰落地瞬间，秦川胸口的龙纹玉佩彻底碎裂，金色纹路蔓延其身，一道古老声音宣告“龙主归位”。秦川轻易废掉打手，震慑陈虎，眼神冰冷地说学会了不再跪。</p>
+      <p>情节1：夜里，秦川回到秦家旧宅，为母亲设置了简单的灵堂，独自守灵。</p>
+      <p>情节2：灵堂外传来剧烈的砸门声，打破了夜的寂静，预示着麻烦上门。</p>
+      <p>情节3：陈虎带着一群林家打手强行闯了进来，声称奉沈临风之命，要让秦川今晚消失。</p>
+      <p>情节4：秦川背对众人，依旧跪在母亲的遗像前，仿佛对身后的危险毫无察觉。</p>
+    </section>
+
+    <section class="card top right">
+      <p class="lead">林氏集团发布会上，沈临风正宣布与林雪订婚，大屏幕突然播放三年前车祸真相视频，证明肇事者是沈临风而非秦川。全场哗然之际，秦川黑衣现身会场，直面沈临风，当众揭穿其罪行，宣告复仇开始，令林雪脸色惨白。</p>
+      <p>情节1：林氏集团召开发布会，江城媒体云集，沈临风与林雪即将宣布订婚消息。</p>
+      <p>情节2：沈临风在台上春风得意，正式宣布沈林两家联姻，会场一片祝贺之声。</p>
+      <p>情节3：突然，发布会现场的大屏幕黑屏，随后开始播放一段清晰的监控录像。</p>
+      <p>情节4：录像内容正是三年前那场改变秦川命运的车祸，画面显示真正的驾驶者是沈临风。</p>
+    </section>
+
+    <section class="card bottom">
+      <div class="chapter">第5章&nbsp; 龙主</div>
+      <div class="summary">沈临风欲令保镖动手，会场外突然涌入佩戴龙形徽章的黑衣人，向秦川跪拜高呼“恭迎龙主”。秦川揭露自己龙门之主的身份，林雪交出沈临风策划放弃抢救的录音证据。秦川握碎录音笔，当众宣布“沈家，今晚除名”，展开终极复仇。</div>
+      <p>情节1：沈临风恼羞成怒，命令现场保镖对秦川动手，试图控制混乱局面。</p>
+      <p>情节2：保镖刚欲行动，会场外迅速涌入一队气势森严的黑衣人，制服统一。</p>
+      <p>情节3：这些黑衣人胸口均佩戴着精致的龙形徽章，他们行动整齐划一，训练有素。</p>
+      <p>情节4：为首的黑衣人径直走到秦川面前，单膝跪地，声音洪亮地高呼：“恭迎龙主出狱！”</p>
+    </section>
+
+    <div class="scale">
+      <div class="n1">1</div>
+      <div class="n10">10</div>
+      <div class="vline"></div>
+      <div class="h long h1"></div>
+      <div class="h short h2"></div>
+      <div class="h short h3"></div>
+      <div class="h short h4"></div>
+      <div class="h short h5"></div>
+      <div class="h short h6"></div>
+      <div class="h short h7"></div>
+      <div class="h short h8"></div>
+      <div class="h short h9"></div>
+      <div class="h long h10"></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

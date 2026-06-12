@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>复刻页面</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#030303;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+.page{position:relative;width:2050px;height:968px;background:#030303}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#090909;border-right:1px solid rgba(255,255,255,.02)}
+.logo{position:absolute;left:32px;top:41px;width:24px;height:19px}
+.logo:before,.logo:after{content:"";position:absolute;background:#5b5b60;border-radius:8px}
+.logo:before{left:0;top:0;width:24px;height:6px;box-shadow:0 13px 0 #5b5b60}
+.logo:after{right:0;top:7px;width:17px;height:5px}
+.nav{position:absolute;left:20px;top:113px;width:46px;height:46px;border-radius:6px;background:#8b8b8f;display:flex;align-items:center;justify-content:center;color:#111}
+.nav svg{width:24px;height:24px;stroke:#111;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ico{position:absolute;left:32px;width:22px;height:22px;opacity:.55}
+.ico svg{width:22px;height:22px;stroke:#74767d;stroke-width:2.1;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ico.i2{top:176px}.ico.i3{top:226px}.ico.i4{top:321px}.ico.i5{top:371px}.ico.i6{top:421px}.ico.i7{top:470px}.ico.i8{top:521px}.ico.i9{top:570px}
+.line{position:absolute;left:20px;top:284px;width:48px;height:1px;background:#252525}
+.coin{position:absolute;left:18px;bottom:92px;color:#9b9da3;font-weight:700;font-size:19px;opacity:.75}
+.coin small{font-size:10px;margin-left:1px}
+.avatar{position:absolute;left:23px;bottom:21px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 45% 38%,#3e3020 0 25%,#171717 26% 100%);border:2px solid #8a5b0b;box-shadow:0 0 0 1px rgba(0,0,0,.7)}
+.avatar:after{content:"";position:absolute;right:-7px;bottom:1px;width:15px;height:15px;border-radius:4px;background:#6d5518}
+
+.main{position:absolute;left:86px;top:0;width:1964px;height:968px;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.026) 0,rgba(255,255,255,.026) 1px,transparent 1px,transparent 7px),#050505}
+.main:before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.68);pointer-events:none}
+.title{position:absolute;left:29px;top:37px;font-size:26px;font-weight:700;color:#6c6d73;letter-spacing:.5px;opacity:.55}
+.title:before{content:"✦";font-size:15px;margin-right:14px;color:#5b4a86;vertical-align:3px}
+
+.tabs{position:absolute;left:469px;top:95px;width:355px;height:40px;background:#101115;border-radius:3px;display:flex;padding:0;color:#686b73;font-size:15px;overflow:hidden;opacity:.86}
+.tab{height:40px;line-height:40px;padding:0 18px;border-right:1px solid rgba(255,255,255,.02)}
+.tab.active{background:#777982;color:#111;border-radius:3px;margin:3px;height:34px;line-height:34px;padding:0 19px;font-weight:600}
+.actions{position:absolute;left:1277px;top:95px;height:40px;display:flex;gap:14px}
+.undo{width:97px;height:40px;background:#101115;border-radius:3px;display:flex;align-items:center;justify-content:space-around;padding:0 15px;opacity:.75}
+.undo span{font-size:24px;color:#595c63}
+.ai{width:191px;height:40px;background:linear-gradient(90deg,#3b1e52,#2b1459);border-radius:4px;color:#8c7ab7;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;opacity:.8}
+.ai:before{content:"✦";color:#8d6bff;font-size:16px}.ai:after{content:"∞";font-size:14px;color:#74639d}
+
+.form{position:absolute;left:469px;top:167px;width:852px}
+.box{width:852px;height:192px;background:#07080a;border-radius:10px;position:relative;color:#464950;box-shadow:inset 0 0 0 1px rgba(255,255,255,.01)}
+.label{position:absolute;left:17px;top:20px;font-size:15px;font-weight:700;color:#626773}
+.label .req{color:#a51818;margin-left:4px}
+.placeholder{position:absolute;left:17px;top:61px;font-size:16px;color:#3f4248;letter-spacing:.2px}
+.chev{position:absolute;right:24px;top:20px;width:11px;height:11px;border-top:2px solid #444a54;border-left:2px solid #444a54;transform:rotate(45deg);opacity:.8}
+.section-label{position:absolute;left:17px;top:222px;font-size:15px;font-weight:700;color:#626773}
+.section-label .req{color:#a51818;margin-left:4px}
+.episode{position:absolute;left:0;top:255px;width:852px;height:84px;background:#07080a;border-radius:10px;color:#555b65;font-size:16px;padding:21px 17px}
+
+.timeline{position:absolute;left:1448px;top:167px;width:130px;height:542px}
+.card{position:absolute;left:0;width:130px;height:129px;background:#07080a;border-radius:12px;color:#4b4d53;text-align:center;font-weight:700}
+.card.top{top:0;border:2px solid #5f636b}
+.card:nth-child(2){top:139px}.card:nth-child(3){top:279px}.card:nth-child(4){top:414px}
+.card .tag{position:absolute;right:0;top:0;width:39px;height:40px;background:#67686d;color:#111;border-radius:0 10px 0 14px;font-size:17px;line-height:31px}
+.card.top .num{position:absolute;left:0;right:0;top:53px;font-size:20px;color:#606168}
+.card .smalltag{position:absolute;right:0;top:0;width:39px;height:48px;background:#101113;border-radius:0 10px 0 14px;color:#3c3e44;font-size:17px;line-height:38px}
+.card .dash{position:absolute;left:0;right:0;top:51px;font-size:18px;color:#33363c}
+
+.spark{position:absolute;left:1368px;top:390px;width:18px;height:18px;filter:drop-shadow(0 0 5px #7f63ff)}
+.spark:before{content:"✦";position:absolute;color:#fff;font-size:19px;text-shadow:1px 1px 0 #895dff,-1px -1px 0 #895dff}
+.tip{position:absolute;left:1110px;top:421px;width:280px;height:111px;background:#1d1e23;border-radius:10px;box-shadow:0 15px 35px rgba(0,0,0,.32);padding:17px 15px;color:#fff}
+.tip h3{margin:0 0 8px 0;font-size:18px;line-height:23px;font-weight:800;color:#fff}
+.tip p{margin:0;color:#aeb2bd;font-size:14px;line-height:20px}
+.tip button{position:absolute;right:15px;bottom:15px;width:53px;height:20px;border:0;border-radius:3px;background:#2d3037;color:#fff;font-size:12px;font-weight:700}
+
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.22);pointer-events:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24"><path d="M8 4h9v14H8z"/><path d="M5 8h3v12h11v-3"/><path d="M11 8h4M11 12h4"/></svg>
+    </div>
+    <div class="ico i2"><svg viewBox="0 0 24 24"><path d="M14 7l3-3 3 3-3 3z"/><path d="M4 20l7-7"/><path d="M7 4l13 13"/><path d="M4 7l3-3 3 3-3 3z"/></svg></div>
+    <div class="ico i3"><svg viewBox="0 0 24 24"><path d="M5 4h4l4 16H9z"/><path d="M13 4h3l3 16h-3"/></svg></div>
+    <div class="line"></div>
+    <div class="ico i4"><svg viewBox="0 0 24 24"><path d="M12 21s8-4 8-10V5l-8-3-8 3v6c0 6 8 10 8 10z"/><path d="M12 8v4l3 2"/></svg></div>
+    <div class="ico i5"><svg viewBox="0 0 24 24"><path d="M12 3c1 4-4 5-4 10a5 5 0 0 0 10 0c0-3-2-5-4-7"/></svg></div>
+    <div class="ico i6"><svg viewBox="0 0 24 24"><path d="M12 3l9 7-4 11H7L3 10z"/><path d="M3 10h18M12 3l-3 7 3 11 3-11z"/></svg></div>
+    <div class="ico i7"><svg viewBox="0 0 24 24"><path d="M4 6h14v12H4z"/><path d="M8 10h12v10H8z"/><path d="M17 14h3"/></svg></div>
+    <div class="ico i8"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></div>
+    <div class="ico i9"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg></div>
+    <div class="coin">1000<small>∞</small></div>
+    <div class="avatar"></div>
+  </aside>
+  <main class="main">
+    <div class="title">剧本名称</div>
+    <div class="tabs">
+      <div class="tab">故事梗概</div>
+      <div class="tab">人物小传</div>
+      <div class="tab active">分集大纲</div>
+      <div class="tab">剧本正文</div>
+    </div>
+    <div class="actions">
+      <div class="undo"><span>↶</span><span>↷</span></div>
+      <div class="ai">AI生成全部粗纲 80</div>
+    </div>
+    <section class="form">
+      <div class="box">
+        <div class="label">粗纲 <span class="req">*</span></div>
+        <div class="placeholder">请输入内容，3000字以内</div>
+        <div class="chev"></div>
+      </div>
+      <div class="section-label">集纲 <span class="req">*</span></div>
+      <div class="episode">第1集</div>
+    </section>
+    <section class="timeline">
+      <div class="card top"><div class="tag">起</div><div class="num">1</div></div>
+      <div class="card"><div class="smalltag">承</div><div class="dash">-</div></div>
+      <div class="card"><div class="smalltag">转</div><div class="dash">-</div></div>
+      <div class="card"><div class="smalltag">合</div><div class="dash">-</div></div>
+    </section>
+    <div class="spark"></div>
+    <div class="tip">
+      <h3>点击AI，一键生成集纲</h3>
+      <p>根据梗概&人物&粗纲生成当前所有集纲</p>
+      <button>知道了</button>
+    </div>
+  </main>
+</div>
+</body>
+</html>

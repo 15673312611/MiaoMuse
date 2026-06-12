@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>拉片</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+.page{position:relative;width:2050px;height:968px;background:#020202;overflow:hidden}
+.bg{position:absolute;left:108px;top:0;width:1942px;height:968px;border-top-left-radius:32px;border-bottom-left-radius:32px;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0,rgba(255,255,255,.045) 1px,transparent 1px,transparent 7px),
+#030303;overflow:hidden}
+.sidebar{position:absolute;left:0;top:0;width:108px;height:968px;background:#191a1e}
+.logo{position:absolute;left:39px;top:52px;width:31px;height:24px}
+.logo:before,.logo:after{content:"";position:absolute;left:0;width:29px;height:6px;background:#f3f3f3;border-radius:8px}
+.logo:before{top:0;box-shadow:0 9px 0 #f3f3f3}
+.logo:after{top:18px;width:22px}
+.nav{position:absolute;left:0;top:140px;width:108px;display:flex;flex-direction:column;align-items:center;gap:28px}
+.nav .ico{width:58px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff}
+.nav svg{width:28px;height:28px;stroke:#fff;stroke-width:2.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.line{width:58px;height:1px;background:#5a5a5d;margin:12px 0}
+.active{width:58px!important;height:58px!important;border-radius:7px;background:#f5f5f5;color:#111!important}
+.active svg{stroke:#111}
+.side-bottom{position:absolute;bottom:24px;left:0;width:108px;display:flex;flex-direction:column;align-items:center}
+.thousand{font-size:24px;font-weight:800;color:#e7e7e7;letter-spacing:-2px;margin-bottom:38px;text-shadow:1px 1px 0 #999}
+.avatar{width:52px;height:52px;border-radius:50%;border:3px solid #ffad23;background:radial-gradient(circle at 55% 32%,#54432b 0 8px,#1b252b 9px 28px,#050505 29px);position:relative}
+.avatar:after{content:"";position:absolute;right:-9px;bottom:1px;width:20px;height:20px;background:#f4b425;border-radius:4px;transform:rotate(45deg);border:2px solid rgba(255,255,255,.45)}
+.title{position:absolute;left:138px;top:47px;font-size:30px;font-weight:800;letter-spacing:1px;color:#fff}
+.search{position:absolute;left:818px;top:38px;width:500px;height:40px;border-radius:7px;background:#1d1e22;display:flex;align-items:center}
+.search span{font-size:17px;color:#848484;margin-left:15px}
+.search .sicon{position:absolute;right:9px;top:9px;width:24px;height:24px;border:1px solid #464850;border-radius:5px}
+.search .sicon:before{content:"";position:absolute;left:5px;top:5px;width:10px;height:10px;border:1.5px solid #73757c;border-radius:50%}
+.search .sicon:after{content:"";position:absolute;left:15px;top:15px;width:8px;height:1.5px;background:#73757c;transform:rotate(45deg);border-radius:2px}
+.topbtns{position:absolute;right:42px;top:38px;height:40px;display:flex;background:#1d1e22;border-radius:4px;overflow:hidden}
+.topbtn{height:40px;display:flex;align-items:center;gap:8px;color:#d9d9d9;font-size:18px;padding:0 20px}
+.topbtn svg{width:19px;height:19px;stroke:#ddd;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.filter{position:absolute;left:556px;top:119px;width:1024px;height:240px;background:#1b1c20;border-radius:14px;padding:40px 32px}
+.mine{position:absolute;right:36px;top:52px;font-size:19px;color:#f1f1f1;display:flex;align-items:center;gap:7px}
+.mine svg{width:17px;height:17px;stroke:#e5e5e5;fill:none;stroke-width:2}
+.frow{display:flex;align-items:center;height:50px;margin-bottom:13px}
+.frow:last-child{margin-bottom:0}
+.tag{width:104px;height:36px;border-radius:5px;background:#36373a;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;margin-right:22px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
+.opt{font-size:18px;color:#fff;margin-right:42px;white-space:nowrap}
+.frow:nth-child(4) .opt{margin-right:43px}
+.grid{position:absolute;left:550px;top:364px;width:1030px;display:grid;grid-template-columns:repeat(5,190px);gap:20px 20px}
+.card{width:190px;height:270px;border-radius:10px;overflow:hidden;position:relative;background:#222;box-shadow:0 0 0 1px rgba(255,255,255,.03)}
+.poster{position:absolute;inset:0;background-size:cover;background-position:center}
+.card:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.04),rgba(0,0,0,.18))}
+.p1{background:linear-gradient(180deg,#b87858 0 23%,#b80c22 24% 39%,#503021 40% 63%,#d5c4a9 64% 82%,#1e1010 83%),radial-gradient(circle at 35% 13%,#ffd1ae 0 14%,transparent 15%),radial-gradient(circle at 58% 12%,#fad0b2 0 13%,transparent 14%)}
+.p2{background:linear-gradient(160deg,#f4f4f0 0 42%,#1a1b21 43% 100%),radial-gradient(circle at 48% 20%,#202020 0 14%,transparent 15%),radial-gradient(circle at 34% 22%,#f0c4a7 0 10%,transparent 11%)}
+.p3{background:linear-gradient(145deg,#e9d5a5 0,#a77c45 34%,#78b99d 35%,#d4f1de 65%,#896c37 100%)}
+.p4{background:linear-gradient(180deg,#48606e 0,#e2d1a3 37%,#343b3b 38%,#171717 100%)}
+.p5{background:radial-gradient(circle at 55% 45%,#64c8ff 0 8%,transparent 9%),linear-gradient(135deg,#0c2337,#1f90d8 38%,#031423 58%,#010205)}
+.p6{background:linear-gradient(160deg,#92b7bd,#e6dcc7 38%,#bd8d35 39%,#0a0a08)}
+.p7{background:linear-gradient(150deg,#063243,#179fb5 38%,#19171a 39%,#b87b48)}
+.p8{background:linear-gradient(90deg,#40362d,#d4ad73 50%,#15100d),radial-gradient(circle at 48% 20%,#ecc3a1 0 16%,transparent 17%)}
+.p9{background:linear-gradient(160deg,#102719,#836d3e 42%,#5d0c0c 100%)}
+.p10{background:linear-gradient(135deg,#e8a022,#b6211a 42%,#f3b43f)}
+.p11{background:linear-gradient(160deg,#b83f28,#ffe0a0 42%,#29120c)}
+.p12{background:linear-gradient(160deg,#2f2a4e,#d4c2a1 46%,#191019)}
+.p13{background:linear-gradient(180deg,#09284f,#0c5a92 45%,#07111e)}
+.p14{background:linear-gradient(160deg,#362464,#b57ee8 45%,#170d22)}
+.p15{background:linear-gradient(160deg,#7b4d23,#ebc27c 45%,#1e0d05)}
+.ptxt{position:absolute;left:10px;right:10px;bottom:21px;text-align:center;font-size:26px;line-height:1.05;font-weight:900;color:#f5d07b;text-shadow:2px 2px 2px rgba(0,0,0,.75),0 0 3px #000;z-index:2;letter-spacing:1px}
+.pbig{top:14px;bottom:auto;color:#fff;font-size:27px}
+.pwhite{color:#fff}
+.pred{color:#ff3b21;text-shadow:2px 2px 0 #ffe46f}
+.scrollbar{position:absolute;right:3px;top:78px;width:7px;height:887px;background:transparent}
+.thumb{position:absolute;right:0;top:10px;width:7px;height:117px;background:#53555a;border-radius:6px}
+.scrollbar:before{content:"";position:absolute;right:0;top:-2px;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:6px solid #52545a}
+.scrollbar:after{content:"";position:absolute;right:0;bottom:-1px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:6px solid #52545a}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="bg"></div>
+  <aside class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10M5 11h10M7 15h10"/><path d="M5 5h5v14H5zM14 9h5v10h-5z"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 19l15-15M5 8l3-3 11 11-3 3z"/><path d="M14 4l2 2M4 14l2 2"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 4v16M10 4v16M14 4l4 16"/></svg></div>
+      <div class="line"></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/><path d="M14.5 10.5a3 3 0 1 0-1 3"/></svg></div>
+      <div class="ico active"><svg viewBox="0 0 24 24"><path d="M12 3s1 4-2 7c-2 2-3 4-2 7a5 5 0 0 0 10-2c0-4-4-6-4-10 0 0-1 3-4 5"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21L3 9l4-5h10l4 5z"/><path d="M3 9h18M7 4l5 17M17 4l-5 17"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 9h18M17 14h4"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21v-2a6 6 0 0 1 12 0v2"/><path d="M16 11a3 3 0 1 0 0-6M18 21v-2a5 5 0 0 0-3-4.5"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1-2.1 2.1-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1.1 1.7V21h-3v-.6A1.8 1.8 0 0 0 10.5 19a1.8 1.8 0 0 0-2 .4l-.1.1-2.1-2.1.1-.1a1.8 1.8 0 0 0 .4-2 1.8 1.8 0 0 0-1.7-1.1H4v-3h.6A1.8 1.8 0 0 0 6.3 10a1.8 1.8 0 0 0-.4-2l-.1-.1 2.1-2.1.1.1a1.8 1.8 0 0 0 2 .4A1.8 1.8 0 0 0 11.1 4.6V4h3v.6A1.8 1.8 0 0 0 15.2 6a1.8 1.8 0 0 0 2-.4l.1-.1 2.1 2.1-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.7 1.1h.6v3h-.6A1.8 1.8 0 0 0 19.4 15z"/></svg></div>
+    </div>
+    <div class="side-bottom">
+      <div class="thousand">1000∞</div>
+      <div class="avatar"></div>
+    </div>
+  </aside>
+
+  <div class="title">拉片</div>
+  <div class="search"><span>搜索</span><div class="sicon"></div></div>
+  <div class="topbtns">
+    <div class="topbtn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>返回</div>
+    <div class="topbtn"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>定制拉片</div>
+  </div>
+
+  <section class="filter">
+    <div class="mine"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="2"/><path d="M8 17c1-3 7-3 8 0"/></svg>我的拉片</div>
+    <div class="frow"><div class="tag">全部类型</div><div class="opt">实拍</div><div class="opt">AI</div></div>
+    <div class="frow"><div class="tag">全部受众</div><div class="opt">男频</div><div class="opt">女频</div></div>
+    <div class="frow"><div class="tag">全部时间</div><div class="opt">最近14天</div><div class="opt">最近30天</div><div class="opt">更早</div></div>
+    <div class="frow"><div class="tag">全部背景</div><div class="opt">现代</div><div class="opt">都市</div><div class="opt">古代</div><div class="opt">乡村</div><div class="opt">年代</div><div class="opt">职场</div><div class="opt">架空</div><div class="opt">宫廷</div><div class="opt">民国</div><div class="opt">校园</div><div class="opt">荒岛</div></div>
+  </section>
+
+  <main class="grid">
+    <div class="card"><div class="poster p1"></div><div class="ptxt">大小姐进门</div></div>
+    <div class="card"><div class="poster p2"></div><div class="ptxt">判出家门后<br>我登顶全国状元</div></div>
+    <div class="card"><div class="poster p3"></div><div class="ptxt">女帝逼我后<br>才发现我无敌天下</div></div>
+    <div class="card"><div class="poster p4"></div><div class="ptxt pbig pwhite">凡人百世书</div></div>
+    <div class="card"><div class="poster p5"></div><div class="ptxt pbig pwhite">狂浪·深海帝王</div></div>
+
+    <div class="card"><div class="poster p6"></div><div class="ptxt pbig pwhite">表哥送我<br>一辆黄金车</div></div>
+    <div class="card"><div class="poster p7"></div><div class="ptxt">无声<br>的偏爱</div></div>
+    <div class="card"><div class="poster p8"></div><div class="ptxt">一薪一万<br>我在博物馆值夜班</div></div>
+    <div class="card"><div class="poster p9"></div><div class="ptxt">聚宝仙盆之<br>杂灵根才是真BOSS<br>第三季</div></div>
+    <div class="card"><div class="poster p10"></div><div class="ptxt pred">两界跑龙套<br><span style="font-size:20px">老太我养活了全家</span></div></div>
+
+    <div class="card"><div class="poster p11"></div><div class="ptxt">铁嫁</div></div>
+    <div class="card"><div class="poster p12"></div><div class="ptxt">错位人生</div></div>
+    <div class="card"><div class="poster p13"></div><div class="ptxt">深夜归来</div></div>
+    <div class="card"><div class="poster p14"></div><div class="ptxt">紫电仙途</div></div>
+    <div class="card"><div class="poster p15"></div><div class="ptxt">黄金时代</div></div>
+  </main>
+
+  <div class="scrollbar"><div class="thumb"></div></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>设置</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+#app{position:relative;width:2050px;height:968px;background:#000;overflow:hidden}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#1b1c20}
+.main{position:absolute;left:86px;top:0;width:1964px;height:968px;border-radius:18px 0 0 18px;background:#000;overflow:hidden}
+.main:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(132deg,rgba(255,255,255,.035) 0,rgba(255,255,255,.035) 1px,transparent 1px,transparent 6px)}
+.title{position:absolute;left:24px;top:34px;font-size:27px;font-weight:800;letter-spacing:.5px;color:#fff}
+.tabs{position:absolute;left:469px;top:97px;width:354px;height:39px;background:#1c1d22;border-radius:4px;display:flex;align-items:center;padding:3px 4px;gap:4px}
+.tab{height:32px;padding:0 15px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;white-space:nowrap}
+.tab.active{background:#fff;color:#1a1a1a}
+.form{position:absolute;left:469px;top:170px;width:354px}
+.label{font-size:14px;color:#fff;font-weight:500;margin-bottom:10px}
+.input{width:354px;height:36px;background:rgba(28,29,34,.72);border-radius:3px;color:rgba(255,255,255,.48);display:flex;align-items:center;padding-left:17px;font-size:16px;font-weight:700;letter-spacing:.2px}
+.hint{font-size:14px;color:#49516b;margin-top:9px}
+.block{margin-bottom:34px}
+.logout{margin-top:31px;width:89px;height:40px;background:#fff;border:0;border-radius:5px;color:#0b0b0b;font-size:15px;font-weight:600;cursor:default}
+.logo{position:absolute;left:31px;top:39px;width:25px;height:23px}
+.nav{position:absolute;left:0;top:112px;width:86px;display:flex;flex-direction:column;align-items:center}
+.nav .item{width:86px;height:49px;display:flex;align-items:center;justify-content:center;color:#fff;opacity:.95}
+.nav .gapline{width:47px;height:1px;background:#52545b;margin:10px 0 18px 0;opacity:.7}
+.nav .selected{width:47px;height:46px;border-radius:5px;background:#fff;color:#15161a;margin-top:8px}
+.bottom{position:absolute;left:0;bottom:0;width:86px;height:124px}
+.points{position:absolute;left:17px;top:8px;color:#e6e8ef;font-size:18px;font-weight:800;letter-spacing:-1.4px}
+.points small{font-size:8px;margin-left:1px;vertical-align:middle;color:#b8bbc5}
+.avatar{position:absolute;left:23px;top:60px;width:40px;height:40px;border-radius:50%;border:2px solid #ff9f00;background:radial-gradient(circle at 55% 35%,#c58a45 0 10%,#5a311f 11% 25%,#15191f 26% 62%,#090b0e 63%);overflow:visible}
+.avatar:before{content:"";position:absolute;left:9px;top:6px;width:19px;height:25px;border-radius:45% 45% 40% 40%;background:linear-gradient(#81512d,#24130d);box-shadow:0 0 0 7px rgba(10,13,18,.55)}
+.avatar:after{content:"";position:absolute;right:-6px;bottom:1px;width:14px;height:14px;border-radius:50%;background:#ffb21b;box-shadow:inset 0 0 0 2px rgba(255,190,45,.65)}
+svg{display:block}
+.icon{width:23px;height:23px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.icon-fill{fill:currentColor;stroke:none}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <svg viewBox="0 0 34 26" width="34" height="26">
+        <path d="M6 4h22c2.8 0 4.5 1.7 4.5 4.1 0 2.5-1.8 4.1-4.7 4.1H12.1c-1.8 0-2.8.8-2.8 2.1s1 2 2.8 2h17.2v5.2H7.2C4.1 21.5 2 19.8 2 17.2c0-2.7 2-4.5 5.2-4.5h15.3c1.7 0 2.7-.7 2.7-1.9s-1-1.9-2.8-1.9H6V4z" fill="#fff"/>
+      </svg>
+    </div>
+    <nav class="nav">
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 7h9a2 2 0 0 1 2 2v10H8z"/><path d="M5 4h9a2 2 0 0 1 2 2v10H5z"/><path d="M5 8H3v11a2 2 0 0 0 2 2h13"/></svg>
+      </div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m14.7 6.3 3-3a2.1 2.1 0 0 1 3 3l-3 3"/><path d="m5 19 5.7-5.7"/><path d="M2.8 16.8 7.5 12"/><path d="m12 7.5 4.5 4.5"/><path d="m7 3 14 14"/><path d="M3 21h5l11-11"/></svg>
+      </div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 19V5h3l4 14H8L4 5"/><path d="M12 5h3l5 14h-3L12 5z"/></svg>
+      </div>
+      <div class="gapline"></div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8a4 4 0 1 0 3.4 6.1"/><path d="M15 8v4h4"/></svg>
+      </div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8 7 17 9 13 14c-1.7 2.1-5.2 1-5.2-2.5C5.4 14 5 16.2 6 18.2A6.5 6.5 0 0 0 18.5 16c0-4.7-5.1-6.5-6.5-14z"/></svg>
+      </div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/><path d="m6 3 6 18 6-18"/><path d="m6 3-4 6"/><path d="m18 3 4 6"/></svg>
+      </div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 7h15a2 2 0 0 1 2 2v10H5a2 2 0 0 1-2-2z"/><path d="M3 7V5a2 2 0 0 1 2-2h12"/><path d="M17 12h5v4h-5a2 2 0 0 1 0-4z"/></svg>
+      </div>
+      <div class="item">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+      </div>
+      <div class="item selected">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 2l.05.05a2.15 2.15 0 0 1-3.04 3.04l-.05-.05a1.8 1.8 0 0 0-2-.36 1.8 1.8 0 0 0-1.1 1.65V21.5a2.15 2.15 0 0 1-4.3 0v-.08A1.8 1.8 0 0 0 8.2 19.8a1.8 1.8 0 0 0-2 .36l-.05.05a2.15 2.15 0 0 1-3.04-3.04l.05-.05a1.8 1.8 0 0 0 .36-2 1.8 1.8 0 0 0-1.65-1.1H1.8a2.15 2.15 0 0 1 0-4.3h.08A1.8 1.8 0 0 0 3.5 8.6a1.8 1.8 0 0 0-.36-2l-.05-.05A2.15 2.15 0 0 1 6.13 3.5l.05.05a1.8 1.8 0 0 0 2 .36 1.8 1.8 0 0 0 1.1-1.65V2.2a2.15 2.15 0 0 1 4.3 0v.08a1.8 1.8 0 0 0 1.1 1.65 1.8 1.8 0 0 0 2-.36l.05-.05a2.15 2.15 0 0 1 3.04 3.04l-.05.05a1.8 1.8 0 0 0-.36 2 1.8 1.8 0 0 0 1.65 1.1h.08a2.15 2.15 0 0 1 0 4.3h-.08A1.8 1.8 0 0 0 19.4 15z"/></svg>
+      </div>
+    </nav>
+    <div class="bottom">
+      <div class="points">1000<small>∞</small></div>
+      <div class="avatar"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="title">设置</div>
+    <div class="tabs">
+      <div class="tab">我的资料</div>
+      <div class="tab active">账号安全</div>
+      <div class="tab">联系我们</div>
+      <div class="tab">通用设置</div>
+    </div>
+    <section class="form">
+      <div class="block">
+        <div class="label">手机号</div>
+        <div class="input">未绑定</div>
+        <div class="hint">暂不支持修改绑定</div>
+      </div>
+      <div class="block" style="margin-top:33px;margin-bottom:0">
+        <div class="label">密码</div>
+        <div class="input" style="letter-spacing:1px;font-size:14px">***************</div>
+        <div class="hint">点击此处设置新密码</div>
+      </div>
+      <button class="logout">退出登录</button>
+    </section>
+  </main>
+</div>
+</body>
+</html>

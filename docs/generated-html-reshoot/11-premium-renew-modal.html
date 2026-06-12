@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>会员续费</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#050505;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;color:#fff}
+body{position:relative}
+
+/* page */
+.app{width:2050px;height:968px;position:relative;background:#050505;overflow:hidden}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#070707;border-right:1px solid rgba(255,255,255,.02);z-index:2}
+.logo{position:absolute;left:31px;top:42px;width:28px;height:19px;border-top:5px solid #6e6e6e;border-bottom:5px solid #555;border-radius:7px 0 7px 0;opacity:.7}
+.nav{position:absolute;top:126px;left:0;width:86px;display:flex;flex-direction:column;align-items:center;gap:29px}
+.ico{width:24px;height:24px;opacity:.55;position:relative;color:#777}
+.ico.doc:before{content:"";position:absolute;left:6px;top:2px;width:12px;height:18px;border:3px solid #777;border-radius:3px}.ico.doc:after{content:"";position:absolute;left:11px;top:8px;width:13px;height:12px;border:3px solid #777;border-left:none;border-radius:2px}
+.ico.tool:before,.ico.tool:after{content:"";position:absolute;left:2px;top:10px;width:22px;height:5px;border:3px solid #777;border-radius:5px;transform:rotate(45deg)}.ico.tool:after{transform:rotate(-45deg)}
+.ico.book:before{content:"";position:absolute;left:3px;top:2px;width:7px;height:20px;border:3px solid #777;border-radius:3px}.ico.book:after{content:"";position:absolute;left:13px;top:2px;width:7px;height:20px;border:3px solid #777;border-radius:3px;transform:skewY(12deg)}
+.sep{width:47px;height:1px;background:#252525;margin:12px 0 5px}
+.ico.shield:before{content:"";position:absolute;left:3px;top:1px;width:18px;height:20px;border:3px solid #777;border-radius:8px 8px 10px 10px;clip-path:polygon(50% 0,100% 18%,91% 72%,50% 100%,9% 72%,0 18%)}.ico.shield:after{content:"";position:absolute;left:10px;top:8px;width:5px;height:5px;border-radius:50%;background:#777}
+.ico.fire:before{content:"";position:absolute;left:6px;top:0;width:13px;height:22px;border:3px solid #777;border-radius:14px 14px 14px 14px;clip-path:polygon(50% 0,72% 34%,84% 17%,100% 59%,80% 100%,22% 100%,0 62%,31% 30%);background:transparent}
+.ico.diamond-wrap{width:46px;height:46px;border-radius:6px;background:#7d7d7d;opacity:.75;display:flex;align-items:center;justify-content:center}
+.diamond{width:24px;height:20px;position:relative}.diamond:before{content:"";position:absolute;left:0;top:0;width:24px;height:20px;border:3px solid #000;clip-path:polygon(20% 0,80% 0,100% 35%,50% 100%,0 35%)}.diamond:after{content:"";position:absolute;left:6px;top:1px;width:12px;height:18px;border-left:3px solid #000;border-right:3px solid #000;transform:skew(-14deg)}
+.ico.wallet:before{content:"";position:absolute;left:2px;top:5px;width:22px;height:17px;border:3px solid #777;border-radius:4px}.ico.wallet:after{content:"";position:absolute;left:15px;top:10px;width:8px;height:7px;border:3px solid #777;border-radius:5px}
+.ico.people:before{content:"";position:absolute;left:2px;top:6px;width:8px;height:8px;border:3px solid #777;border-radius:50%}.ico.people:after{content:"";position:absolute;left:0;top:17px;width:15px;height:8px;border:3px solid #777;border-bottom:none;border-radius:10px 10px 0 0;box-shadow:14px -8px 0 -3px transparent}
+.ico.gear:before{content:"⚙";position:absolute;left:-1px;top:-6px;font-size:29px;color:#777}
+.bottom{position:absolute;bottom:20px;left:0;width:86px;text-align:center}
+.percent{font-size:20px;font-weight:700;color:#777;margin-bottom:34px}.percent small{font-size:11px}
+.avatar{margin:auto;width:39px;height:39px;border-radius:50%;border:2px solid #9c6a18;background:radial-gradient(circle at 50% 42%,#3d2d20 0 28%,#151515 29% 100%);position:relative}.avatar:after{content:"";position:absolute;right:-7px;bottom:0;width:17px;height:17px;background:#8a651c;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+
+.main{position:absolute;left:86px;top:0;width:1964px;height:968px;background:repeating-linear-gradient(135deg,#070707 0,#070707 4px,#0d0d0d 4px,#0d0d0d 8px);border-radius:28px 0 0 28px;overflow:hidden}
+.main:after{content:"";position:absolute;right:0;top:78px;width:7px;height:731px;background:linear-gradient(#111,#1c1c1c,#111);opacity:.7}
+.page-title{position:absolute;left:25px;top:39px;font-size:27px;font-weight:800;color:#9b9b9b;letter-spacing:2px}
+.invite{position:absolute;right:40px;top:41px;font-size:15px;color:#777;display:flex;align-items:center;gap:8px}.invite:before{content:"INVITE";font-size:7px;color:#44c338;background:#70620c;width:28px;height:22px;transform:rotate(-12deg);display:inline-flex;align-items:flex-start;justify-content:center;border-radius:2px;box-shadow:3px 3px 0 #3a3208}
+
+.member-hero{position:absolute;left:464px;top:95px;width:1024px;height:276px;background:linear-gradient(105deg,#141414 0%,#111114 45%,#17123a 100%);border-radius:24px;overflow:hidden;opacity:.78}
+.member-hero:before{content:"";position:absolute;right:0;top:0;width:450px;height:276px;background:radial-gradient(circle at 55% 15%,rgba(93,75,255,.45),transparent 35%),radial-gradient(circle at 95% 0,rgba(76,62,150,.55),transparent 45%)}
+.member-hero .valid{position:absolute;left:65px;top:36px;color:#7b7b7b;font-size:15px;font-weight:700}
+.member-hero .big{position:absolute;left:65px;top:66px;font-size:35px;font-weight:900;color:#777}
+.member-hero .desc{position:absolute;left:65px;top:124px;width:650px;font-size:17px;line-height:1.6;color:#858585}
+.bg-cube{position:absolute;right:215px;top:85px;width:110px;height:110px;background:linear-gradient(135deg,#9ff,#a5f,#68f);opacity:.45;clip-path:polygon(50% 0,88% 18%,100% 65%,50% 100%,0 65%,12% 18%);filter:blur(.2px)}
+.bg-cube.s{right:110px;top:42px;width:38px;height:38px;opacity:.24}
+.bg-cube.m{right:330px;top:38px;width:52px;height:52px;opacity:.24}
+
+.under-card{position:absolute;top:395px;width:372px;height:520px;border-radius:10px;background:#111;opacity:.62}
+.under-card.left{left:464px}.under-card.mid{left:870px}.under-card.right{left:955px;width:620px;border:1px solid #9a6512;box-shadow:0 0 0 1px rgba(177,110,17,.25) inset}
+.under-card .pill{position:absolute;right:25px;top:26px;border-radius:18px;background:#8f6f20;color:#1b1506;font-weight:700;font-size:14px;padding:7px 20px}
+.under-list{position:absolute;left:26px;bottom:22px;color:#5e5e5e;font-size:19px;font-weight:700;line-height:33px}.check{display:inline-flex;width:20px;height:20px;border-radius:50%;background:#3b2dd7;margin-right:8px;vertical-align:-3px;align-items:center;justify-content:center}.check:before{content:"✓";font-size:14px;color:#aaa}
+
+/* dim layer */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.72);z-index:10}
+
+/* modal */
+.modal{position:absolute;left:582px;top:164px;width:884px;height:638px;background:#1b1c20;border-radius:6px;z-index:20;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.7)}
+.modal-top{position:absolute;left:0;top:0;width:884px;height:285px;background:linear-gradient(112deg,#1b1c20 0%,#1b1c20 51%,#1a1b2c 74%,#16142b 100%);overflow:hidden}
+.modal-top:before{content:"";position:absolute;right:0;top:0;width:470px;height:148px;background:radial-gradient(circle at 70% -10%,rgba(88,68,255,.78),rgba(86,72,255,.22) 38%,transparent 72%)}
+.modal-title{position:absolute;left:36px;top:51px;font-size:32px;line-height:1;font-weight:900;letter-spacing:.5px;color:#fff;text-shadow:2px 2px 0 rgba(0,130,255,.28)}
+.modal-desc{position:absolute;left:36px;top:104px;width:690px;font-size:15.5px;line-height:1.45;color:#fff;font-weight:500}
+.modal-note{position:absolute;left:36px;top:161px;width:650px;font-size:13px;line-height:1.45;color:#8c8c8c}
+.agree{position:absolute;left:36px;top:215px;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px}
+.checkbox{width:15px;height:15px;border:1.5px solid #fff;border-radius:3px;display:inline-block}
+.agree a{color:#fff;text-decoration:none}
+
+.crystal-big{position:absolute;right:106px;top:96px;width:123px;height:123px;filter:drop-shadow(0 0 18px rgba(100,80,255,.35))}
+.crystal-big:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(127,255,255,.9),rgba(197,102,255,.86) 42%,rgba(65,83,255,.9));clip-path:polygon(28% 8%,72% 0,96% 32%,89% 76%,47% 100%,7% 67%,15% 25%);opacity:.9}
+.crystal-big:after{content:"";position:absolute;left:22px;top:20px;width:80px;height:80px;background:linear-gradient(45deg,rgba(255,255,255,.45),rgba(60,255,255,.15),rgba(255,90,255,.32));clip-path:polygon(0 20%,63% 0,100% 36%,78% 100%,16% 87%);box-shadow:inset 0 0 16px rgba(255,255,255,.45)}
+.crystal{position:absolute;background:linear-gradient(135deg,rgba(103,255,255,.8),rgba(204,91,255,.75),rgba(72,65,255,.78));clip-path:polygon(50% 0,87% 18%,100% 61%,50% 100%,0 61%,13% 18%);opacity:.65;filter:drop-shadow(0 0 10px rgba(91,78,255,.45))}
+.crystal.c1{right:216px;top:38px;width:56px;height:56px}.crystal.c2{right:104px;top:43px;width:30px;height:30px}.crystal.c3{right:232px;top:71px;width:30px;height:30px;opacity:.35}
+
+.plans{position:absolute;left:36px;top:273px;width:812px;height:398px;display:flex;gap:24px;align-items:flex-start}
+.plan{position:relative;width:246px;height:342px;background:#202123;border-radius:10px;padding:29px 24px 22px;color:#fff}
+.plan:nth-child(2){background:#242424;z-index:2}
+.plan:nth-child(3){width:270px;background:#202020;margin-top:-22px;height:364px;border-radius:10px;padding-top:30px}
+.plan h2{margin:0;font-size:28px;line-height:1;font-weight:900;letter-spacing:.5px}
+.period{margin-top:13px;color:#a8a8a8;font-size:15.5px;font-weight:800}.period b{font-size:17px;color:#bebebe}
+.benefits{margin:32px 0 0 0;padding:0;list-style:none}
+.benefits li{font-size:12.5px;line-height:28px;color:#fff;font-weight:700;white-space:nowrap}
+.benefits li:before{content:"＊";color:#5844ff;font-size:16px;margin-right:7px;font-weight:900;vertical-align:-1px}
+.benefits li.pink:before,.benefits li.pink{color:#ff0c87}
+.price-area{position:absolute;left:24px;right:24px;bottom:83px;height:60px}
+.daily{text-align:right;color:#a6a6a6;font-size:12.5px;margin-bottom:2px}
+.original{position:absolute;left:0;bottom:4px;color:#fff;font-size:12.5px;font-weight:700}
+.original span{color:red}
+.price{position:absolute;right:1px;bottom:0;font-size:47px;line-height:.82;font-weight:900;letter-spacing:-1px}
+.price small{font-size:15px;margin-left:2px;font-weight:700}
+.btn{position:absolute;left:24px;right:24px;bottom:22px;height:41px;border-radius:22px;background:linear-gradient(90deg,#ad671d,#a88c47);display:flex;align-items:center;justify-content:center;color:#9b9b9b;font-size:16px;font-weight:900}
+.ribbon{position:absolute;right:0;top:20px;width:120px;height:40px;border-radius:0 0 0 10px;background:#242424;color:#ffd200;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.plan:nth-child(3) .ribbon{top:0;right:0;background:#202020;width:106px}
+.plan:nth-child(3) .benefits{margin-top:30px}
+.plan:nth-child(3) .price-area{bottom:83px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="ico doc"></div>
+      <div class="ico tool"></div>
+      <div class="ico book"></div>
+      <div class="sep"></div>
+      <div class="ico shield"></div>
+      <div class="ico fire"></div>
+      <div class="ico diamond-wrap"><div class="diamond"></div></div>
+      <div class="ico wallet"></div>
+      <div class="ico people"></div>
+      <div class="ico gear"></div>
+    </div>
+    <div class="bottom">
+      <div class="percent">1000<small>₀₃</small></div>
+      <div class="avatar"></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-title">会员</div>
+    <div class="invite">邀请有礼</div>
+
+    <div class="member-hero">
+      <div class="valid">有效期至 2026-06-06 19:48</div>
+      <div class="big">剧点会员</div>
+      <div class="desc">续费后会在您当前套餐截止日期后叠加对应周期，继续享受剧点充值 6.7折优惠，还可拥有短剧拉片等强大的AI剧本创作功能，更多福利请参阅 会员权益</div>
+      <div class="bg-cube"></div><div class="bg-cube s"></div><div class="bg-cube m"></div>
+    </div>
+
+    <div class="under-card left">
+      <div class="under-list">
+        <div><span class="check"></span>AI小说改编剧本</div>
+        <div><span class="check"></span>AI解析人物小传</div>
+      </div>
+    </div>
+    <div class="under-card mid">
+      <div class="under-list">
+        <div><span class="check"></span>AI小说改编剧本</div>
+        <div><span class="check"></span>AI解析人物小传</div>
+      </div>
+    </div>
+    <div class="under-card right">
+      <div class="pill">当前权益</div>
+      <div class="under-list" style="left:314px">
+        <div><span class="check" style="background:#a15c0c"></span>人物关系图谱（即将上线）</div>
+        <div><span class="check" style="background:#a15c0c"></span>金手指情节辅助（即将上线）</div>
+        <div><span class="check" style="background:#a15c0c"></span>更多会员专属功能尽请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dim"></div>
+
+  <div class="modal">
+    <div class="modal-top">
+      <div class="crystal c1"></div>
+      <div class="crystal c2"></div>
+      <div class="crystal c3"></div>
+      <div class="crystal-big"></div>
+
+      <div class="modal-title">续费会员</div>
+      <div class="modal-desc">续费后会在您当前套餐截止日期后叠加对应周期，继续享受剧点充值 6.7折优惠，还可拥有 短剧拉片等强大的AI剧本创作功能，更多福利请参阅 会员权益</div>
+      <div class="modal-note">会员套餐（包含月卡、季卡、年卡）均为一次性消费，不自动续订扣费。您可以在会员期间续订套餐，暂不支持在线升级套餐。购买后不支持退订，建议您在购买前仔细阅读《会员协议》</div>
+      <div class="agree"><span class="checkbox"></span><span>我已阅读并同意 <a>《会员协议》</a></span></div>
+    </div>
+
+    <div class="plans">
+      <div class="plan">
+        <h2>月卡套餐</h2>
+        <div class="period">周期：<b>30个自然日</b></div>
+        <ul class="benefits">
+          <li>短剧拉片（每30天免费1次拉片）</li>
+          <li>剧点充值6.7折优惠</li>
+          <li>每月可领取500剧点</li>
+        </ul>
+        <div class="price-area">
+          <div class="daily">约0.97元/天</div>
+          <div class="original">原价58元，限时<span>5折</span></div>
+          <div class="price">29<small>元</small></div>
+        </div>
+        <div class="btn">续费月卡</div>
+      </div>
+
+      <div class="plan">
+        <div class="ribbon">较月卡9折优惠</div>
+        <h2>季卡套餐</h2>
+        <div class="period">周期：<b>90个自然日</b></div>
+        <ul class="benefits">
+          <li>短剧拉片（每30天免费1次拉片）</li>
+          <li>剧点充值6.7折优惠</li>
+          <li>每月可领取500剧点</li>
+        </ul>
+        <div class="price-area">
+          <div class="daily">约0.88元/天</div>
+          <div class="original">原价158元，限时<span>5折</span></div>
+          <div class="price">79<small>元</small></div>
+        </div>
+        <div class="btn">续费季卡</div>
+      </div>
+
+      <div class="plan">
+        <div class="ribbon">较月卡8折优惠</div>
+        <h2>年卡套餐</h2>
+        <div class="period">周期：<b>365个自然日</b></div>
+        <ul class="benefits">
+          <li>短剧拉片（每30天免费1次拉片）</li>
+          <li>剧点充值6.7折优惠</li>
+          <li>每月可领取500剧点</li>
+          <li class="pink">额外赠送1500剧点</li>
+        </ul>
+        <div class="price-area">
+          <div class="daily">约0.79元/天</div>
+          <div class="original">原价578元，限时<span>5折</span></div>
+          <div class="price">289<small>元</small></div>
+        </div>
+        <div class="btn">续费年卡</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

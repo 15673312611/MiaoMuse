@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>网文改编</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    padding:0;
+    width:2050px;
+    height:968px;
+    overflow:hidden;
+    background:#000;
+    font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  }
+  .page{
+    position:relative;
+    width:2050px;
+    height:968px;
+    overflow:hidden;
+    background:#000;
+  }
+  .sidebar{
+    position:absolute;
+    left:0;
+    top:0;
+    width:108px;
+    height:968px;
+    background:#18191e;
+    color:#fff;
+  }
+  .main{
+    position:absolute;
+    left:108px;
+    top:0;
+    width:1942px;
+    height:968px;
+    border-top-left-radius:26px;
+    border-bottom-left-radius:0;
+    overflow:hidden;
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(255,255,255,0.055) 0px,
+        rgba(255,255,255,0.055) 1px,
+        transparent 1px,
+        transparent 7px),
+      #020202;
+  }
+  .logo{
+    position:absolute;
+    top:43px;
+    left:40px;
+    width:30px;
+    height:28px;
+  }
+  .logo svg{width:100%;height:100%}
+  .nav{
+    position:absolute;
+    left:0;
+    top:124px;
+    width:108px;
+  }
+  .nav-item{
+    position:relative;
+    width:108px;
+    height:50px;
+    margin-bottom:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+  }
+  .nav-item svg{
+    width:29px;
+    height:29px;
+    stroke:#fff;
+    stroke-width:2.7;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .nav-item.active{
+    width:58px;
+    height:58px;
+    margin-left:25px;
+    margin-top:4px;
+    margin-bottom:29px;
+    border-radius:7px;
+    background:#fff;
+    color:#000;
+  }
+  .nav-item.active svg{
+    stroke:#050505;
+    width:30px;
+    height:30px;
+  }
+  .divider{
+    position:absolute;
+    top:357px;
+    left:25px;
+    width:58px;
+    height:1px;
+    background:rgba(255,255,255,.23);
+  }
+  .nav2{
+    position:absolute;
+    left:0;
+    top:393px;
+    width:108px;
+  }
+  .nav2 .nav-item{
+    margin-bottom:12px;
+  }
+  .bottom-credit{
+    position:absolute;
+    left:22px;
+    bottom:115px;
+    font-size:21px;
+    line-height:24px;
+    font-weight:800;
+    color:#f2f2f2;
+    letter-spacing:-1.5px;
+    text-shadow:0 0 1px rgba(255,255,255,.6);
+  }
+  .bottom-credit .small{
+    font-size:12px;
+    font-weight:700;
+    margin-left:1px;
+  }
+  .avatar{
+    position:absolute;
+    left:28px;
+    bottom:23px;
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 42%, #2a170b 0 14px, transparent 15px),
+      radial-gradient(circle at 50% 45%, #d08a45 0 21px, transparent 22px),
+      linear-gradient(135deg,#1b1e24,#080808);
+    border:3px solid #f6a51a;
+    box-shadow:0 0 0 1px rgba(0,0,0,.6) inset;
+    overflow:visible;
+  }
+  .avatar:before{
+    content:"";
+    position:absolute;
+    left:9px;
+    top:6px;
+    width:30px;
+    height:35px;
+    border-radius:50% 50% 45% 45%;
+    background:
+      radial-gradient(circle at 18px 18px,#e3a16a 0 3px,transparent 4px),
+      linear-gradient(#3b2a20,#0d0d0e 45%,#111);
+    transform:rotate(-15deg);
+  }
+  .avatar:after{
+    content:"";
+    position:absolute;
+    right:-9px;
+    bottom:2px;
+    width:22px;
+    height:22px;
+    background:linear-gradient(135deg,#ffd85e,#f39800);
+    clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+    border:1px solid rgba(255,255,255,.5);
+  }
+  .title{
+    position:absolute;
+    left:30px;
+    top:45px;
+    color:#fff;
+    font-size:25px;
+    line-height:32px;
+    font-weight:800;
+    letter-spacing:.5px;
+    text-shadow:0 1px 1px rgba(0,0,0,.7);
+  }
+  .search{
+    position:absolute;
+    left:817px;
+    top:30px;
+    width:500px;
+    height:41px;
+    border-radius:5px;
+    background:#191a1e;
+    border:1px solid #25262b;
+    box-shadow:0 0 0 1px rgba(255,255,255,.02) inset;
+  }
+  .search input{
+    position:absolute;
+    left:13px;
+    top:0;
+    width:440px;
+    height:39px;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#d9d9df;
+    font-size:15px;
+    line-height:39px;
+    font-family:inherit;
+  }
+  .search input::placeholder{color:#8b8f9c}
+  .search .sbtn{
+    position:absolute;
+    right:8px;
+    top:8px;
+    width:25px;
+    height:25px;
+    border:1px solid #555861;
+    border-radius:5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .search .sbtn svg{
+    width:16px;
+    height:16px;
+    stroke:#8f929a;
+    stroke-width:1.8;
+    fill:none;
+  }
+  .help{
+    position:absolute;
+    right:50px;
+    top:51px;
+    color:#fff;
+    font-size:15px;
+    line-height:20px;
+    font-weight:600;
+  }
+  .empty{
+    position:absolute;
+    left:0;
+    top:0;
+    width:1942px;
+    height:968px;
+    pointer-events:none;
+  }
+  .empty-inner{
+    position:absolute;
+    left:50%;
+    top:460px;
+    transform:translateX(-50%);
+    width:380px;
+    text-align:center;
+  }
+  .doc-icon{
+    width:79px;
+    height:92px;
+    margin:0 auto 30px auto;
+  }
+  .doc-icon svg{
+    width:100%;
+    height:100%;
+    stroke:#a7a9b3;
+    stroke-width:6;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .empty-title{
+    color:#f2f4fb;
+    font-size:24px;
+    line-height:30px;
+    font-weight:800;
+    margin:0 0 26px 0;
+    text-shadow:0 1px 0 rgba(54,82,144,.8);
+  }
+  .empty-desc{
+    color:#b9bdcb;
+    font-size:16px;
+    line-height:22px;
+    font-weight:400;
+    margin:0 0 31px 0;
+  }
+  .upload-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:116px;
+    height:41px;
+    border-radius:6px;
+    background:#fff;
+    color:#000;
+    font-size:15px;
+    line-height:41px;
+    font-weight:500;
+    box-shadow:none;
+  }
+  .footer-note{
+    position:absolute;
+    left:0;
+    bottom:26px;
+    width:1942px;
+    text-align:center;
+    color:#aaaeb8;
+    font-size:14px;
+    line-height:20px;
+  }
+  .footer-note .i{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:17px;
+    height:17px;
+    border-radius:50%;
+    border:1px solid #747783;
+    color:#747783;
+    font-size:12px;
+    margin-right:7px;
+    vertical-align:-2px;
+    font-family:Georgia,serif;
+  }
+  .bot{
+    position:absolute;
+    right:37px;
+    bottom:20px;
+    width:61px;
+    height:61px;
+  }
+  .bot .glow{
+    position:absolute;
+    left:7px;
+    top:18px;
+    width:48px;
+    height:38px;
+    border-radius:22px;
+    background:#6540ff;
+    box-shadow:0 0 18px 6px rgba(99,66,255,.75);
+  }
+  .bot .head{
+    position:absolute;
+    left:9px;
+    top:17px;
+    width:47px;
+    height:37px;
+    border-radius:17px;
+    background:linear-gradient(180deg,#6a46ff 0%,#4a2be1 100%);
+    border:2px solid #8f75ff;
+  }
+  .bot .face{
+    position:absolute;
+    left:16px;
+    top:24px;
+    width:34px;
+    height:19px;
+    border-radius:7px;
+    background:#fff;
+  }
+  .bot .eye{
+    position:absolute;
+    top:31px;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:#6b55d9;
+  }
+  .bot .eye.l{left:25px}
+  .bot .eye.r{left:41px}
+  .bot .mouth{
+    position:absolute;
+    left:31px;
+    top:43px;
+    width:12px;
+    height:3px;
+    border-radius:4px;
+    background:#d8d3ff;
+  }
+  .bot .ant{
+    position:absolute;
+    left:31px;
+    top:3px;
+    width:2px;
+    height:13px;
+    background:#a988ff;
+  }
+  .bot .dot{
+    position:absolute;
+    left:26px;
+    top:0;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#a988ff;
+  }
+  .bot .ear{
+    position:absolute;
+    right:2px;
+    top:30px;
+    width:9px;
+    height:21px;
+    border:2px solid #6c4cff;
+    border-left:none;
+    border-radius:0 12px 12px 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">
+      <svg viewBox="0 0 42 32" aria-hidden="true">
+        <path d="M5 9h27c4 0 6 2 6 5s-2 5-6 5H14c-4 0-7 2-7 5s3 5 7 5h24" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="nav">
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M8 5h9l5 5v17H8z"/><path d="M17 5v6h6"/><path d="M5 9h6v13H5z"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M5 22L22 5"/><path d="M9 5l18 18"/><path d="M5 10l5-5 5 5-5 5z"/><path d="M17 22l5-5 5 5-5 5z"/></svg>
+      </div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 32 32"><path d="M7 5h5l4 22h-5z"/><path d="M14 5h4l7 22h-5z"/><path d="M7 5v22"/></svg>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="nav2">
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M16 4l11 5v7c0 6-4.5 10-11 12C9.5 26 5 22 5 16V9z"/><circle cx="16" cy="15" r="4"/><path d="M20 19l4 4"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M16 4c2 5-3 7-3 11a6 6 0 1010-4c.5 8-9 5-5-1 1.5-2 1-4-.5-6z"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M4 12h24l-12 16z"/><path d="M9 4h14l5 8H4z"/><path d="M12 12l4 16 4-16"/><path d="M9 4l3 8M23 4l-3 8"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M6 8h20v18H6z"/><path d="M6 12h17"/><circle cx="25" cy="19" r="3"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><circle cx="11" cy="11" r="4"/><path d="M4 27v-3c0-4 3-6 7-6s7 2 7 6v3"/><path d="M20 9a4 4 0 014 4 4 4 0 01-3 3.8"/><path d="M22 20c3 1 5 3 5 7"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="4"/><path d="M16 3v4M16 25v4M5.8 5.8l2.8 2.8M23.4 23.4l2.8 2.8M3 16h4M25 16h4M5.8 26.2l2.8-2.8M23.4 8.6l2.8-2.8"/><path d="M12 4l-1 3M20 28l1-3"/></svg>
+      </div>
+    </div>
+
+    <div class="bottom-credit">1000<span class="small">∞</span></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">网文改编</div>
+
+    <div class="search">
+      <input placeholder="根据名称、核心梗概进行搜索">
+      <div class="sbtn">
+        <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+      </div>
+    </div>
+
+    <div class="help">使用教程</div>
+
+    <section class="empty">
+      <div class="empty-inner">
+        <div class="doc-icon">
+          <svg viewBox="0 0 86 96">
+            <path d="M18 4h43l20 20v62a6 6 0 01-6 6H18a6 6 0 01-6-6V10a6 6 0 016-6z"/>
+            <path d="M61 4v19a6 6 0 006 6h14"/>
+            <circle cx="41" cy="58" r="12"/>
+            <path d="M50 67l12 12"/>
+          </svg>
+        </div>
+        <div class="empty-title">您暂无改编剧本</div>
+        <div class="empty-desc">点击按钮上传小说文件，即刻进行草纲拆解</div>
+        <div class="upload-btn">上传文件</div>
+      </div>
+    </section>
+
+    <div class="footer-note"><span class="i">i</span>您拥有剧本所有权与控制，我们承诺不利用数据进行任何商业用途</div>
+
+    <div class="bot">
+      <div class="glow"></div>
+      <div class="ant"></div>
+      <div class="dot"></div>
+      <div class="head"></div>
+      <div class="face"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="mouth"></div>
+      <div class="ear"></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

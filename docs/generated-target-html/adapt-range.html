@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1605, height=1125, initial-scale=1.0">
+<title>网文改编-拆解范围</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1605px;height:1125px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;color:#fff}
+.page{position:relative;width:1605px;height:1125px;background:#020303}
+.side{position:absolute;left:0;top:0;width:108px;height:1125px;background:#050607}
+.logo{position:absolute;left:39px;top:52px;color:#55585c;font-size:42px;font-weight:700;letter-spacing:-6px;transform:scaleX(1.2)}
+.nav{position:absolute;left:0;top:142px;width:108px}
+.nav .item{position:relative;margin:21px auto;width:58px;height:58px;border-radius:7px;color:#4c4d51;display:flex;align-items:center;justify-content:center;font-size:29px;font-weight:400}
+.nav .item.active{background:#555;color:#070707}
+.nav .sep{height:1px;background:#1c1d20;margin:31px 25px 36px}
+.bottom-num{position:absolute;left:26px;bottom:114px;color:#3f4145;font-size:24px;font-weight:700}
+.bottom-num small{font-size:14px;margin-left:1px}
+.avatar{position:absolute;left:30px;bottom:23px;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 52% 38%,#604d25 0,#2b251b 35%,#070808 70%);border:2px solid #101113;overflow:hidden}
+.main{position:absolute;left:108px;top:0;width:1497px;height:1125px;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 2px,transparent 2px,transparent 8px),#030404;border-top-left-radius:28px;border-bottom-left-radius:28px}
+.title{position:absolute;left:29px;top:44px;font-size:30px;font-weight:800;color:#76808d;letter-spacing:1px}
+.search{position:absolute;left:522px;top:37px;width:451px;height:52px;background:#090a0c;border-radius:7px;border:1px solid rgba(255,255,255,.02);color:#2a2d32;font-size:19px;line-height:52px;padding-left:13px}
+.search .mag{position:absolute;right:13px;top:11px;width:30px;height:30px;border:1px solid #22252a;border-radius:8px}
+.search .mag:before{content:"";position:absolute;left:8px;top:7px;width:10px;height:10px;border:2px solid #2b2e33;border-radius:50%}
+.search .mag:after{content:"";position:absolute;left:18px;top:19px;width:8px;height:2px;background:#2b2e33;transform:rotate(45deg);transform-origin:left center}
+.tutorial{position:absolute;right:62px;top:55px;color:#59606a;font-size:17px}
+.footer-note{position:absolute;left:480px;bottom:28px;color:#1d2025;font-size:17px}
+.footer-note:before{content:"ⓘ";margin-right:8px;color:#2a2d33}
+.bot{position:absolute;right:61px;bottom:256px;width:62px;height:63px}
+.bot .head{position:absolute;left:9px;top:22px;width:45px;height:31px;border-radius:16px;background:#33314a;border:4px solid #2d175d;box-shadow:0 0 12px rgba(83,50,165,.6)}
+.bot .eye{position:absolute;top:34px;width:7px;height:7px;border-radius:50%;background:#9089a6}
+.bot .eye.l{left:24px}.bot .eye.r{left:42px}
+.bot .ant{position:absolute;left:31px;top:6px;width:5px;height:18px;background:#4b3480;border-radius:4px}
+.bot .ant:before{content:"";position:absolute;left:-3px;top:-5px;width:10px;height:10px;border-radius:50%;background:#4b3480}
+.bot .ear{position:absolute;top:31px;width:8px;height:18px;border:3px solid #2d175d}
+.bot .ear.l{left:6px;border-right:0;border-radius:10px 0 0 10px}
+.bot .ear.r{right:5px;border-left:0;border-radius:0 10px 10px 0}
+.modal{position:absolute;left:294px;top:141px;width:1015px;height:845px;background:#191a1e;border-radius:5px;color:#fff}
+.close{position:absolute;right:20px;top:16px;width:24px;height:24px}
+.close:before,.close:after{content:"";position:absolute;left:10px;top:0;width:4px;height:25px;background:#6a6b70;border-radius:2px}
+.close:before{transform:rotate(45deg)}.close:after{transform:rotate(-45deg)}
+.modal h2{position:absolute;left:30px;top:32px;margin:0;font-size:25px;line-height:32px;font-weight:800;color:#fff}
+.desc{position:absolute;left:30px;top:78px;font-size:18px;color:#76859b;letter-spacing:.2px}
+.desc b{color:#fff;font-weight:700}
+.range{position:absolute;left:30px;top:120px;width:45px;height:45px;border:1px solid #e7eefb;border-radius:7px;text-align:center;line-height:43px;font-size:21px;font-weight:700;color:#fff}
+.range.bottom{top:690px}
+.slider-track{position:absolute;left:342px;top:323px;width:9px;height:489px;background:#f2f2f2;border-radius:5px}
+.slider-dot{position:absolute;left:334px;top:801px;width:25px;height:25px;border-radius:50%;background:#fff;border:3px solid #9394ff}
+.chapters{position:absolute;left:94px;top:124px;width:110px}
+.chapter{height:39px;display:flex;align-items:center;color:#fff;font-size:20px;font-weight:600;padding-left:9px;border-radius:5px;margin-bottom:0}
+.chapter.active{background:#3b3b3d;width:110px;height:37px}
+.chk{position:relative;width:15px;height:15px;border:2px solid #fff;border-radius:2px;margin-right:11px}
+.chk:after{content:"";position:absolute;left:2px;top:0;width:8px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+.divider{position:absolute;left:223px;top:120px;width:1px;height:615px;background:#303137}
+.preview{position:absolute;left:237px;top:118px;width:765px;height:610px;padding:0 10px 0 0}
+.preview h3{margin:0 0 14px 0;font-size:21px;line-height:28px;font-weight:800;color:#fff}
+.preview .tag{position:absolute;right:22px;top:2px;background:#34383f;color:#fff;font-size:15px;line-height:24px;height:24px;padding:0 6px;border-radius:4px;font-weight:700}
+.preview p{margin:0;color:#fff;font-size:20px;line-height:30px;font-weight:600;letter-spacing:-.4px}
+.points{position:absolute;left:30px;bottom:44px}
+.big4{font-size:40px;line-height:38px;font-weight:900;color:#fff;display:inline-block;letter-spacing:-1px}
+.unit{font-size:15px;color:#fff;font-weight:700;margin-left:1px}
+.consume{margin-top:2px;color:#696d75;font-size:15px}
+.actions{position:absolute;right:30px;bottom:32px;display:flex;align-items:center;gap:27px}
+.linkbtn{color:#b5b5ba;font-size:18px;display:flex;align-items:center;gap:7px}
+.warn{width:23px;height:23px;border:3px solid #a9a9ae;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#a9a9ae;font-size:16px;font-weight:900;line-height:18px}
+.confirm{width:110px;height:50px;background:#fff;color:#111;border-radius:6px;border:0;font-size:17px;font-weight:500}
+.icon-lines{width:28px;height:28px;position:relative}
+.icon-lines:before,.icon-lines:after{content:"";position:absolute;background:currentColor;border-radius:2px}
+.i-doc:before{left:5px;top:4px;width:17px;height:21px;border:3px solid currentColor;background:transparent;border-radius:3px}
+.i-doc:after{left:12px;top:11px;width:16px;height:3px;box-shadow:0 7px 0 currentColor}
+.i-tools:before{left:2px;top:12px;width:26px;height:5px;transform:rotate(-45deg)}
+.i-tools:after{left:2px;top:12px;width:26px;height:5px;transform:rotate(45deg)}
+.i-book:before{left:4px;top:3px;width:7px;height:22px;border:3px solid currentColor;background:transparent;border-radius:2px;box-shadow:9px 0 0 -1px #555}
+.i-book:after{left:18px;top:4px;width:3px;height:21px;background:currentColor;transform:rotate(-15deg)}
+.i-shield:before{left:5px;top:3px;width:18px;height:20px;border:3px solid currentColor;background:transparent;clip-path:polygon(50% 0,100% 18%,90% 75%,50% 100%,10% 75%,0 18%)}
+.i-fire:before{left:8px;top:4px;width:14px;height:20px;border:3px solid currentColor;background:transparent;border-radius:60% 60% 60% 60%;transform:rotate(25deg)}
+.i-gem:before{left:3px;top:5px;width:22px;height:17px;border:3px solid currentColor;background:transparent;clip-path:polygon(22% 0,78% 0,100% 35%,50% 100%,0 35%)}
+.i-wallet:before{left:3px;top:7px;width:23px;height:18px;border:3px solid currentColor;background:transparent;border-radius:4px}
+.i-wallet:after{left:17px;top:14px;width:7px;height:5px;border:2px solid currentColor;background:transparent;border-radius:4px}
+.i-users:before{left:2px;top:5px;width:9px;height:9px;border:3px solid currentColor;background:transparent;border-radius:50%;box-shadow:13px 0 0 -1px #4c4d51}
+.i-users:after{left:0;top:19px;width:12px;height:8px;border:3px solid currentColor;border-bottom:0;background:transparent;border-radius:10px 10px 0 0;box-shadow:15px 0 0 -1px #4c4d51}
+.i-gear:before{left:5px;top:5px;width:18px;height:18px;border:3px solid currentColor;background:transparent;border-radius:50%;box-shadow:0 -8px 0 -5px currentColor,0 8px 0 -5px currentColor,8px 0 0 -5px currentColor,-8px 0 0 -5px currentColor}
+.i-gear:after{left:12px;top:12px;width:5px;height:5px;background:currentColor;border-radius:50%}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="side">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="item"><span class="icon-lines i-doc"></span></div>
+      <div class="item"><span class="icon-lines i-tools"></span></div>
+      <div class="item active"><span class="icon-lines i-book"></span></div>
+      <div class="sep"></div>
+      <div class="item"><span class="icon-lines i-shield"></span></div>
+      <div class="item"><span class="icon-lines i-fire"></span></div>
+      <div class="item"><span class="icon-lines i-gem"></span></div>
+      <div class="item"><span class="icon-lines i-wallet"></span></div>
+      <div class="item"><span class="icon-lines i-users"></span></div>
+      <div class="item"><span class="icon-lines i-gear"></span></div>
+    </div>
+    <div class="bottom-num">467<small>☯</small></div>
+    <div class="avatar"></div>
+  </div>
+  <div class="main">
+    <div class="title">网文改编</div>
+    <div class="search">根据名称、核心梗概进行搜索<div class="mag"></div></div>
+    <div class="tutorial">使用教程</div>
+    <div class="bot"><div class="ant"></div><div class="ear l"></div><div class="ear r"></div><div class="head"></div><div class="eye l"></div><div class="eye r"></div></div>
+    <div class="footer-note">您拥有剧本所有权与控制，我们承诺不利用数据进行任何商业用途</div>
+  </div>
+
+  <div class="modal">
+    <div class="close"></div>
+    <h2>拆解范围</h2>
+    <div class="desc">小说共<b>5章</b>，总计<b>1324字</b>，请选择需要拆解的范围</div>
+
+    <div class="range">1</div>
+    <div class="slider-track"></div>
+    <div class="slider-dot"></div>
+    <div class="range bottom">5</div>
+
+    <div class="chapters">
+      <div class="chapter"><span class="chk"></span>第1章</div>
+      <div class="chapter"><span class="chk"></span>第2章</div>
+      <div class="chapter"><span class="chk"></span>第3章</div>
+      <div class="chapter"><span class="chk"></span>第4章</div>
+      <div class="chapter active"><span class="chk"></span>第5章</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="preview">
+      <h3>第5章&nbsp;&nbsp;龙主</h3>
+      <div class="tag">277字</div>
+      <p>沈临风命令保镖动手。可保镖刚迈出一步，会场外便涌入一队黑衣人，胸口全都佩着龙形徽章。</p>
+      <p>为首男人单膝跪地，声音震动全场：“恭迎龙主出狱！”</p>
+      <p>林父手里的酒杯摔碎。江城上流圈无人不知龙门，却无人见过龙主。传闻龙主一句话，可以决定一座城的生死。</p>
+      <p>沈临风脸色铁青：“不可能！他只是秦家弃子！”</p>
+      <p>秦川走到他面前，语气平静：“秦家弃我，龙门收我。沈临风，你欠我的，从我母亲开始还。”</p>
+      <p>林雪冲上来拦住他，颤声说放弃抢救书不是她签的。她递出一段录音，里面传出沈临风的声音：“老太太死了，秦川才会彻底疯。”</p>
+      <p>秦川握碎录音笔，眼底再无温度。</p>
+      <p>“沈家，今晚除名。”</p>
+    </div>
+
+    <div class="points">
+      <div><span class="big4">4</span><span class="unit">☯</span></div>
+      <div class="consume">消耗剧点（400字/剧点，已选5章，共1324字）</div>
+    </div>
+
+    <div class="actions">
+      <div class="linkbtn"><span class="warn">!</span>格式</div>
+      <div class="linkbtn"><span class="warn">!</span>拆解</div>
+      <button class="confirm">确认拆解</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

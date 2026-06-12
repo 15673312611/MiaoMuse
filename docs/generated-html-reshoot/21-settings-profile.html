@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>设置</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+.app{width:2050px;height:968px;position:relative;background:#000;overflow:hidden}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#1b1c20}
+.main{position:absolute;left:86px;top:0;width:1964px;height:968px;border-top-left-radius:26px;background-color:#030303;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0px,rgba(255,255,255,.045) 1px,transparent 1px,transparent 6px);overflow:hidden}
+.title{position:absolute;left:24px;top:34px;font-size:28px;line-height:32px;font-weight:800;color:#fff;letter-spacing:-1px}
+.logo{position:absolute;left:31px;top:40px;width:26px;height:22px}
+.logo:before,.logo:after{content:"";position:absolute;height:6px;background:#fff;border-radius:8px}
+.logo:before{width:25px;left:1px;top:0;transform:skewX(-14deg)}
+.logo:after{width:23px;left:0;top:14px;transform:skewX(-14deg)}
+.logo i{position:absolute;left:5px;top:7px;width:20px;height:6px;background:#fff;border-radius:8px;transform:skewX(-14deg)}
+.nav{position:absolute;left:0;top:118px;width:86px}
+.nav .item{width:86px;height:50px;position:relative;margin:0 0 1px 0;color:#f6f6f7}
+.nav .item svg{position:absolute;left:31px;top:13px;width:24px;height:24px;stroke:#f5f5f6;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.divider{position:absolute;left:20px;top:284px;width:47px;height:1px;background:#515257}
+.nav2{position:absolute;left:0;top:313px;width:86px}
+.nav2 .item{width:86px;height:50px;position:relative;margin-bottom:1px}
+.nav2 .item svg{position:absolute;left:31px;top:13px;width:24px;height:24px;stroke:#f5f5f6;stroke-width:2.35;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav2 .active{height:59px;margin-top:2px}
+.nav2 .active .activebox{position:absolute;left:20px;top:6px;width:47px;height:47px;border-radius:6px;background:#fff}
+.nav2 .active svg{left:31px;top:17px;stroke:#1c1d21;stroke-width:2.7}
+.balance{position:absolute;left:18px;bottom:93px;font-size:22px;font-weight:800;color:#f0f0f2;letter-spacing:-1.8px}
+.balance small{font-size:11px;vertical-align:super;margin-left:1px;color:#d6d6d9}
+.miniAvatar{position:absolute;left:23px;bottom:21px;width:39px;height:39px;border-radius:50%;border:2px solid #f49a12;background:#141414;overflow:visible}
+.miniAvatar:before{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle at 50% 35%,#b36a2a 0 11%,#2b1b13 12% 18%,transparent 19%),radial-gradient(circle at 41% 45%,#e1a56b 0 4%,#1b110d 5% 6%,transparent 7%),radial-gradient(circle at 60% 45%,#e1a56b 0 4%,#1b110d 5% 6%,transparent 7%),linear-gradient(140deg,#151515 0 25%,#d89119 26% 49%,#5c3516 50% 100%)}
+.miniAvatar:after{content:"";position:absolute;right:-7px;bottom:0;width:13px;height:13px;border-radius:50%;background:#ffc038;border:1px solid #d88d08}
+.tabs{position:absolute;left:557px;top:99px;width:353px;height:36px;background:#1d1e23;border-radius:4px;padding:4px;display:flex;align-items:center}
+.tab{height:28px;padding:0 13px;border-radius:3px;color:#fff;font-size:15px;font-weight:600;line-height:28px;margin-right:9px;white-space:nowrap}
+.tab.active{background:#fff;color:#111;margin-right:10px}
+.profile{position:absolute;left:557px;top:171px;width:355px}
+.avatar{position:absolute;left:0;top:0;width:116px;height:116px;border-radius:50%;overflow:hidden;background:#111}
+.avatar svg{width:116px;height:116px;display:block}
+.form{position:absolute;left:0;top:152px;width:355px}
+.label{font-size:14px;color:#fff;font-weight:500;line-height:20px;margin-bottom:6px}
+.input{width:354px;height:37px;border-radius:3px;background:#191a1f;color:#fff;font-size:15px;font-weight:800;line-height:37px;padding-left:14px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><i></i></div>
+
+    <div class="nav">
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M8 5h8v14H8z"/><path d="M5 3h5v5H5z"/><path d="M4 10h4v6h8"/><path d="M16 15h4v4h-4z"/></svg>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M14 7l3-3 3 3-3 3z"/><path d="M4 20l7-7"/><path d="M7 17l-3-3 3-3 3 3"/><path d="M12 12l8 8"/><path d="M15 15l-4 4"/></svg>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M5 19V5h4l4 14H9L5 5"/><path d="M13 5h3l4 14h-4z"/></svg>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="nav2">
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M12 21s8-4 8-10V5l-8-3-8 3v6c0 6 8 10 8 10z"/><path d="M12 8v4l3 2"/></svg>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M12 3c1 4-4 5-4 10a5 5 0 0 0 10 0c0-3-2-5-3-6 .2 3-2 4-3 4"/></svg>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l4-5h10l4 5-9 12z"/><path d="M3 9h18"/><path d="M7 4l5 17 5-17"/></svg>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M4 7h14a2 2 0 0 1 2 2v10H6a2 2 0 0 1-2-2z"/><path d="M4 7V5a2 2 0 0 1 2-2h11"/><path d="M17 13h4v4h-4a2 2 0 0 1 0-4z"/></svg>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="item active">
+        <div class="activebox"></div>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 8.6 19a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 5 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 15.4 5a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7.6z"/></svg>
+      </div>
+    </div>
+
+    <div class="balance">1000<small>₽</small></div>
+    <div class="miniAvatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">设置</div>
+
+    <div class="tabs">
+      <div class="tab active">我的资料</div>
+      <div class="tab">账号安全</div>
+      <div class="tab">联系我们</div>
+      <div class="tab">通用设置</div>
+    </div>
+
+    <section class="profile">
+      <div class="avatar">
+        <svg viewBox="0 0 116 116" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="c"><circle cx="58" cy="58" r="58"/></clipPath>
+            <radialGradient id="bg" cx="56%" cy="47%" r="60%">
+              <stop offset="0" stop-color="#263836"/>
+              <stop offset="1" stop-color="#0c1517"/>
+            </radialGradient>
+            <linearGradient id="hood" x1="25" y1="8" x2="92" y2="112">
+              <stop offset="0" stop-color="#ffd633"/>
+              <stop offset=".42" stop-color="#e4981a"/>
+              <stop offset="1" stop-color="#5b3115"/>
+            </linearGradient>
+            <linearGradient id="fur" x1="35" y1="25" x2="76" y2="87">
+              <stop offset="0" stop-color="#a26031"/>
+              <stop offset=".48" stop-color="#d09a6b"/>
+              <stop offset="1" stop-color="#3a2117"/>
+            </linearGradient>
+          </defs>
+          <g clip-path="url(#c)">
+            <rect width="116" height="116" fill="url(#bg)"/>
+            <path d="M18 18C32 4 63 0 83 18c19 18 20 54 10 76-10 22-53 26-73 5C5 83 2 34 18 18z" fill="#131d1e"/>
+            <path d="M31 13c18-11 47-3 59 18 12 22 5 59-12 76-11 12-41 10-55-8 6-12 8-24 5-38-4-21-4-37 3-48z" fill="url(#hood)"/>
+            <path d="M33 34c8-25 42-21 55 3-3 6-8 12-12 15-3-9-16-17-27-15-9 1-14 6-16 12-1-5-1-10 0-15z" fill="#ffdf40"/>
+            <path d="M27 58c-2-20 11-34 30-33 20 1 31 16 28 36-3 21-16 35-32 35-15 0-25-14-26-38z" fill="url(#fur)"/>
+            <path d="M31 50c-6 4-9 14-5 22 3 5 8 5 11 0 3-6 2-18-6-22z" fill="#2c1a15"/>
+            <path d="M81 51c7 4 8 15 4 22-3 5-8 4-10-1-3-7-1-17 6-21z" fill="#2a1813"/>
+            <ellipse cx="43" cy="52" rx="9" ry="12" fill="#1a1110"/>
+            <ellipse cx="69" cy="52" rx="9" ry="12" fill="#1a1110"/>
+            <circle cx="45" cy="53" r="3.3" fill="#e4d2b2"/>
+            <circle cx="68" cy="53" r="3.3" fill="#e4d2b2"/>
+            <path d="M52 58c5-3 13-2 17 2 1 10-5 20-14 20-8 0-13-9-11-18 2-1 5-3 8-4z" fill="#bc7b53"/>
+            <path d="M52 65c4-4 11-4 15 0-1 5-4 8-8 8-4 0-7-3-7-8z" fill="#221313"/>
+            <path d="M38 36c8-8 24-9 36 0" stroke="#2a1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M26 84c12 2 20 9 25 27H21c-3-10-1-19 5-27z" fill="#2d1b13" opacity=".9"/>
+            <path d="M70 86c9 4 17 11 22 26H56c2-12 6-21 14-26z" fill="#764514"/>
+            <path d="M85 19c-8-8-20-13-35-12 11 7 18 18 22 31 7-4 13-10 13-19z" fill="#ffd533" opacity=".9"/>
+            <path d="M22 37c3-14 12-25 26-30-15-2-27 3-34 14-6 10-4 25 2 34 1-7 3-13 6-18z" fill="#071112" opacity=".75"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="form">
+        <div class="label">昵称</div>
+        <div class="input">用户2611</div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

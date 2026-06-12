@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1605, height=1125, initial-scale=1.0">
+<title>新建 DOCX 文档</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1605px;height:1125px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif;color:#fff}
+.page{position:relative;width:1605px;height:1125px;background:#000;overflow:hidden}
+.sidebar{position:absolute;left:0;top:0;width:108px;height:1125px;background:#1a1b20;color:#fff}
+.logo{position:absolute;left:40px;top:51px;width:30px;height:25px;font-weight:900;font-size:38px;line-height:25px;letter-spacing:-4px;color:#f4f5f6;transform:skewX(-9deg)}
+.nav{position:absolute;left:0;top:141px;width:108px}
+.nav-item{position:relative;width:108px;height:63px;color:#fff;opacity:.98}
+.nav-item svg{position:absolute;left:41px;top:17px;width:26px;height:26px;stroke:#fff;stroke-width:2.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active:before{content:"";position:absolute;left:25px;top:1px;width:58px;height:56px;background:#f5f5f6;border-radius:7px}
+.nav-item.active svg{stroke:#000;z-index:1;stroke-width:2.9}
+.divider{position:absolute;left:25px;top:357px;width:58px;height:1px;background:#5b5d63;opacity:.65}
+.nav2{position:absolute;left:0;top:387px;width:108px}
+.nav2 .nav-item{height:63px}
+.bottom-credits{position:absolute;left:26px;bottom:111px;font-size:25px;font-weight:800;letter-spacing:-2px;color:#e5e5e5}
+.bottom-credits small{font-size:13px;font-weight:700;margin-left:1px;letter-spacing:0}
+.avatar{position:absolute;left:30px;bottom:25px;width:47px;height:47px;border-radius:50%;background:#2a2b2f;border:2px solid #393b40;overflow:hidden}
+.avatar:before{content:"";position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 58% 26%,#f5c878 0 7px,transparent 8px),radial-gradient(circle at 42% 34%,#3d2a18 0 12px,transparent 13px),linear-gradient(135deg,#b7792e,#262419 52%,#101014);filter:saturate(1.05)}
+.avatar:after{content:"";position:absolute;left:8px;top:28px;width:28px;height:15px;border-radius:50% 50% 0 0;background:#2d2116;transform:rotate(18deg)}
+.main{position:absolute;left:108px;top:0;width:1497px;height:1125px;background-color:#010101;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0px,rgba(255,255,255,.055) 1px,transparent 1px,transparent 6px);border-top-left-radius:33px;overflow:hidden}
+.title{position:absolute;left:31px;top:45px;height:35px;display:flex;align-items:center;font-size:30px;font-weight:800;letter-spacing:.2px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.45)}
+.title .spark{width:27px;height:27px;margin-right:13px;border-radius:7px;background:#181a20;position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.title .spark:before{content:"✦";position:absolute;left:5px;top:0px;font-size:22px;color:#b694ff;text-shadow:0 0 8px rgba(149,105,255,.85)}
+.tabs{position:absolute;left:107px;top:119px;height:49px;display:flex;align-items:center}
+.tab{height:49px;min-width:111px;padding:0 22px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;background:#17181d}
+.tab:first-child{border-top-left-radius:7px;border-bottom-left-radius:7px}
+.tab:last-child{border-top-right-radius:7px;border-bottom-right-radius:7px}
+.tab.active{min-width:110px;border-radius:7px;background:linear-gradient(135deg,#91f08f 0%,#1894f4 100%);box-shadow:none}
+.quote-btn{position:absolute;right:108px;top:119px;width:140px;height:49px;border-radius:7px;background:rgba(24,25,30,.68);color:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600}
+.quote-btn svg{width:22px;height:22px;margin-right:10px;stroke:rgba(255,255,255,.5);stroke-width:2;fill:none}
+.card{position:absolute;left:107px;width:1280px;background:#191a1f;border-radius:14px;color:#d6d7db;box-shadow:none}
+.card.one{top:209px;height:595px}
+.card.two{top:824px;height:520px}
+.card-inner{position:absolute;left:25px;right:28px;top:33px}
+.section-title{font-size:23px;line-height:28px;color:#fff;font-weight:800;margin:0 0 15px}
+.meta-grid{display:grid;grid-template-columns:150px 250px 300px 1fr;column-gap:0;margin-bottom:12px}
+.meta .label{font-size:18px;font-weight:800;color:#fff;line-height:26px;margin-bottom:2px}
+.meta .value{font-size:18px;color:#d1d2d6;line-height:28px}
+.block-title{font-size:20px;font-weight:800;color:#fff;line-height:25px;margin:10px 0 4px}
+.p{font-size:18px;line-height:30px;color:#d0d1d5;margin:0 0 8px;text-align:left}
+.people-title{font-size:23px;line-height:28px;color:#fff;font-weight:800;margin:0 0 13px}
+.person{margin:0 0 10px}
+.person-head{font-size:19px;line-height:25px;margin-bottom:4px}
+.person-head b{color:#fff;font-weight:800;margin-right:22px}
+.person-head span{color:#d6d7da;font-weight:500}
+.person p{font-size:18px;line-height:30px;color:#d0d1d5;margin:0}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M7 7h9.5a2.5 2.5 0 0 1 0 5H8a3 3 0 0 1-3-3V6.5a2.5 2.5 0 0 1 5 0V18h9"/></svg>
+      </div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M4 14.5 14.5 4a3 3 0 0 1 4.2 4.2L8.2 18.8a3 3 0 1 1-4.2-4.3Z"/><path d="m9 9 6 6"/><path d="M15.8 4.5 19.5 8.2"/><path d="M4.5 19.5 8 16"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M5 19V5h3l5 14h-3L5 5"/><path d="M13 19V5h3l5 14"/></svg>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="nav2">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v7c0 4 3.5 6.5 8 8 4.5-1.5 8-4 8-8V7l-8-4Z"/><path d="M15.5 10.8a3.8 3.8 0 1 0-1.2 4.1l2.2 2.1"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3c1.5 4-3.5 4.7-3.5 9.2A5.5 5.5 0 0 0 19 14.5c0-3.1-2-5.2-4.1-7.4.3 3-1 4.2-2.9 5.1"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 4h12l4 6-10 11L2 10l4-6Z"/><path d="M2 10h20"/><path d="m7 4 5 17 5-17"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 5V3h10v2"/><path d="M15 14h6"/><circle cx="18" cy="14" r="3"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.85"/><path d="M16 3.2a4 4 0 0 1 0 7.6"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.15.36.36.7.6 1 .3.3.7.4 1.1.4H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51.6Z"/></svg></div>
+    </div>
+    <div class="bottom-credits">463<small>∞</small></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title"><div class="spark"></div>新建 DOCX 文档</div>
+
+    <div class="tabs">
+      <div class="tab active">信息流</div>
+      <div class="tab">故事梗概</div>
+      <div class="tab">人物小传</div>
+      <div class="tab">分集大纲</div>
+      <div class="tab">剧本正文</div>
+    </div>
+
+    <div class="quote-btn">
+      <svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="1.5"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+      一键引用
+    </div>
+
+    <section class="card one">
+      <div class="card-inner">
+        <h2 class="section-title">故事梗概</h2>
+        <div class="meta-grid">
+          <div class="meta"><div class="label">目标受众</div><div class="value">女频</div></div>
+          <div class="meta"><div class="label">时代背景</div><div class="value">古代</div></div>
+          <div class="meta"><div class="label">题材类型</div><div class="value">宅斗</div></div>
+          <div class="meta"><div class="label">核心设定</div><div class="value">真假千金、逆袭、虐恋、大女主、重生</div></div>
+        </div>
+
+        <div class="block-title">故事背景</div>
+        <p class="p">在等级森严、以灵脉天赋论尊卑的古代世家社会中，嫡庶有别是铁律。苏府作为一方望族，家主寿宴是彰显地位与荣耀的重要场合，席间觥筹交错，实则暗流涌动，每个人都戴着面具，遵循着既定的虚伪礼仪。由于“灵根”成为决定命运的唯一标准，导致了“天赋平庸者被家族视为弃子，甚至成为巩固地位的工具”这一矛盾根源，进而使被刻意打压的嫡女苏清漪，在众目睽睽之下，面临“被构陷与反杀”的生存与尊严之战。</p>
+
+        <div class="block-title">核心亮点</div>
+        <p class="p">重生嫡女从灵脉闭塞的“废物”逆袭为隐藏大佬，在寿宴上反手揭穿假千金母女陷害阴谋，开启爽虐交织的复仇打脸之路，让所有轻视她的人悔不当初！</p>
+
+        <div class="block-title">核心梗概</div>
+        <p class="p">在灵脉天赋决定一切的世家，嫡女苏清漪因“灵脉闭塞”被家族视为弃子，受尽冷眼。家主寿宴上，她同父异母的妹妹苏婉儿与生母柳姨娘联手设局，当众诬陷苏清漪收受绊倒自己，欲使其身败名裂。正当众人对苏清漪口诛笔伐、父亲苏明远也面露不悦之时，一直沉默的苏清漪缓缓抬眸，眼底再无怯懦，只有冰冷的锐利。她并非真正的废物，而是带着前世记忆重生归来，早已洞悉一切阴谋。面对指控，她不慌不忙，以超凡的观察力与逻辑，当场拆穿苏婉儿自导自演的破绽，并抛出柳姨娘多年来暗中克扣田度、下毒损害其根基的证据，瞬间逆转局势。寿宴从众贺变为审判场，苏清漪的隐忍与爆发，不仅洗刷了冤屈，更向整个家族宣告了她的回归与复仇的开始。而人群中一直担忧注视她的未婚夫林逸风，也第一次看到了她截然不同的一面，故事由此拉开嫡女逆袭、虐渣打脸、揭开身世之谜与权谋斗争的序幕。</p>
+      </div>
+    </section>
+
+    <section class="card two">
+      <div class="card-inner" style="top:33px">
+        <h2 class="people-title">人物设定</h2>
+
+        <div class="person">
+          <div class="person-head"><b>苏明远</b><span>45岁</span></div>
+          <p>虚荣、重才轻亲。苏家家主，注重家族颜面和天赋出众的后辈，寿宴上因苏婉儿的天赋备受吹捧，对嫡女苏清漪的处境视而不见，是家族中偏心的掌权者。</p>
+        </div>
+
+        <div class="person">
+          <div class="person-head"><b>苏婉儿</b><span>16岁</span></div>
+          <p>骄纵、虚伪、心机深沉。苏家庶女，天赋出众被视为家族骄傲，在父亲寿宴上众星捧月。受柳姨娘指使，设计陷害苏清漪，故意摔倒污蔑对方绊倒自己，以此打压苏清漪博取同情。</p>
+        </div>
+
+        <div class="person">
+          <div class="person-head"><b>柳姨娘</b><span>38岁</span></div>
+          <p>阴险、势利、护女心切。苏明远的宠妾，苏婉儿的母亲，嫉妒苏清漪的嫡女身份，在府中暗中谋划，寿宴上看到苏婉儿风光，便示意女儿设计陷害苏清漪，试图进一步巩固自己母女的地位。</p>
+        </div>
+
+        <div class="person">
+          <div class="person-head"><b>苏清漪</b><span>16岁</span></div>
+          <p>隐忍、聪慧、外柔内刚。苏家嫡女，因灵脉闭塞被族人轻视，前世惨遭算计后重生归来。她表面沉静，实则洞察人心，在寿宴上以冷静与证据反击诬陷，开启复仇与自我觉醒。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

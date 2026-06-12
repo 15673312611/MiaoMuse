@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>社区</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#030303;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+#app{position:relative;width:2050px;height:968px;background:#050505}
+#app:before{content:"";position:absolute;left:86px;top:0;right:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 6px)}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#07080a;border-right:1px solid rgba(255,255,255,.02)}
+.logo{position:absolute;left:31px;top:39px;width:27px;height:20px;color:#5b5d63;font-weight:900;font-size:38px;line-height:18px;transform:skewX(-8deg)}
+.nav{position:absolute;left:0;top:121px;width:86px}
+.nav .item{width:86px;height:50px;display:flex;align-items:center;justify-content:center;color:#4a4d54}
+.nav .item svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nav .sep{width:48px;height:1px;background:#1a1b1f;margin:18px auto 18px}
+.nav .active{width:46px;height:46px;margin:4px auto;border-radius:6px;background:#777;color:#030303}
+.nav .active svg{stroke:#050505}
+.bottom-score{position:absolute;left:18px;bottom:93px;color:#5a5c62;font-size:20px;font-weight:700;letter-spacing:-1px}
+.avatar{position:absolute;left:22px;bottom:20px;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 45% 35%,#9c6a36 0 8px,#2b2119 9px 20px,#0b0b0b 21px);border:2px solid #8b6209;box-shadow:0 0 0 1px rgba(0,0,0,.8)}
+.avatar:after{content:"";position:absolute;right:-7px;bottom:0;width:14px;height:14px;background:#66521c;border-radius:50%}
+.title{position:absolute;left:110px;top:36px;font-size:28px;font-weight:700;color:#d7d9df;letter-spacing:1px}
+.content{position:absolute;left:550px;top:64px;width:1024px;height:804px}
+.grid{display:grid;grid-template-columns:307px 307px 307px;gap:30px 20px}
+.card{position:relative;width:307px;height:212px;border-radius:5px;overflow:hidden;background:#151719;box-shadow:0 0 0 1px rgba(255,255,255,.03) inset}
+.card:before{content:"";position:absolute;inset:0;background:
+linear-gradient(165deg,rgba(22,42,50,.8),rgba(20,20,20,.45) 38%,rgba(8,8,9,.9)),
+radial-gradient(circle at 42% 35%,rgba(157,51,23,.7) 0 30px,transparent 31px),
+radial-gradient(circle at 69% 28%,rgba(77,83,89,.55) 0 48px,transparent 49px),
+linear-gradient(160deg,transparent 0 48%,rgba(255,255,255,.08) 49%,transparent 50%);
+opacity:.9}
+.card .txt{position:absolute;left:0;right:0;top:76px;text-align:center;color:#050505;font-weight:900;font-size:23px;line-height:34px;text-shadow:0 1px 0 rgba(255,255,255,.12)}
+.card .meta{position:absolute;left:13px;bottom:15px;color:#8c8f96;font-size:16px;display:flex;align-items:center;gap:6px}
+.clock{width:14px;height:14px;border:1.7px solid currentColor;border-radius:50%;display:inline-block;position:relative}
+.clock:before{content:"";position:absolute;left:6px;top:3px;width:1.5px;height:4px;background:currentColor}
+.clock:after{content:"";position:absolute;left:6px;top:6px;width:4px;height:1.5px;background:currentColor;transform:rotate(35deg);transform-origin:left center}
+.play{position:absolute;right:13px;bottom:14px;width:15px;height:17px;border:1.5px solid #8b8f98;clip-path:polygon(0 0,100% 50%,0 100%);border-left:none;opacity:.85}
+.toprow{position:absolute;left:32px;top:0;display:grid;grid-template-columns:307px 307px 307px;gap:20px}
+.toprow .mini{height:42px;border-radius:5px;background:#1a1a1c;position:relative;overflow:hidden}
+.toprow .mini .meta{position:absolute;left:13px;top:12px;font-size:16px;color:#8c8f96;display:flex;gap:6px;align-items:center}
+.toprow .mini .play{top:13px;bottom:auto}
+.row2{position:absolute;left:32px;top:72px}
+.row3{position:absolute;left:32px;top:313px}
+.info{position:absolute;left:550px;top:650px;display:grid;grid-template-columns:320px 320px 320px;gap:31px}
+.info-card{height:217px;background:#070708;border-radius:7px;padding:31px 31px;color:#6a6d74}
+.info-card h3{margin:0 0 12px;font-size:22px;line-height:22px;color:#d4d6dc;font-weight:800}
+.info-card p{margin:0;font-size:16px;line-height:26px;color:#84878f}
+.info-card button{margin-top:38px;height:40px;padding:0 17px;border:0;border-radius:5px;background:#151617;color:#9a9da4;font-size:16px}
+.scrollbar{position:absolute;right:4px;top:727px;width:5px;height:227px;border-radius:3px;background:#303033}
+.scrolltop{position:absolute;right:4px;top:67px;width:7px;height:7px;background:#202124;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.74);z-index:5}
+.modal{position:absolute;z-index:10;left:847px;top:284px;width:353px;height:399px;background:#1b1c20;border-radius:4px;box-shadow:0 12px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center}
+.qrwrap{position:absolute;left:72px;top:44px;width:210px;height:210px;background:#fff;border-radius:6px;overflow:hidden}
+#qr{width:210px;height:210px;display:block}
+.scan{position:absolute;top:264px;font-size:13px;color:#8b8d94}
+.work{position:absolute;top:289px;font-size:16px;color:#fff;letter-spacing:.1px}
+.added{position:absolute;top:340px;width:108px;height:40px;border-radius:5px;background:#4c4c4d;color:#fff;text-align:center;line-height:40px;font-size:16px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M8 5h9v12H8z"/><path d="M5 8h9v12H5z"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M14 6l4 4-9 9H5v-4z"/><path d="M5 5l14 14"/><path d="M16 3l5 5"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 19V5h4l4 14h-4L5 5"/><path d="M15 5l4 14"/></svg></div>
+      <div class="sep"></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-4 7-8 8-4-1-8-3-8-8V7z"/><path d="M12 8v5l4 2"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M12 3c2 4-2 5 1 8 1-2 3-2 4 0 2 4-1 8-5 8s-7-4-5-8c1-2 3-3 5-8z"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M3 9l4-5h10l4 5-9 12z"/><path d="M3 9h18M7 4l5 17 5-17"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M4 7h14v10H4z"/><path d="M7 4h14v10"/><path d="M16 12h5v5h-5z"/></svg></div>
+      <div class="item active"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4v-.2a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"/></svg></div>
+    </div>
+    <div class="bottom-score">1000∞</div>
+    <div class="avatar"></div>
+  </div>
+
+  <div class="title">社区</div>
+
+  <div class="toprow">
+    <div class="mini"><div class="meta"><span class="clock"></span>54分31秒</div><div class="play"></div></div>
+    <div class="mini"><div class="meta"><span class="clock"></span>69分44秒</div><div class="play"></div></div>
+    <div class="mini"><div class="meta"><span class="clock"></span>12分06秒</div><div class="play"></div></div>
+  </div>
+
+  <div class="grid row2">
+    <div class="card"><div class="txt">我想试试！靠梦想，能不能站在互联网上<br>达成共识！从行业生态开跑到春秋大梦</div><div class="meta"><span class="clock"></span>34分19秒</div><div class="play"></div></div>
+    <div class="card"><div class="txt">演示：正确的使用指令设计剧本</div><div class="meta"><span class="clock"></span>43分04秒</div><div class="play"></div></div>
+    <div class="card"><div class="txt">学习中的3个重要因素：<br>氛围、心态、教材与老师</div><div class="meta"><span class="clock"></span>4分09秒</div><div class="play"></div></div>
+  </div>
+
+  <div class="grid row3">
+    <div class="card"><div class="txt" style="font-size:32px;top:85px;text-align:left;left:10px">如何理解学习自主</div><div class="meta"><span class="clock"></span>4分09秒</div><div class="play"></div></div>
+    <div class="card"><div class="txt">为什么AI学习第一重要是结构</div><div class="meta"><span class="clock"></span>8分12秒</div><div class="play"></div></div>
+    <div class="card"><div class="txt">我是如何用“好奇心指引”<br>扩展知识储备的</div><div class="meta"><span class="clock"></span>17分19秒</div><div class="play"></div></div>
+  </div>
+
+  <div class="info">
+    <div class="info-card"><h3>参加培训</h3><p>我们的教学体系清晰分层，满足不同阶段<br>学员的需求。具体信息请添加老师咨询</p><button>咨询老师</button></div>
+    <div class="info-card"><h3>剧本投稿</h3><p>直接靠谱平台方，具体信息请添加责编咨<br>询</p><button>咨询责编</button></div>
+    <div class="info-card"><h3>官方微信群</h3><p>在群里您的任何咨询都会有专人解答，我<br>们也会不定期开展社群专属福利和活动，<br>扫码立刻加入</p><button>立刻进群</button></div>
+  </div>
+  <div class="scrolltop"></div>
+  <div class="scrollbar"></div>
+
+  <div class="dim"></div>
+  <div class="modal">
+    <div class="qrwrap"><canvas id="qr" width="210" height="210"></canvas></div>
+    <div class="scan">扫码领教案+教学咨询</div>
+    <div class="work">工作日：10:30-19:30</div>
+    <div class="added">已扫码添加</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('qr'),ctx=c.getContext('2d'),N=49,s=210/N;
+  ctx.fillStyle="#fff";ctx.fillRect(0,0,210,210);
+  function rand(x,y){let n=x*374761393+y*668265263;n=(n^(n>>13))*1274126177;return ((n^(n>>16))>>>0)/4294967295}
+  function cell(x,y,v){ctx.fillStyle=v?"#050505":"#fff";ctx.fillRect(Math.floor(x*s),Math.floor(y*s),Math.ceil(s),Math.ceil(s))}
+  function finder(x,y){
+    for(let j=0;j<7;j++)for(let i=0;i<7;i++)cell(x+i,y+j,(i==0||i==6||j==0||j==6)||(i>=2&&i<=4&&j>=2&&j<=4));
+    for(let j=-1;j<8;j++){ if(x-1>=0)cell(x-1,y+j,0); if(x+7<N)cell(x+7,y+j,0);}
+    for(let i=-1;i<8;i++){ if(y-1>=0)cell(x+i,y-1,0); if(y+7<N)cell(x+i,y+7,0);}
+  }
+  for(let y=0;y<N;y++){
+    for(let x=0;x<N;x++){
+      if((x<9&&y<9)||(x>N-10&&y<9)||(x<9&&y>N-10))continue;
+      if(x>20&&x<30&&y>20&&y<30)continue;
+      let p=(x%2==0||y%3==0)?0.46:0.32;
+      if(rand(x,y)<p)cell(x,y,1);
+    }
+  }
+  finder(2,2);finder(N-9,2);finder(2,N-9);
+  for(let i=10;i<N-10;i++){cell(i,8,i%2==0);cell(8,i,i%2==0)}
+  function smallFinder(x,y){
+    for(let j=0;j<5;j++)for(let i=0;i<5;i++)cell(x+i,y+j,(i==0||i==4||j==0||j==4)||(i==2&&j==2));
+  }
+  smallFinder(36,36);
+  ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(105,105,19,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle="#000";ctx.lineWidth=4;ctx.lineCap="round";ctx.lineJoin="round";
+  ctx.beginPath();ctx.ellipse(101,101,15,12,0,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(112,111);ctx.lineTo(124,119);ctx.moveTo(111,113);ctx.lineTo(118,113);ctx.stroke();
+})();
+</script>
+</body>
+</html>

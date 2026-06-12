@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>剧本评估</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#000;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:#f4f4f6}
+body{position:relative}
+.page{position:relative;width:2050px;height:968px;background:#020203}
+.main{
+  position:absolute;left:86px;top:0;width:1964px;height:968px;overflow:hidden;border-top-left-radius:22px;border-bottom-left-radius:30px;
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0px,rgba(255,255,255,.055) 1px,transparent 1px,transparent 7px),
+    #000;
+}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#1b1c21;color:white}
+.logo{position:absolute;left:32px;top:42px;font-size:34px;font-weight:900;letter-spacing:-6px;transform:scaleX(1.25)}
+.nav{position:absolute;left:0;top:126px;width:86px}
+.nav .ico{width:86px;height:50px;margin:0 0 0 0;position:relative;color:#fff;opacity:.98}
+.nav .ico svg{position:absolute;left:31px;top:13px;width:24px;height:24px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav .ico:nth-child(2){margin-top:0}
+.nav .line{width:47px;height:1px;background:#5a5b60;margin:14px 0 21px 19px}
+.nav .active{width:46px;height:46px;border-radius:7px;background:#fff;margin-left:20px;margin-top:0;margin-bottom:7px}
+.nav .active svg{left:12px;top:11px;stroke:#1b1c21}
+.side-bottom{position:absolute;left:0;bottom:0;width:86px;height:150px}
+.token{position:absolute;left:17px;top:2px;font-size:22px;font-weight:800;color:#e7e7e9;letter-spacing:-2px}
+.token small{font-size:12px;color:#bbb;margin-left:2px;letter-spacing:0}
+.avatar{position:absolute;left:23px;bottom:20px;width:40px;height:40px;border-radius:50%;border:2px solid #ff9d00;background:radial-gradient(circle at 60% 35%,#c98232 0 10%,#3b261a 11% 42%,#101217 43% 100%);box-shadow:0 0 0 2px rgba(255,160,0,.15)}
+.badge{position:absolute;left:53px;bottom:20px;width:16px;height:18px;background:#ffb000;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);border:1px solid #ffd36b}
+.header-title{position:absolute;left:110px;top:36px;font-size:27px;font-weight:800;color:#fff;letter-spacing:1px}
+.history{position:absolute;right:32px;top:30px;width:112px;height:40px;border-radius:4px;background:#1c1d22;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;gap:8px}
+.history svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+.section-title{position:absolute;left:583px;top:108px;font-size:26px;font-weight:800;color:#f3f3f5;line-height:32px}
+.section-title:before{content:"";position:absolute;left:0;top:0;width:4px;height:24px;background:#bfa7ff;border-radius:3px}
+.section-title span{padding-left:16px}
+.section-sub{position:absolute;left:604px;top:143px;font-size:16px;color:#898993}
+.intro-card{position:absolute;left:583px;top:183px;width:553px;height:352px;background:#1f1d23;border:1px solid rgba(255,255,255,.05);border-radius:6px}
+.tag{position:absolute;left:33px;top:32px;height:20px;line-height:18px;border:1px solid #6b5e8b;background:#423956;color:#d9caff;font-size:12px;font-weight:800;padding:0 9px;border-radius:1px}
+.dots{position:absolute;left:216px;top:40px;display:flex;gap:9px}
+.dots i{width:4px;height:4px;background:#827a9f;border-radius:50%;display:block}
+.brain{position:absolute;right:24px;top:20px;width:82px;height:72px;opacity:.23}
+.intro-main{position:absolute;left:32px;top:78px;width:477px;font-size:20px;line-height:32px;font-weight:700;color:#e5e2e8}
+.intro-sub{position:absolute;left:32px;top:165px;width:477px;font-size:16px;line-height:24px;color:#b2adb8;font-weight:600}
+.stats{position:absolute;left:32px;bottom:33px;display:flex;gap:20px}
+.stat{width:238px;height:86px;border:1px solid rgba(255,255,255,.055);background:#1b191f;border-radius:4px;position:relative}
+.stat .lab{position:absolute;left:16px;top:19px;font-size:13px;color:#a9a2ad}
+.stat .num{position:absolute;right:47px;top:38px;font-size:28px;font-weight:900;color:#cdb7ff}
+.stat:nth-child(2) .num{color:#ffdf72;right:48px}
+.feature{position:absolute;left:1156px;width:387px;height:85px;background:#1f1d23;border:1px solid rgba(255,255,255,.04);border-radius:6px}
+.feature.f1{top:183px}.feature.f2{top:288px}.feature.f3{top:392px}
+.iconbox{position:absolute;left:26px;top:18px;width:48px;height:48px;border-radius:3px;background:#332d41}
+.f2 .iconbox{background:#352d24}.f3 .iconbox{background:#20362f}
+.ftitle{position:absolute;left:90px;top:17px;font-size:18px;font-weight:800;color:#f1eef4}
+.fdesc{position:absolute;left:90px;top:45px;font-size:13.5px;color:#d8d4dc;line-height:19px;width:220px;font-weight:600}
+.feature svg{position:absolute}
+.f1 .chart{right:27px;top:23px;width:49px;height:40px}
+.f2 .chart{right:27px;top:23px;width:49px;height:42px}
+.f3 .chart{right:27px;top:24px;width:49px;height:38px}
+.captions{position:absolute;left:1156px;top:509px;width:387px;height:20px;font-family:Georgia,serif;font-weight:700;color:#fff;font-size:14px}
+.captions .opt{position:absolute;right:0}
+.section2{position:absolute;left:583px;top:584px;font-size:26px;font-weight:800;color:#f3f3f5;line-height:32px}
+.section2:before{content:"";position:absolute;left:0;top:0;width:4px;height:24px;background:#bfa7ff;border-radius:3px}
+.section2 span{padding-left:16px}
+.section2-sub{position:absolute;left:604px;top:619px;font-size:16px;color:#898993}
+.form-card{position:absolute;left:583px;top:661px;width:960px;height:480px;border-radius:7px;background:#131116;border:1px solid rgba(255,255,255,.06)}
+.row{position:absolute;left:32px;top:33px;display:flex;gap:31px}
+.field{width:278px;height:65px;position:relative}
+.field label{display:block;color:#c9b7ff;font-size:13px;font-weight:800;margin-bottom:18px}
+.selectline{height:32px;border-bottom:1px solid #302e35;color:#f4f3f5;font-size:18px;display:flex;align-items:flex-start;justify-content:space-between;padding-right:15px}
+.selectline svg{margin-top:3px;width:16px;height:16px;stroke:#9aabc2;stroke-width:2;fill:none}
+.audience{position:absolute;left:32px;top:121px;width:896px}
+.audience label{display:block;color:#c9b7ff;font-size:13px;font-weight:800;margin-bottom:10px}
+.input{width:896px;height:50px;border:1px solid #2c2a30;border-radius:6px;background:#121015;color:#6d6a73;font-size:17px;display:flex;align-items:center;padding-left:16px}
+.upload{position:absolute;left:32px;top:212px;width:896px;height:190px;border:1px dashed #34323a;border-radius:6px;background:#1a171e}
+.upload svg{position:absolute;left:428px;top:50px;width:44px;height:55px;stroke:#f6f3ff;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.scrollbar{position:absolute;right:0;top:78px;width:7px;height:600px;background:#1a1b20;border-radius:6px}
+.scrollbar:before{content:"";position:absolute;right:1px;top:-4px;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:5px solid #202126}
+.scrollbar:after{content:"";position:absolute;right:1px;bottom:-5px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #202126}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 5h7v6H6z"/><path d="M6 11v6h12"/><path d="M12 17v3h8v-6h-5"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 18L18 4"/><path d="M8 4l12 12"/><path d="M6 6l-2 4 4-2"/><path d="M18 18l2-4-4 2"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 5v14"/><path d="M9 5v14"/><path d="M13 5l6 14"/><path d="M17 5l2 6"/></svg></div>
+      <div class="line"></div>
+      <div class="ico active"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M15 10a3 3 0 1 0-2 4"/><path d="M14 14l2 2 4-5"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3c2 4-3 5-1 8 1 2 5 2 5-2 3 4 2 10-4 11-5 1-9-3-7-8"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21L3 8l4-5h10l4 5z"/><path d="M3 8h18"/><path d="M7 3l5 18 5-18"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M7 6V4h10v2"/><path d="M17 13h5"/><circle cx="18" cy="13" r="2"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20v-2a4 4 0 0 1 4-4h3"/><circle cx="9" cy="8" r="3"/><path d="M17 20v-2a4 4 0 0 0-3-3.8"/><path d="M15 5a3 3 0 0 1 0 6"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.3a2 2 0 1 1-4 0V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H2.7a2 2 0 1 1 0-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.7a2 2 0 1 1 4 0V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.3a2 2 0 1 1 0 4H21a1.7 1.7 0 0 0-1.6 1z"/></svg></div>
+    </div>
+    <div class="side-bottom"><div class="token">1000<small>₭</small></div><div class="avatar"></div><div class="badge"></div></div>
+  </aside>
+
+  <main class="main">
+    <div class="header-title">剧本评估</div>
+    <div class="history"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v6l4 2"/></svg>评估历史</div>
+
+    <div class="section-title"><span>核心评估维度</span></div>
+    <div class="section-sub">结合AI从多维度、图形化等视角完成剧本评估</div>
+
+    <div class="intro-card">
+      <div class="tag">SCRIPTCOVERAGESYSTEM V1.0</div>
+      <div class="dots"><i></i><i></i><i></i></div>
+      <svg class="brain" viewBox="0 0 100 90"><path d="M45 12c-10-11-29 0-23 15-13 0-20 16-10 26-8 13 7 26 20 20 4 12 18 10 18-2V14" stroke="#bcb7c7" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M55 12c10-11 29 0 23 15 13 0 20 16 10 26 8 13-7 26-20 20-4 12-18 10-18-2V14" stroke="#bcb7c7" stroke-width="8" fill="none" stroke-linecap="round"/></svg>
+      <div class="intro-main">利用AI强逻辑模拟能力，结合编剧理论、观众心理学，推演设计意图、情绪感受，以函数曲线的形式，直接呈现剧本质量，并以创作的六个技巧维度，综合客观地评判剧本质量</div>
+      <div class="intro-sub">区别于传统AI剧本分析、摒弃主观性模糊评价的错误方式，充分发挥AI的逻辑推理能力，对剧本进行客观评价</div>
+      <div class="stats">
+        <div class="stat"><div class="lab">百万语料库</div><div class="num">1.2M+</div></div>
+        <div class="stat"><div class="lab">评估有效性</div><div class="num">90%+</div></div>
+      </div>
+    </div>
+
+    <div class="feature f1">
+      <div class="iconbox"><svg viewBox="0 0 48 48" style="left:10px;top:10px;width:28px;height:28px"><path d="M24 5a14 14 0 0 0-8 25v6h12v-5a14 14 0 0 0-4-26z" stroke="#cdb7ff" stroke-width="2" fill="none"/><circle cx="18" cy="17" r="2" fill="#cdb7ff"/><path d="M22 14c4-2 7 2 5 6" stroke="#cdb7ff" stroke-width="2" fill="none"/><path d="M20 26h7" stroke="#cdb7ff" stroke-width="2"/></svg></div>
+      <div class="ftitle">独创情绪趋势曲线</div><div class="fdesc">从情绪强度与分类钩子强度双层角度<br>直观体现剧本价值</div>
+      <svg class="chart" viewBox="0 0 60 45"><path d="M5 38L15 10l8 25 8-28 10 30 7-20 7 18" stroke="#ffb000" stroke-width="4" fill="none"/><path d="M2 40h56M2 2v38" stroke="#5050d8" stroke-width="4" fill="none"/></svg>
+    </div>
+    <div class="feature f2">
+      <div class="iconbox"><svg viewBox="0 0 48 48" style="left:10px;top:10px;width:28px;height:28px"><path d="M24 4l18 13-7 21H13L6 17z" stroke="#ffd74a" stroke-width="2" fill="none"/><path d="M24 4v34M6 17l29 21M42 17L13 38M24 4l-11 34M24 4l11 34" stroke="#ffd74a" stroke-width="1.5" fill="none"/></svg></div>
+      <div class="ftitle">多维雷达图可视化</div><div class="fdesc">多维度、可视化展现，优势一目了然</div>
+      <svg class="chart" viewBox="0 0 60 45">
+        <path d="M2 6h28M2 15h32M2 24h30M2 33h34M2 42h31" stroke-width="2" fill="none" stroke-linecap="square"/>
+        <path d="M2 6h28" stroke="#ffbd18" stroke-width="2"/><path d="M2 15h32" stroke="#e85d41" stroke-width="2"/><path d="M2 24h30" stroke="#f3df91" stroke-width="2"/><path d="M2 33h34" stroke="#cf6782" stroke-width="2"/><path d="M2 42h31" stroke="#a58ce7" stroke-width="2"/>
+        <text x="43" y="8" font-size="8" fill="#fff">8.0</text><text x="43" y="17" font-size="8" fill="#fff">5.0</text><text x="43" y="26" font-size="8" fill="#fff">9.0</text><text x="43" y="35" font-size="8" fill="#fff">6.0</text><text x="43" y="44" font-size="8" fill="#fff">7.0</text>
+      </svg>
+    </div>
+    <div class="feature f3">
+      <div class="iconbox"><svg viewBox="0 0 48 48" style="left:10px;top:10px;width:28px;height:28px"><circle cx="24" cy="24" r="17" stroke="#55c08f" stroke-width="2" fill="none"/><circle cx="18" cy="19" r="4" stroke="#55c08f" stroke-width="2" fill="none"/><circle cx="30" cy="19" r="4" stroke="#55c08f" stroke-width="2" fill="none"/><path d="M15 33c5-5 13-5 18 0" stroke="#55c08f" stroke-width="2" fill="none"/></svg></div>
+      <div class="ftitle">按场景维度评估剧本</div><div class="fdesc">对剧本进行逐一场景的高维度拆解</div>
+      <svg class="chart" viewBox="0 0 60 45"><rect x="4" y="11" width="10" height="24" fill="#ffdf21"/><rect x="46" y="11" width="10" height="24" fill="#ffdf21"/><rect x="15" y="4" width="30" height="37" fill="#6252df"/><path d="M15 10h30M15 35h30" stroke="#fff" stroke-width="2" stroke-dasharray="5 5"/><circle cx="20" cy="8" r="2" fill="#fff"/><circle cx="31" cy="8" r="2" fill="#fff"/><circle cx="42" cy="8" r="2" fill="#fff"/></svg>
+    </div>
+    <div class="captions"><span>SCRIPT COVERAGE</span><span class="opt">OPTIMIZED</span></div>
+
+    <div class="section2"><span>设置评估参数</span></div>
+    <div class="section2-sub">设定评估参数并上传剧本进行深度AI解析</div>
+
+    <div class="form-card">
+      <div class="row">
+        <div class="field"><label>文化背景</label><div class="selectline">国内<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div>
+        <div class="field"><label>目标受众</label><div class="selectline">男频<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div>
+        <div class="field"><label>剧本类型</label><div class="selectline">真人实拍<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div>
+      </div>
+      <div class="audience"><label>受众喜好</label><div class="input">输入受众喜好（为空则AI自动识别）</div></div>
+      <div class="upload">
+        <svg viewBox="0 0 64 72"><path d="M16 4h25l15 15v49H16z"/><path d="M41 4v16h15"/><path d="M32 55V35"/><path d="M22 45l10-10 10 10"/></svg>
+      </div>
+    </div>
+    <div class="scrollbar"></div>
+  </main>
+</div>
+</body>
+</html>

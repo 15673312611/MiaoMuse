@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>Story Settings</title>
+<style>
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:2050px;
+  height:968px;
+  overflow:hidden;
+  background:#000;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  color:#fff;
+}
+.page{
+  width:2050px;
+  height:968px;
+  position:relative;
+  background:#000;
+}
+.sidebar{
+  position:absolute;
+  left:0;top:0;
+  width:86px;height:968px;
+  background:#191a1f;
+  color:#f5f5f6;
+}
+.logo{
+  position:absolute;
+  left:32px;top:39px;
+  width:26px;height:22px;
+  font-weight:900;
+}
+.logo:before{
+  content:"";
+  position:absolute;
+  width:26px;height:6px;
+  border-radius:5px;
+  background:#fff;
+  transform:skewX(-20deg);
+  top:0;left:0;
+  box-shadow:0 15px 0 #fff;
+}
+.logo:after{
+  content:"";
+  position:absolute;
+  width:18px;height:6px;
+  border-radius:5px;
+  background:#fff;
+  transform:skewX(-20deg);
+  top:7px;left:8px;
+}
+.nav{
+  position:absolute;left:0;top:113px;width:86px;
+}
+.nav-item{
+  width:86px;height:51px;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  opacity:.95;
+  margin-bottom:3px;
+}
+.nav-item.active:before{
+  content:"";
+  position:absolute;left:20px;top:0;
+  width:46px;height:45px;border-radius:6px;background:#fff;
+}
+.nav-item svg{width:25px;height:25px;position:relative;z-index:1;stroke:currentColor;fill:none;stroke-width:2.35;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active svg{color:#16181d}
+.sep{position:absolute;left:20px;top:285px;width:47px;height:1px;background:#56575d}
+.nav2{position:absolute;left:0;top:312px;width:86px}
+.nav2 .nav-item{height:50px;margin-bottom:0}
+.balance{
+  position:absolute;left:17px;bottom:94px;
+  font-size:19px;font-weight:800;color:#e8e8eb;letter-spacing:-1px;
+}
+.balance span{font-size:11px;color:#aaa;margin-left:2px}
+.avatar{
+  position:absolute;left:23px;bottom:20px;width:42px;height:42px;border-radius:50%;
+  border:2px solid #f5a314;
+  background:
+    radial-gradient(circle at 50% 42%, #c08b53 0 6px, transparent 7px),
+    radial-gradient(circle at 55% 65%, #1f1510 0 16px, transparent 17px),
+    linear-gradient(135deg,#26313e,#090b0e);
+  box-shadow:0 0 0 2px rgba(0,0,0,.35) inset;
+}
+.avatar:after{
+  content:"";
+  position:absolute;right:-5px;bottom:1px;width:15px;height:15px;border-radius:50%;
+  background:#f6b529;
+  border:1px solid #e2970a;
+}
+.canvas{
+  position:absolute;left:86px;top:0;
+  width:1964px;height:968px;
+  border-top-left-radius:22px;
+  border-bottom-left-radius:22px;
+  overflow:hidden;
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 1px,transparent 1px 5px),
+    #030303;
+}
+.title{
+  position:absolute;left:27px;top:36px;
+  display:flex;align-items:center;
+  height:36px;color:#9b9ca2;font-weight:800;font-size:25px;
+}
+.spark{
+  width:28px;height:28px;margin-right:9px;position:relative;
+  filter:drop-shadow(0 0 8px rgba(127,93,255,.35));
+}
+.spark:before{
+  content:"✦";position:absolute;left:4px;top:1px;font-size:22px;color:#6659b7;
+}
+.spark:after{
+  content:"✦";position:absolute;left:13px;top:10px;font-size:10px;color:#ddd;
+}
+.tabs{
+  position:absolute;left:471px;top:98px;height:36px;
+  display:flex;align-items:center;background:#1c1d22;border-radius:4px;overflow:hidden;
+}
+.tab{
+  height:36px;line-height:36px;padding:0 17px;font-size:15px;color:#fff;white-space:nowrap;
+}
+.tab.active{
+  background:#fff;color:#111;border-radius:3px;margin-left:4px;height:28px;line-height:28px;padding:0 14px;
+}
+.top-actions{position:absolute;left:1268px;top:95px;display:flex;align-items:center}
+.undo-box{width:96px;height:40px;background:#111216;display:flex;border-radius:2px;margin-right:10px}
+.undo-box div{width:48px;height:40px;display:flex;align-items:center;justify-content:center;color:#86888e}
+.undo-box svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ai-btn{
+  width:111px;height:40px;border-radius:4px;border:0;
+  background:linear-gradient(100deg,#4530c9,#dd5571);
+  color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.ai-btn svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.form{
+  position:absolute;left:469px;top:174px;width:852px;
+}
+.section-title{
+  font-size:16px;font-weight:800;margin-bottom:28px;color:#fff;
+}
+.grid{
+  display:grid;grid-template-columns:410px 410px;column-gap:32px;row-gap:31px;
+}
+.field label,.wide label{
+  display:block;font-size:15px;color:#dfe1e7;margin-bottom:10px;
+}
+.req{color:#ff2727;font-weight:900;margin-left:1px}
+.select,.input,.textarea{
+  width:100%;height:39px;background:#1b1c21;border-radius:5px;border:0;color:#657086;
+  font-size:14px;padding:0 14px;outline:none;
+}
+.select{display:flex;align-items:center;justify-content:space-between}
+.chev{
+  width:10px;height:10px;border-right:2px solid #8790a5;border-bottom:2px solid #8790a5;transform:rotate(45deg);margin-right:2px;margin-top:-5px;
+}
+.gender-row{display:flex;gap:12px}
+.gender{
+  width:155px;height:39px;border-radius:5px;background:transparent;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;
+}
+.gender.male{border:1px solid #1d76bd;color:#4da9ff}
+.gender.female{border:1px solid #b47d1b;color:#ffc641}
+.gender .sym{font-size:18px;margin-right:7px;font-weight:800}
+.wide{margin-top:27px;width:852px}
+.textarea{
+  height:63px;resize:none;padding:11px 14px;line-height:24px;color:#596275;overflow:hidden;
+}
+.textarea.small{height:39px;line-height:17px;padding-top:10px}
+.textarea.large{height:63px;color:#1b1c21}
+.core{margin-top:28px}
+.steps{
+  position:absolute;left:1402px;top:231px;width:192px;height:365px;color:#8a8d99;
+}
+.step-line{
+  position:absolute;left:84px;top:8px;width:3px;height:346px;background:#17181d;
+}
+.step{
+  position:relative;height:58px;font-size:15px;color:#8d909b;
+}
+.step span{
+  position:absolute;right:112px;top:-2px;width:80px;text-align:right;
+}
+.step .dot{
+  position:absolute;left:77px;top:0;width:16px;height:16px;border-radius:50%;background:#17181d;
+}
+.step:nth-child(2){margin-top:0}
+.step:nth-child(3),.step:nth-child(4),.step:nth-child(5),.step:nth-child(6){height:58px}
+.step:nth-child(7){height:50px}
+.placeholder-dark{color:#5e6678}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M8 5h8v11H8z"/><path d="M5 8h3v11h11v-3"/><path d="M11 9h5M11 13h5"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M4 20l7-7"/><path d="M14 4l6 6"/><path d="M12 6l6 6-8 8H4v-6z"/><path d="M5 5l4 4M3 9l4-4M16 3l1 3M21 8l-3 1"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5h3l4 14H8L4 5"/><path d="M12 19V5h3l5 14h-3L12 5"/></svg>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="nav2">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V7z"/><path d="M15 10a3 3 0 1 0 0 4l3 3"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3c2 4-2 5 1 8 1.5 1.5 3 0 3-2 2 2 4 5 1 9-2 3-8 3-10 0-2.5-3.5.5-6 2-8 .5 2 2 2.5 3 1"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 9l4-5h10l4 5-9 12z"/><path d="M3 9h18M7 4l5 17M17 4l-5 17"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 6h15v13H4z"/><path d="M8 10h12v9H8z"/><path d="M16 14h4"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M2 21c0-4 2.5-7 6-7"/><path d="M17 11a3 3 0 1 0 0-6"/><path d="M14 14c3.5.5 5 3 5 7"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5z"/><path d="M19 13.5v-3l-2.1-.5a7 7 0 0 0-.8-1.9l1.1-1.9-2.1-2.1-1.9 1.1a7 7 0 0 0-1.9-.8L10.5 2h-3L7 4.1a7 7 0 0 0-1.9.8L3.2 3.8 1.1 5.9l1.1 1.9a7 7 0 0 0-.8 1.9L-.5 10.5v3l2.1.5c.2.7.5 1.3.8 1.9l-1.1 1.9 2.1 2.1 1.9-1.1c.6.3 1.2.6 1.9.8l.5 2.1h3l.5-2.1c.7-.2 1.3-.5 1.9-.8l1.9 1.1 2.1-2.1-1.1-1.9c.3-.6.6-1.2.8-1.9z" transform="translate(3 1) scale(.85)"/></svg></div>
+    </div>
+    <div class="balance">1000<span>♘</span></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="canvas">
+    <div class="title"><div class="spark"></div><div>剧本名称</div></div>
+
+    <div class="tabs">
+      <div class="tab active">故事梗概</div>
+      <div class="tab">人物小传</div>
+      <div class="tab">分集大纲</div>
+      <div class="tab">剧本正文</div>
+    </div>
+
+    <div class="top-actions">
+      <div class="undo-box">
+        <div><svg viewBox="0 0 24 24"><path d="M9 7H5v-4"/><path d="M5 7a8 8 0 1 1-1 8"/></svg></div>
+        <div><svg viewBox="0 0 24 24"><path d="M15 7h4v-4"/><path d="M19 7a8 8 0 1 0 1 8"/></svg></div>
+      </div>
+      <button class="ai-btn">
+        <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8 14c-1.5-1.2-2.5-3-2.5-5A6.5 6.5 0 0 1 12 2.5 6.5 6.5 0 0 1 18.5 9c0 2-1 3.8-2.5 5-.8.7-1 1.2-1 2H9c0-.8-.2-1.3-1-2z"/></svg>
+        灵感策划
+      </button>
+    </div>
+
+    <section class="form">
+      <div class="section-title">故事设定</div>
+      <div class="grid">
+        <div class="field">
+          <label>目标受众<span class="req">*</span></label>
+          <div class="gender-row">
+            <div class="gender male"><span class="sym">♂</span>男频</div>
+            <div class="gender female"><span class="sym">♀</span>女频</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>题材类型<span class="req">*</span>（不超过3个）</label>
+          <div class="select"><span class="placeholder-dark">选择或自定义输入背景</span><i class="chev"></i></div>
+        </div>
+        <div class="field">
+          <label>核心设定<span class="req">*</span>（不超过3个）</label>
+          <div class="select"><span class="placeholder-dark">选择或自定义输入类型</span><i class="chev"></i></div>
+        </div>
+        <div class="field">
+          <label>风格元素<span class="req">*</span>（不超过5个）</label>
+          <div class="select"><span class="placeholder-dark">选择或自定义输入设定</span><i class="chev"></i></div>
+        </div>
+      </div>
+
+      <div class="wide">
+        <label>世界观（选填）</label>
+        <textarea class="textarea" readonly>例：世界存在一种失传的“缂墨术”，顶尖修复师能以特制丝线“绣”补古画，不仅可恢复品相，技艺至高者甚至能通过画中“墨绣”窥见历史隐秘。此技艺引来了正统修复派、投机商和境外势力的争抢。</textarea>
+      </div>
+
+      <div class="wide">
+        <label>核心亮点（选填）</label>
+        <textarea class="textarea small" readonly>例：穿书成作死女配，她反向操作，用沙雕和直球硬核攻略哑巴老公，结果把冰山霸总撩到开口说话！</textarea>
+      </div>
+
+      <div class="wide core">
+        <label>核心梗概<span class="req">*</span></label>
+        <textarea class="textarea large" readonly></textarea>
+      </div>
+    </section>
+
+    <div class="steps">
+      <div class="step-line"></div>
+      <div class="step"><span>目标受众</span><i class="dot"></i></div>
+      <div class="step"><span>题材类型</span><i class="dot"></i></div>
+      <div class="step"><span>核心设定</span><i class="dot"></i></div>
+      <div class="step"><span>风格元素</span><i class="dot"></i></div>
+      <div class="step"><span>世界观</span><i class="dot"></i></div>
+      <div class="step"><span>核心亮点</span><i class="dot"></i></div>
+      <div class="step"><span>核心梗概</span><i class="dot"></i></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>爆款榜单</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#050505;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+body:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.022) 0,rgba(255,255,255,.022) 1px,transparent 1px,transparent 7px);opacity:.55}
+.page{position:relative;width:2050px;height:968px}
+.logo{position:absolute;left:78px;top:38px;color:#3b3f48;font-size:25px;font-weight:800;letter-spacing:1px}
+.top-right{position:absolute;right:78px;top:45px;color:#2b2b2e;font-size:15px;display:flex;gap:42px;align-items:center}
+.fire{color:#310707;font-weight:700}.fire:before{content:"♨";font-size:22px;margin-right:7px;color:#520a0a}
+.modal{position:absolute;left:582px;top:49px;width:884px;height:870px;background:#17181d;border-radius:6px;overflow:hidden;box-shadow:0 12px 45px rgba(0,0,0,.52)}
+.header{position:relative;height:292px;padding:50px 36px 0 36px}
+h1{margin:0 0 14px 0;font-size:34px;line-height:1.1;font-weight:900;letter-spacing:.5px;text-shadow:0 0 0 #fff}
+.update{font-size:16px;color:#5264ff;margin-bottom:18px}
+.desc{width:604px;font-size:16px;line-height:1.55;color:#f0f2f6;font-weight:650}
+.note{margin-top:22px;color:#74777f;font-size:13px}
+.collage{position:absolute;right:0;top:0;width:307px;height:230px;overflow:hidden;transform:skewY(-3deg);opacity:.94}
+.grid{position:absolute;right:-7px;top:-15px;width:292px;height:247px;display:grid;grid-template-columns:repeat(3,86px);grid-auto-rows:75px;gap:9px;transform:rotate(-12deg)}
+.tile{border-radius:5px;background-size:cover;background-position:center;box-shadow:0 2px 10px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.tile:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(0,0,0,.18))}
+.t1{background:radial-gradient(circle at 32% 35%,#9cc3e8 0 9%,transparent 10%),linear-gradient(135deg,#10192d,#2978a4 45%,#07121e)}
+.t2{background:radial-gradient(circle at 45% 30%,#f5d2a5 0 10%,transparent 11%),linear-gradient(135deg,#63331b,#d9a23c,#25110d)}
+.t3{background:radial-gradient(circle at 50% 30%,#ffe2c2 0 12%,transparent 13%),linear-gradient(135deg,#2b1f18,#97601c,#161616)}
+.t4{background:radial-gradient(circle at 35% 33%,#ffe1d1 0 10%,transparent 11%),linear-gradient(135deg,#d6d0d2,#7a4164,#17111a)}
+.t5{background:radial-gradient(circle at 42% 28%,#f6cfb5 0 10%,transparent 11%),radial-gradient(circle at 62% 30%,#f3c5a8 0 9%,transparent 10%),linear-gradient(135deg,#201c1a,#a94d37,#16191e)}
+.t6{background:radial-gradient(circle at 48% 30%,#ffd8b8 0 11%,transparent 12%),linear-gradient(135deg,#263948,#b28152,#111)}
+.t7{background:radial-gradient(circle at 45% 33%,#f0d0bd 0 10%,transparent 11%),linear-gradient(135deg,#4c917e,#1f493f,#e3d8ba)}
+.t8{background:radial-gradient(circle at 40% 30%,#fad5be 0 9%,transparent 10%),linear-gradient(135deg,#112637,#307899,#1a1717)}
+.t9{background:radial-gradient(circle at 52% 28%,#ffd8bf 0 11%,transparent 12%),linear-gradient(135deg,#b5643d,#f3c47b,#2d160f)}
+.t10{background:radial-gradient(circle at 48% 32%,#f4c7a6 0 11%,transparent 12%),linear-gradient(135deg,#37203a,#bd6b8f,#171019)}
+.tabs-title{position:absolute;left:46px;top:260px;color:#8d9098;font-size:16px}
+.tabs-title.r{left:422px}
+.nav{height:54px;padding:7px 30px 0 30px;display:flex;align-items:flex-start;gap:0;border:0}
+.nav span{display:inline-flex;height:40px;align-items:center;justify-content:center;padding:0 17px;border-radius:4px;color:#fff;font-size:15px;font-weight:650;margin-right:2px;white-space:nowrap}
+.nav span.active{background:#fff;color:#1d1d1f}
+.nav .gap{margin-left:112px}
+.list{position:absolute;left:10px;right:0;top:346px;bottom:0;overflow:hidden;padding:0 20px 0 0}
+.item{position:relative;min-height:239px;margin:0 10px 10px 0;border-radius:10px;padding:10px 74px 12px 194px;background:transparent}
+.item.first{background:#292929;min-height:239px}
+.poster{position:absolute;left:10px;top:10px;width:160px;height:221px;border-radius:12px;overflow:hidden;background:#333;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.p1{background:linear-gradient(180deg,rgba(23,53,59,.15),rgba(0,0,0,.2)),radial-gradient(circle at 50% 34%,#d6aa7f 0 9%,transparent 10%),linear-gradient(145deg,#243f4f 0%,#c9b06d 38%,#2b3a2b 64%,#0c1114 100%)}
+.p2{background:radial-gradient(circle at 40% 24%,#e0bfae 0 8%,transparent 9%),radial-gradient(circle at 62% 25%,#efc9b4 0 8%,transparent 9%),linear-gradient(160deg,#9ed8ff 0,#08131d 42%,#111 100%)}
+.p3{background:linear-gradient(160deg,#cfd3d9,#6e7485 50%,#181b28)}
+.poster:before{content:"";position:absolute;left:0;right:0;bottom:0;height:75px;background:linear-gradient(to top,rgba(0,0,0,.86),transparent)}
+.poster .pt{position:absolute;left:10px;right:10px;bottom:14px;font-size:23px;line-height:1.05;font-weight:900;color:#fff;text-shadow:0 2px 4px #000;letter-spacing:-1px;transform:rotate(-3deg)}
+.poster .yellow{color:#ffd21b}
+.meta h2{margin:2px 0 7px 0;font-size:18px;line-height:1.25;font-weight:900;color:#fff}
+.meta h2 small{font-size:12px;color:#8e9097;font-weight:500;margin-left:5px}
+.date{font-size:13px;color:#858891;margin-bottom:7px}
+.tags{font-size:13px;font-weight:800;margin-bottom:13px;color:#b4ff2e}
+.tags .m{color:#ff37d4}.tags .b{color:#22a0ff}
+.summary{font-size:15px;line-height:1.52;color:#e5e8ee;font-weight:500;letter-spacing:.1px}
+.power{position:absolute;left:194px;bottom:15px;color:#92959c;font-size:13px}
+.power b{font-size:18px;color:#fff;margin-left:5px}
+.rank{position:absolute;right:10px;top:20px;font-size:48px;line-height:1;font-weight:950;color:#fff}
+.btn{position:absolute;right:10px;bottom:10px;height:32px;padding:0 13px;background:#a8a8a8;color:#2a2a2a;border-radius:7px;font-size:14px;display:flex;align-items:center;gap:5px}
+.btn:before{content:"▣";font-size:15px}
+.item:not(.first){min-height:232px;padding-top:0}
+.item:not(.first) .poster{top:0}
+.item:not(.first) .meta h2{margin-top:0}
+.scrollbar{position:absolute;right:3px;top:385px;width:6px;height:530px;background:rgba(255,255,255,.06);border-radius:4px}
+.thumb{position:absolute;right:3px;top:404px;width:6px;height:505px;background:rgba(255,255,255,.09);border-radius:4px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="logo">灵感策划</div>
+  <div class="top-right"><span class="fire">爆款榜单</span><span>跳过</span></div>
+
+  <main class="modal">
+    <section class="header">
+      <h1>爆款榜单</h1>
+      <div class="update">数据更新于2026年05月31日</div>
+      <div class="desc">通过收集各大短剧平台榜单，如红果、抖音的播放量、点赞、评论、分享等互动数据，结合第三方权威机构DataEye的加权整合，从而得出排名分析数据。</div>
+      <div class="note">注：短剧数据及内容所有权归平台所有，不支持任何第三方商用。</div>
+      <div class="tabs-title">AI短剧</div>
+      <div class="tabs-title r">实拍短剧</div>
+      <div class="collage"><div class="grid">
+        <div class="tile t1"></div><div class="tile t2"></div><div class="tile t3"></div>
+        <div class="tile t4"></div><div class="tile t5"></div><div class="tile t6"></div>
+        <div class="tile t7"></div><div class="tile t8"></div><div class="tile t9"></div>
+      </div></div>
+    </section>
+
+    <nav class="nav">
+      <span class="active">热播榜</span><span>AI真人榜</span><span>漫剧榜</span><span>沙雕漫榜</span>
+      <span class="gap">热播榜</span><span>红果榜</span><span>抖音榜</span><span>快手榜</span>
+    </nav>
+
+    <section class="list">
+      <article class="item first">
+        <div class="poster p1"><div class="pt">中年被赶出门<br><span class="yellow">我逆袭成鱼王</span></div></div>
+        <div class="meta">
+          <h2>中年被赶出门，我逆袭成鱼王<small>57集</small></h2>
+          <div class="date">上线于2026-05-24</div>
+          <div class="tags">#都市日常&nbsp;&nbsp;#种田&nbsp;&nbsp;#逆袭&nbsp;&nbsp;#家庭伦理&nbsp;&nbsp;#银发</div>
+          <div class="summary">曾经的渔村渔王赵海柱，为抚养儿子放弃事业、卖房进城，却遭嫌弃五十岁生日被无情赶出门。他重回海边，凭借一身捕鱼绝技东山再起，赶海捞宝、深海捕捞，重登渔王宝座，盖别墅、买大船、带领乡邻致富。最终赵海柱功成身退，收获幸福，子女也幡然醒悟。</div>
+          <div class="power">累计热力值<b>6.5亿</b></div>
+        </div>
+        <div class="rank">1</div>
+        <div class="btn">对标策划</div>
+      </article>
+
+      <article class="item">
+        <div class="poster p2"><div class="pt">号外号外，<br>重生大佬掉马甲了</div></div>
+        <div class="meta">
+          <h2>号外号外，重生大佬掉马甲了<small>94集</small></h2>
+          <div class="date">上线于2026-05-26</div>
+          <div class="tags"><span class="m">#现代言情</span>&nbsp;&nbsp;#都市日常&nbsp;&nbsp;#豪门恩怨&nbsp;&nbsp;<span class="m">#现代</span>&nbsp;&nbsp;<span class="b">#重生</span></div>
+          <div class="summary">苏家女儿苏识儿在婚礼当天遭遇横祸，自家经营多年的企业也陷入危机。走投无路之际，她与看似性情单纯的东方衍结为夫妻。东方衍实为东方家族继承人，因家族变故暂隐身份，他认出苏识儿正是七年前救过自己的女孩，便默默守护在她身边，帮她渡过经营难关。两人历经误会解开隔阂，坦诚心意，最终携手步入婚姻殿堂，收获了真挚的幸福。</div>
+          <div class="power">累计热力值<b>6.3亿</b></div>
+        </div>
+        <div class="rank">2</div>
+      </article>
+
+      <article class="item">
+        <div class="poster p3"><div class="pt">花瓶千金</div></div>
+        <div class="meta">
+          <h2>花瓶千金<small>65集</small></h2>
+          <div class="date">上线于2026-05-26</div>
+          <div class="tags">#现代言情&nbsp;&nbsp;#都市日常&nbsp;&nbsp;#逆袭</div>
+          <div class="summary">豪门千金意外卷入家族纷争，在误解与危机中不断成长，凭借智慧和勇气重新掌握命运。</div>
+          <div class="power">累计热力值<b>5.9亿</b></div>
+        </div>
+        <div class="rank">3</div>
+      </article>
+    </section>
+    <div class="scrollbar"></div><div class="thumb"></div>
+  </main>
+</div>
+</body>
+</html>

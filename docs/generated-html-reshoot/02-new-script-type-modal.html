@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>剧本原创</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#030303;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;color:#e8e8e8}
+#app{position:relative;width:2050px;height:968px;background:#050505}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#050505;border-right:1px solid rgba(255,255,255,.02);z-index:1}
+.logo{position:absolute;left:32px;top:42px;width:24px;height:18px}
+.logo:before,.logo:after{content:"";position:absolute;left:0;height:5px;border-radius:3px;background:#777}
+.logo:before{top:0;width:23px;box-shadow:0 7px 0 #777}
+.logo:after{top:14px;width:18px}
+.nav{position:absolute;top:113px;left:20px;width:46px;display:flex;flex-direction:column;align-items:center;gap:23px}
+.nav .item{width:46px;height:46px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#5d5d5d}
+.nav .item.active{background:#515151;color:#0d0d0d}
+.nav svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.nav .sep{width:46px;height:1px;background:#202020;margin:15px 0 10px}
+.bottom{position:absolute;left:18px;bottom:18px;width:52px;text-align:center}
+.credits{font-weight:700;font-size:18px;color:#747474;line-height:20px;margin-bottom:32px;letter-spacing:-1px}
+.credits small{font-size:10px;margin-left:1px;color:#696969}
+.avatar{position:relative;margin:0 auto;width:42px;height:42px;border-radius:50%;border:2px solid #6b480a;background:radial-gradient(circle at 55% 35%,#65411d 0 12%,#171717 13% 80%);box-shadow:0 0 0 1px rgba(255,165,0,.18)}
+.avatar:after{content:"";position:absolute;right:-7px;bottom:0;width:17px;height:17px;border-radius:4px;background:#3c3519;border:1px solid #76550e}
+.main{position:absolute;left:86px;top:0;width:1964px;height:968px;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 6px),
+#070707;border-top-left-radius:22px;border-bottom-left-radius:22px;overflow:hidden}
+.header-title{position:absolute;left:24px;top:38px;font-size:25px;font-weight:700;color:#dedede;letter-spacing:.5px}
+.search{position:absolute;left:732px;top:30px;width:500px;height:40px;border-radius:8px;background:#0d0d0d;border:1px solid #242424;color:#5d5d5d}
+.search span{position:absolute;left:13px;top:9px;font-size:15px;color:#5a5a5a}
+.search .sicon{position:absolute;right:8px;top:8px;width:25px;height:25px;border:1px solid #2d2d2d;border-radius:6px}
+.search .sicon:before{content:"";position:absolute;left:6px;top:5px;width:9px;height:9px;border:1.8px solid #4a4a4a;border-radius:50%}
+.search .sicon:after{content:"";position:absolute;left:15px;top:15px;width:7px;height:1.8px;background:#4a4a4a;transform:rotate(45deg);border-radius:2px}
+.toplink{position:absolute;right:146px;top:43px;font-size:14px;color:#bdbdbd}
+.newbtn{position:absolute;right:22px;top:28px;width:112px;height:42px;border-radius:6px;background:#151515;color:#d7d7d7;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.newbtn svg{width:17px;height:17px;stroke:#b9b9b9;fill:none;stroke-width:2}
+.sort{position:absolute;left:493px;top:87px;color:#9b9b9b;font-size:15px;display:flex;align-items:center;gap:6px}
+.sort:before{content:"☰";font-size:15px;color:#818181}
+.card{position:absolute;left:486px;width:122px;height:90px;border-radius:11px;background:linear-gradient(135deg,#35205e 0%,#8d3d4b 52%,#34465a 100%);overflow:hidden;opacity:.92}
+.card:after{content:"";position:absolute;left:36px;top:17px;width:52px;height:52px;border:1px solid rgba(255,255,255,.07);box-shadow:8px -8px 0 rgba(255,255,255,.035),-8px 8px 0 rgba(255,255,255,.025)}
+.card .tag{position:absolute;left:0;top:0;width:39px;height:29px;border-bottom-right-radius:11px;background:#25184b;color:#8a75d8;font-size:13px;display:flex;align-items:center;justify-content:center}
+.card1{top:140px}
+.card2{top:262px}
+.meta{position:absolute;left:623px;color:#d6d6d6}
+.meta.m1{top:151px}.meta.m2{top:273px}
+.meta h3{margin:0 0 9px 0;font-size:19px;line-height:20px;font-weight:700;color:#d0d0d0}
+.meta p{margin:0;font-size:13px;color:#8d8d8d}
+.chatbot{position:absolute;right:23px;bottom:21px;width:54px;height:54px}
+.chatbot .dot{position:absolute;left:25px;top:0;width:9px;height:9px;background:#5b4395;border-radius:50%}
+.chatbot .line{position:absolute;left:28px;top:7px;width:2px;height:14px;background:#4d3b83}
+.botbody{position:absolute;left:8px;top:17px;width:40px;height:27px;border-radius:15px;background:#232323;border:5px solid #2f215c;box-shadow:0 0 0 2px rgba(61,45,110,.45)}
+.botbody:before,.botbody:after{content:"";position:absolute;top:8px;width:5px;height:5px;background:#807c73;border-radius:50%}
+.botbody:before{left:9px}.botbody:after{right:9px}
+.botbody i{position:absolute;left:13px;bottom:5px;width:14px;height:3px;border-radius:2px;background:#807c73}
+.chatbot .ear{position:absolute;right:2px;top:26px;width:8px;height:18px;border-radius:0 10px 10px 0;border:2px solid #2f215c;border-left:0}
+.dim{position:absolute;left:0;top:0;width:2050px;height:968px;background:rgba(0,0,0,.60);z-index:5}
+.preview{position:absolute;left:691px;top:299px;width:669px;height:370px;border-radius:5px;background:#151515;border:2px solid #2e2e2e;z-index:10;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.75)}
+.preview svg{display:block;width:100%;height:100%}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="item active"><svg viewBox="0 0 24 24"><path d="M7 5h9a2 2 0 0 1 2 2v12H8a2 2 0 0 1-2-2V4"/><path d="M4 5h5v4H4z"/><path d="M10 10h5M10 14h5"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M4 18L18 4M8 4l12 12M4 8l12 12"/><path d="M7 4h3v3M17 17h3v3"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 19V5h3l4 14h-3L5 5"/><path d="M13 19V5h3l3 14"/></svg></div>
+      <div class="sep"></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-5 8-8 8s-8-3-8-8V7z"/><path d="M12 10h.01M15 13a4 4 0 0 1-6 0"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M13 3c-1 5 5 6 2 12-1 2-3 3-5 2-3-1-3-5-1-8-4 3-5 9 0 12 5 2 11-1 11-7 0-5-4-8-7-11z"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M12 21L3 8l4-5h10l4 5z"/><path d="M3 8h18M8 3l4 18M16 3l-4 18"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 9h16M16 14h4"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M4 18c0-3 2-5 5-5s5 2 5 5"/><circle cx="9" cy="8" r="3"/><path d="M16 11c2 0 4 2 4 5M15 5c2 0 3 1 3 3"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.8-1L14.5 3h-5l-.4 3a8 8 0 0 0-1.8 1L5 6 3 9.5 5 11a7 7 0 0 0 0 2l-2 1.5L5 18l2.3-1a8 8 0 0 0 1.8 1l.4 3h5l.4-3a8 8 0 0 0 1.8-1l2.3 1 2-3.5-2-1.5a7 7 0 0 0 .1-1z"/></svg></div>
+    </div>
+    <div class="bottom">
+      <div class="credits">1000<small>∞</small></div>
+      <div class="avatar"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="header-title">剧本原创</div>
+    <div class="search"><span>根据名称、核心梗概进行搜索</span><div class="sicon"></div></div>
+    <div class="toplink">使用教程</div>
+    <div class="newbtn"><svg viewBox="0 0 24 24"><path d="M7 7h10v10M7 7v10h10"/></svg>新建剧本</div>
+    <div class="sort">排序方式</div>
+    <div class="card card1"><div class="tag">AI</div></div>
+    <div class="meta m1"><h3>未命名</h3><p>上次修改于 06月05日 20:52</p></div>
+    <div class="card card2"><div class="tag">AI</div></div>
+    <div class="meta m2"><h3>未命名</h3></div>
+    <div class="chatbot"><div class="dot"></div><div class="line"></div><div class="botbody"><i></i></div><div class="ear"></div></div>
+  </main>
+
+  <div class="dim"></div>
+
+  <div class="preview">
+    <svg viewBox="0 0 669 370" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="leftBg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#331514"/>
+          <stop offset=".25" stop-color="#8c3929"/>
+          <stop offset=".55" stop-color="#f1a05c"/>
+          <stop offset=".78" stop-color="#64bed0"/>
+          <stop offset="1" stop-color="#1d3028"/>
+        </linearGradient>
+        <linearGradient id="rightBg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#05090a"/>
+          <stop offset=".36" stop-color="#21170f"/>
+          <stop offset=".65" stop-color="#5c4432"/>
+          <stop offset="1" stop-color="#090908"/>
+        </linearGradient>
+        <radialGradient id="skinL" cx="58%" cy="43%" r="60%">
+          <stop offset="0" stop-color="#ffd2b4"/>
+          <stop offset=".45" stop-color="#e89175"/>
+          <stop offset=".8" stop-color="#9e493e"/>
+          <stop offset="1" stop-color="#47201d"/>
+        </radialGradient>
+        <radialGradient id="skinR" cx="55%" cy="45%" r="65%">
+          <stop offset="0" stop-color="#b7835f"/>
+          <stop offset=".38" stop-color="#7d4d36"/>
+          <stop offset=".72" stop-color="#38221b"/>
+          <stop offset="1" stop-color="#0b0908"/>
+        </radialGradient>
+        <filter id="soft"><feGaussianBlur stdDeviation="1.2"/></filter>
+        <clipPath id="leftClip"><polygon points="0,0 366,0 302,370 0,370"/></clipPath>
+        <clipPath id="rightClip"><polygon points="366,0 669,0 669,370 302,370"/></clipPath>
+      </defs>
+
+      <rect width="669" height="370" fill="#111"/>
+      <g clip-path="url(#leftClip)">
+        <rect width="370" height="370" fill="url(#leftBg)"/>
+        <circle cx="250" cy="34" r="78" fill="#ff5d25" opacity=".75" filter="url(#soft)"/>
+        <circle cx="225" cy="240" r="92" fill="#65d3d7" opacity=".55" filter="url(#soft)"/>
+        <path d="M25,5 C80,-10 184,8 248,80 C308,145 283,240 228,315 C185,372 85,386 16,334 C-35,294 -36,224 -20,154 C-7,91 -28,34 25,5Z" fill="url(#skinL)"/>
+        <path d="M0,0 C40,12 94,34 134,73 C88,73 44,97 4,136 Z" fill="#090606"/>
+        <path d="M7,96 C65,51 143,42 217,71 C137,61 80,76 18,117Z" fill="#050505"/>
+        <path d="M184,48 C221,27 249,21 274,20 C269,30 260,39 249,45 C232,54 207,54 184,48Z" fill="#51310d"/>
+        <path d="M245,0 C260,8 278,7 293,0 C305,22 299,44 277,55 C254,66 230,52 225,31 C223,18 232,7 245,0Z" fill="#b98221"/>
+        <path d="M231,0 C244,25 274,31 295,14" stroke="#f8d46b" stroke-width="5" fill="none"/>
+        <path d="M166,96 C205,82 244,82 277,98" stroke="#36140d" stroke-width="7" fill="none"/>
+        <path d="M168,104 C210,90 247,92 281,111" stroke="#090707" stroke-width="4" fill="none"/>
+        <path d="M153,123 C188,105 236,107 270,130 C233,148 187,148 153,123Z" fill="#fff0d5"/>
+        <ellipse cx="214" cy="126" rx="22" ry="20" fill="#2c79d8"/>
+        <circle cx="214" cy="126" r="13" fill="#55b945"/>
+        <path d="M202,119 C208,111 223,113 229,124 C220,119 210,120 202,119Z" fill="#f0d54e"/>
+        <circle cx="207" cy="119" r="5" fill="#fff"/>
+        <path d="M151,123 C184,101 236,102 276,129" stroke="#1c0806" stroke-width="7" fill="none"/>
+        <path d="M274,129 C288,136 292,146 296,158" stroke="#1d0806" stroke-width="4" fill="none"/>
+        <path d="M163,143 C194,159 230,158 263,143" stroke="#c96256" stroke-width="3" opacity=".55"/>
+        <path d="M303,126 C319,136 327,156 320,176 C314,194 297,194 286,180 C303,175 309,157 303,126Z" fill="#de886b"/>
+        <path d="M148,270 C190,261 230,262 262,276 C225,294 186,296 148,270Z" fill="#8a130d"/>
+        <path d="M155,267 C188,274 225,275 257,271" stroke="#f29a86" stroke-width="2" opacity=".5"/>
+        <path d="M32,112 C6,181 14,257 70,292 C31,287 0,244 -5,201 C-11,162 5,128 32,112Z" fill="#110808"/>
+        <path d="M43,224 C38,246 22,260 8,262" stroke="#0b0808" stroke-width="11" fill="none"/>
+      </g>
+
+      <g clip-path="url(#rightClip)">
+        <rect x="302" width="367" height="370" fill="url(#rightBg)"/>
+        <path d="M398,10 C462,-16 554,-2 610,61 C672,130 672,255 616,332 C571,392 478,393 422,350 C373,312 344,231 352,155 C359,88 360,34 398,10Z" fill="url(#skinR)"/>
+        <path d="M346,0 C414,-7 459,22 478,88 C420,70 380,95 348,145 C329,92 330,36 346,0Z" fill="#070707"/>
+        <path d="M486,0 C573,4 632,53 662,129 C668,69 650,24 615,0Z" fill="#050505"/>
+        <path d="M363,14 C382,40 379,77 363,111" stroke="#20140f" stroke-width="14" fill="none"/>
+        <path d="M448,102 C482,87 516,88 545,106" stroke="#12100e" stroke-width="8" fill="none"/>
+        <path d="M548,102 C583,89 623,91 651,111" stroke="#100e0c" stroke-width="8" fill="none"/>
+        <path d="M446,121 C480,106 516,108 544,125 C512,141 477,141 446,121Z" fill="#e6c0a1"/>
+        <ellipse cx="500" cy="124" rx="12" ry="10" fill="#2d1a0f"/>
+        <circle cx="496" cy="120" r="3" fill="#fff"/>
+        <path d="M550,126 C584,108 624,110 652,128 C620,143 582,143 550,126Z" fill="#d0a27e"/>
+        <ellipse cx="602" cy="128" rx="12" ry="10" fill="#29170d"/>
+        <circle cx="597" cy="124" r="3" fill="#fff"/>
+        <path d="M445,122 C482,101 516,104 548,120" stroke="#080808" stroke-width="5" fill="none"/>
+        <path d="M548,125 C584,104 626,106 655,123" stroke="#080808" stroke-width="5" fill="none"/>
+        <path d="M531,102 C526,165 506,193 489,229 C512,239 542,235 558,219" fill="#89583d" opacity=".85"/>
+        <path d="M507,265 C544,279 582,279 616,265 C597,295 536,298 507,265Z" fill="#4b1714"/>
+        <path d="M515,263 C545,270 582,269 609,263" stroke="#b77765" stroke-width="2" opacity=".45"/>
+        <path d="M386,301 L496,244 L541,370 L315,370 Z" fill="#e9eef1"/>
+        <path d="M349,352 C406,313 468,290 537,281 L565,370 L340,370Z" fill="#2f2921"/>
+        <path d="M407,318 C430,310 452,307 475,309" stroke="#d9c994" stroke-width="2" opacity=".8"/>
+        <path d="M407,333 C441,321 477,319 511,329" stroke="#94835b" stroke-width="2" opacity=".65"/>
+        <path d="M394,61 C394,104 390,144 381,189" stroke="#0b0a09" stroke-width="8" fill="none"/>
+        <path d="M414,36 C414,77 407,117 394,156" stroke="#1a130f" stroke-width="5" fill="none"/>
+        <path d="M366,0 L302,370" stroke="#0d0d0d" stroke-width="4"/>
+        <rect x="302" y="0" width="367" height="370" fill="rgba(0,0,0,.08)"/>
+      </g>
+      <rect x="0" y="0" width="669" height="370" fill="none" stroke="#222" stroke-width="2"/>
+    </svg>
+  </div>
+</div>
+</body>
+</html>

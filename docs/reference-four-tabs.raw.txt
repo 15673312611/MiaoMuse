@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>《拯救并女魂是三界团宠》编辑器复刻</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#070708;
+  --panel:#17171b;
+  --panel2:#1e1e24;
+  --panel3:#101114;
+  --line:#2b2c31;
+  --text:#e9e9ee;
+  --muted:#8b8d94;
+  --soft:#555963;
+  --white:#fff;
+  --purple:#8b3ff6;
+  --pink:#ff4f89;
+  --orange:#ffb047;
+  --green:#33d38a;
+  --cyan:#65d6ff;
+}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#050506;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;font-size:12px}
+body:before{
+  content:"";
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 55% 8%,rgba(85,85,92,.16),transparent 28%),
+    radial-gradient(circle at 30% 70%,rgba(70,70,76,.12),transparent 35%),
+    repeating-linear-gradient(115deg,rgba(255,255,255,.032) 0 1px,transparent 1px 17px),
+    linear-gradient(#070708,#030304);
+  opacity:.92;
+}
+body:after{
+  content:"";
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
+  background-size:26px 26px;
+  pointer-events:none;
+}
+.app{position:relative;z-index:2;width:100vw;height:100vh}
+.sidebar{
+  position:absolute;left:0;top:0;width:56px;height:100vh;
+  background:linear-gradient(180deg,#090a0c,#060607);
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.logo{
+  position:absolute;top:18px;left:18px;font-weight:900;font-size:22px;letter-spacing:.5px;color:#fafafa;font-style:italic;
+}
+.side-icons{position:absolute;top:76px;left:0;width:56px;display:flex;align-items:center;flex-direction:column;gap:18px}
+.ico{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#bfc2ca;font-size:14px;position:relative}
+.ico.active{background:#f5f6fa;color:#101014}
+.ico svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8}
+.bottom{position:absolute;bottom:13px;left:0;width:56px;text-align:center;color:#d9d9df;font-size:11px}
+.avatar{width:27px;height:27px;border-radius:50%;margin:10px auto 0;background:radial-gradient(circle at 35% 28%,#ffd978 0 18%,#9c4fff 19% 45%,#2a151d 46% 100%);border:1px solid rgba(255,255,255,.25);position:relative}
+.avatar:after{content:"";position:absolute;right:-1px;bottom:2px;width:7px;height:7px;background:#ffce39;border-radius:50%;border:1px solid #111}
+.main{position:absolute;left:56px;top:0;right:0;height:100vh}
+.header{
+  height:68px;position:relative;padding-left:24px;padding-top:25px;
+}
+.title{font-weight:700;font-size:15px;color:#fff;display:flex;align-items:center;gap:8px}
+.title .bolt{width:15px;height:15px;border-radius:50%;background:#17181d;color:#e8e8ea;display:inline-flex;align-items:center;justify-content:center;font-size:10px}
+.tabs{position:absolute;left:112px;top:72px;display:flex;gap:0;z-index:5}
+.tab{
+  height:22px;min-width:60px;padding:0 12px;border:0;background:#191a1e;color:#dedee3;font-size:11px;line-height:22px;
+  border-right:1px solid rgba(255,255,255,.08);cursor:pointer;
+}
+.tab:first-child{border-radius:3px 0 0 3px}
+.tab:last-child{border-radius:0 3px 3px 0;border-right:0}
+.tab.active{background:#fff;color:#111;font-weight:700}
+.top-actions{position:absolute;right:56px;top:72px;display:flex;gap:8px;align-items:center;z-index:6}
+.iconbtn{width:23px;height:23px;border-radius:4px;background:#0b0c0e;border:1px solid rgba(255,255,255,.1);color:#d8d8de;display:flex;align-items:center;justify-content:center}
+.iconbtn svg{width:12px;height:12px;stroke:currentColor;fill:none}
+.gradbtn{height:24px;border:0;border-radius:4px;color:#fff;font-size:11px;padding:0 12px;background:linear-gradient(90deg,#7b3cff,#ff4a88);box-shadow:0 0 14px rgba(139,63,246,.23)}
+.download{height:25px;border:1px solid rgba(255,255,255,.28);background:#0b0c0e;color:#e5e6e9;border-radius:4px;font-size:11px;padding:0 10px;display:flex;gap:5px;align-items:center}
+.content{
+  position:absolute;left:112px;top:108px;right:56px;bottom:0;
+}
+.panel{display:none;position:relative;width:100%;height:100%}
+.panel.active{display:block}
+label{display:block;color:#f1f1f3;font-size:11px;margin-bottom:8px;font-weight:600}
+.required:after{content:"*";color:#ff5869;margin-left:3px}
+.input,.select,.textarea{
+  background:#1a1a1f;border:1px solid #24252b;color:#dfe0e5;border-radius:4px;outline:none;
+  font-size:12px;padding:0 12px;
+}
+.input{height:28px}
+.select{height:30px;appearance:none;background-image:linear-gradient(45deg,transparent 50%,#7c8088 50%),linear-gradient(135deg,#7c8088 50%,transparent 50%);background-position:calc(100% - 14px) 12px,calc(100% - 9px) 12px;background-size:5px 5px;background-repeat:no-repeat}
+.textarea{resize:none;line-height:1.55;padding:12px;color:#e0e0e5}
+.row{display:flex;gap:20px;margin-bottom:16px}
+.field{position:relative}
+.w180{width:180px}.w330{width:330px}.w390{width:390px}.w700{width:700px}
+.synopsis-wrap{width:780px}
+.small-tab-pair{display:flex;width:180px;height:30px;border-radius:4px;overflow:hidden;border:1px solid #2b2d33}
+.small-tab-pair button{flex:1;background:#101115;color:#d7d8dd;border:0;font-size:11px}
+.small-tab-pair button.on{background:#1d1f25;color:#79c8ff}
+.ai-orange{width:158px;height:30px;background:linear-gradient(90deg,#ff8d2e,#ffbd58);border:0;border-radius:5px;color:#fff;font-weight:700;font-size:12px;margin-top:20px}
+.synopsis-main{width:700px;height:150px}
+.synopsis-short{width:700px;height:58px}
+.synopsis-long{width:700px;height:142px}
+.right-steps{
+  position:absolute;right:0;top:0;width:120px;height:410px;padding-top:5px;
+}
+.right-steps:after{content:"";position:absolute;right:0;top:-68px;height:520px;width:1px;background:rgba(255,255,255,.18)}
+.step{height:39px;color:#dcdde2;font-size:11px;text-align:left;padding-left:10px;position:relative}
+.step:after{content:"";position:absolute;right:14px;top:5px;width:9px;height:9px;border-radius:50%;background:#0e1513;border:1px solid rgba(80,255,180,.35)}
+.step:before{content:"";position:absolute;right:18px;top:14px;width:1px;height:29px;background:rgba(80,255,180,.18)}
+.step:last-child:before{display:none}
+.char-left{width:520px}
+.char-form{display:grid;grid-template-columns:1fr 1fr 84px;gap:16px;margin-bottom:16px}
+.counter{display:flex;width:84px;height:28px;border:1px solid #2b2c32;border-radius:4px;overflow:hidden}
+.counter button{width:25px;background:#18191e;color:#ddd;border:0}
+.counter span{flex:1;line-height:28px;text-align:center;background:#111217;color:#dcdde1}
+.tagsbox{height:42px;width:520px;background:#1a1a1f;border:1px solid #24252b;border-radius:4px;padding:9px 10px}
+.tag{display:inline-block;height:17px;line-height:17px;padding:0 9px;border-radius:9px;color:#fff;font-size:10px;margin-right:5px}
+.t1{background:#8f42ff}.t2{background:#e03f9e}.t3{background:#31b965}.t4{background:#6c39ff}
+.bio{width:520px;height:112px}
+.role-grid{position:absolute;left:600px;top:0;width:330px;display:grid;grid-template-columns:repeat(3,96px);grid-auto-rows:96px;gap:10px}
+.role-card{background:#15161b;border:1px solid rgba(255,255,255,.03);border-radius:6px;color:#d5d6dc;font-size:18px;display:flex;align-items:center;justify-content:center}
+.role-card.active{border:1px solid rgba(255,255,255,.65);box-shadow:0 0 0 1px rgba(255,255,255,.13) inset;color:#fff;font-weight:700}
+.add-card{font-size:24px;color:#e6e6e9}
+.outline-editor{width:760px;height:318px}
+.outline-block{margin-top:16px;width:760px;height:67px}
+.outline-block .input{width:100%;height:46px}
+.episode-nav{position:absolute;left:820px;top:0;width:78px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.ep-card{width:64px;height:82px;background:#111216;border:1px solid rgba(255,255,255,.08);border-radius:7px;color:#9fa1a8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:11px;position:relative}
+.ep-card.active{border-color:#fff;color:#fff}
+.ep-card.active:after{content:"";position:absolute;right:6px;top:6px;width:16px;height:16px;background:#fff;border-radius:3px}
+.ep-card.active:before{content:"▣";position:absolute;right:9px;top:5px;z-index:2;color:#111;font-size:10px}
+.ep-title{font-size:12px;color:#e6e6ea}
+.script-paper{width:490px;height:382px;background:#1a1a1f;border:1px solid #24252b;border-radius:6px;padding:22px 18px;color:#f1f1f3}
+.script-paper .chapter{font-size:14px;font-weight:700;margin-bottom:16px}
+.script-paper .hint{color:#52545c;font-size:12px}
+.ruler{position:absolute;left:810px;top:0;width:70px;height:210px;color:#e8e8ed}
+.ruler .vline{position:absolute;right:18px;top:30px;width:1px;height:142px;background:linear-gradient(#eee,#444)}
+.tick{position:absolute;right:18px;width:14px;height:1px;background:#d9d9df}
+.tick.t0{top:30px}.tick.t1{top:45px;width:10px}.tick.t2{top:60px;width:10px}.tick.t3{top:75px;width:10px}.tick.t4{top:90px;width:10px}
+.tick.t5{top:105px}.tick.t6{top:120px;width:10px}.tick.t7{top:135px;width:10px}.tick.t8{top:150px;width:10px}.tick.t9{top:165px;width:10px}
+.rnum{position:absolute;right:36px;font-size:10px;color:#f3f3f5}
+.rnum.one{top:26px}.rnum.ten{top:101px}
+.hidden{display:none}
+@media(max-width:900px){
+  .content{left:90px;transform:scale(.86);transform-origin:top left}
+  .tabs{left:90px}.top-actions{right:30px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="side-icons">
+      <div class="ico active"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/><circle cx="12" cy="12" r="9"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M8 4h8l2 5-6 11L6 9z"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v18M6 8h12M7 16h10"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3c3 3 5 6 5 10a5 5 0 0 1-10 0c0-4 2-7 5-10z"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 7h14v12H5zM8 4h8v3"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></div>
+    </div>
+    <div class="bottom">B2D..<div class="avatar"></div></div>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div class="title"><span class="bolt">✦</span>《拯救并女魂是三界团宠》</div>
+    </div>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="synopsis">故事梗概</button>
+      <button class="tab" data-tab="character">人物小传</button>
+      <button class="tab" data-tab="outline">分集大纲</button>
+      <button class="tab" data-tab="script">剧本正文</button>
+    </nav>
+
+    <div class="top-actions" id="normalActions">
+      <button class="iconbtn"><svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 0 1 12-5l2 2M19 12a7 7 0 0 1-12 5l-2-2"/></svg></button>
+      <button class="iconbtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3"/></svg></button>
+      <button class="gradbtn" id="actionText">创建角色</button>
+    </div>
+    <div class="top-actions hidden" id="scriptActions">
+      <button class="download">⌄ 输出为Word</button>
+    </div>
+
+    <section class="content">
+      <div class="panel active" id="synopsis">
+        <div class="synopsis-wrap">
+          <div class="row">
+            <div class="field w180">
+              <label class="required">目标受众</label>
+              <div class="small-tab-pair"><button class="on">女频</button><button>男频</button></div>
+            </div>
+            <button class="ai-orange">AI生成</button>
+            <div class="field w330">
+              <label>剧本类型（可选择多个）</label>
+              <select class="select w330"><option>女频爽剧、仙侠奇幻</option></select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field w330">
+              <label>故事风格（可选择多个）</label>
+              <select class="select w330"><option>爽感强烈、沙雕轻松、奇幻脑洞</option></select>
+            </div>
+            <div class="field w330">
+              <label>核心卖点（可选择多个）</label>
+              <select class="select w330"><option>三界团宠、逆袭成长、甜宠治愈、爽点密集</option></select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:16px">
+            <label>片名梗概（2000）</label>
+            <textarea class="textarea synopsis-main">九幽冥府战神苏清瑶魂魄消散，意外被废柴小花妖苏妍妍借尸还魂。她睁眼便在仙门刑台，三界传闻她勾结魔族、害死师尊、抢夺灵脉，是人人唾弃的恶毒女配。可她不但不怕，还把审判现场变成大型打脸直播：一剑挑破伪证，一句拆穿白莲师妹，顺手救下被囚的小灵兽。从此，原本要被献祭的她一路开挂，天界太子为她撑腰，魔尊旧友为她封城，冥府判官替她翻案，连传说中冷心冷情的上神都频频破戒相护。</textarea>
+          </div>
+          <div class="field" style="margin-bottom:16px">
+            <label>核心冲突（200字）</label>
+            <textarea class="textarea synopsis-short">苏妍妍被迫在众人误解中寻找自己死亡真相，她既要面对仙门阴谋与三界追杀，又要处理各路大佬突如其来的偏爱，并在复仇与守护之间做出选择。</textarea>
+          </div>
+          <div class="field">
+            <label>剧集梗概</label>
+            <textarea class="textarea synopsis-long">灵魂归来的苏妍妍发现，原主竟是三界气运关键。她每揭开一层阴谋，就会唤醒一段被封存的前世记忆。表面柔弱的师妹、权势滔天的仙门长老、神秘失踪的冥府旧部皆与当年的灭魂案有关。她一边用离谱操作疯狂逆袭，一边收获亲情、友情与爱情，最终带领三界众人打破命运剧本。</textarea>
+          </div>
+        </div>
+        <div class="right-steps">
+          <div class="step">剧本设定</div>
+          <div class="step">剧情梗概</div>
+          <div class="step">核心冲突</div>
+          <div class="step">风格设定</div>
+          <div class="step">世界观</div>
+          <div class="step">核心卖点</div>
+          <div class="step">创作摘要</div>
+        </div>
+      </div>
+
+      <div class="panel" id="character">
+        <div class="char-left">
+          <div class="char-form">
+            <div class="field">
+              <label>姓名</label>
+              <input class="input" style="width:100%" value="苏清瑶">
+            </div>
+            <div class="field">
+              <label>性别</label>
+              <select class="select" style="width:100%"><option>女主</option></select>
+            </div>
+            <div class="field">
+              <label>年龄</label>
+              <div class="counter"><button>-</button><span>20</span><button>+</button></div>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:17px">
+            <label>标签</label>
+            <div class="tagsbox">
+              <span class="tag t1">三界团宠</span>
+              <span class="tag t2">战神归来</span>
+              <span class="tag t3">嘴强王者</span>
+              <span class="tag t4">隐藏身份的冥府女帝</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>小传</label>
+            <textarea class="textarea bio">冥府战神苏清瑶，因查三界灵脉枯竭真相被害，魂穿成仙门废柴小花妖苏妍妍。她看似散漫毒舌，实则极重情义，擅长以反常识手段破解危机。她不相信命运安排，更不接受“恶毒女配”的结局，一路打脸诬陷她的人，同时找回失散的旧友与被夺走的神格。</textarea>
+          </div>
+        </div>
+        <div class="role-grid">
+          <div class="role-card active">苏清瑶</div>
+          <div class="role-card">沈明远</div>
+          <div class="role-card">苏妍儿</div>
+          <div class="role-card">墨渊</div>
+          <div class="role-card">云澈</div>
+          <div class="role-card">夜隐</div>
+          <div class="role-card">大长老</div>
+          <div class="role-card">柳映桃</div>
+          <div class="role-card">林逸风</div>
+          <div class="role-card">玄冥长老</div>
+          <div class="role-card">冥霜仙子</div>
+          <div class="role-card">宗炎妖王</div>
+          <div class="role-card add-card">♧</div>
+        </div>
+      </div>
+
+      <div class="panel" id="outline">
+        <div class="field">
+          <label class="required">剧情</label>
+          <textarea class="textarea outline-editor">苏清瑶从审判台醒来，发现自己被仙门长老、同门弟子围攻，罪名包括勾结魔族、盗取灵脉、害死师尊。她没有急着辩解，而是冷静观察每个人的灵息波动，发现所谓证物上残留着白莲师妹苏妍儿的香火印。众人逼她认罪时，她当场以冥府秘法还原案发瞬间，画面显示真正偷走灵脉的人另有其人。苏妍儿装晕引导舆论，沈明远却第一次站出来为苏清瑶说话。大长老恼羞成怒，命人将她押入锁魂塔。进入塔中后，苏清瑶遇见被囚禁多年的小灵兽“青团”，青团认出她身上的冥府战神气息，主动带她找到第一枚记忆碎片。碎片里，她看见三年前自己被最信任的人背叛，魂魄被打散，神格被封。与此同时，塔外仙门传出魔族来袭的警报，大长老试图将责任再次推到苏清瑶身上。苏清瑶带着青团破塔而出，用一招失传的冥火阵救下即将被魔气吞噬的弟子，众人才意识到她并非废柴。可她没有接受感谢，而是当众宣布：从今天起，她要查清三年前灭魂案，所有欠她的人，一个都别想逃。</textarea>
+        </div>
+        <div class="outline-block">
+          <label class="required">场景</label>
+          <input class="input" value="仙门刑台">
+        </div>
+        <div class="outline-block" style="margin-top:8px">
+          <label>转折</label>
+          <input class="input" value="苏清瑶当场还原证物真相，反转众人认知">
+        </div>
+        <div class="episode-nav">
+          <div class="ep-card active"><div class="ep-title">1</div><div>1 - 10</div></div>
+          <div class="ep-card"><div class="ep-title">用</div><div>11 - 30</div></div>
+          <div class="ep-card"><div class="ep-title">转</div><div>31 - 50</div></div>
+          <div class="ep-card"><div class="ep-title">合</div><div>51 - 60</div></div>
+        </div>
+      </div>
+
+      <div class="panel" id="script">
+        <div class="script-paper">
+          <div class="chapter">第1集</div>
+          <div class="hint">在这里输入剧本正文，支持场次、对白、动作与旁白排版。</div>
+        </div>
+        <div class="ruler">
+          <div class="rnum one">1</div>
+          <div class="rnum ten">10</div>
+          <div class="vline"></div>
+          <span class="tick t0"></span><span class="tick t1"></span><span class="tick t2"></span><span class="tick t3"></span><span class="tick t4"></span>
+          <span class="tick t5"></span><span class="tick t6"></span><span class="tick t7"></span><span class="tick t8"></span><span class="tick t9"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const tabs=[...document.querySelectorAll('.tab')];
+const panels=[...document.querySelectorAll('.panel')];
+const normal=document.getElementById('normalActions');
+const script=document.getElementById('scriptActions');
+const action=document.getElementById('actionText');
+const textMap={synopsis:'创建剧本',character:'AI生成小传 50%+',outline:'AI生成分集大纲 100+',script:''};
+tabs.forEach(t=>{
+  t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+    if(t.dataset.tab==='script'){
+      normal.classList.add('hidden');script.classList.remove('hidden');
+    }else{
+      script.classList.add('hidden');normal.classList.remove('hidden');
+      action.textContent=textMap[t.dataset.tab];
+    }
+  })
+});
+</script>
+</body>
+</html>

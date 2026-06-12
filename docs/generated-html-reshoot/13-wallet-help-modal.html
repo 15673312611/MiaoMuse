@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>剧点</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#050505;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#eef2f7}
+body{
+  position:relative;
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 2px,transparent 2px,transparent 8px),
+    #050505;
+}
+.app{position:relative;width:2050px;height:968px;background:transparent}
+.sidebar{
+  position:absolute;left:0;top:0;width:86px;height:968px;background:#070708;
+  border-right:1px solid rgba(255,255,255,.015);
+}
+.logo{
+  position:absolute;left:32px;top:42px;width:24px;height:18px;
+}
+.logo:before,.logo:after{content:"";position:absolute;left:0;width:24px;height:6px;border-radius:5px;background:#6b6c70}
+.logo:before{top:0;transform:skewX(-18deg)}
+.logo:after{bottom:0;transform:skewX(-18deg)}
+.nav{position:absolute;top:124px;left:20px;width:48px}
+.nav-item{
+  width:48px;height:48px;margin:3px 0 4px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  color:#73757a;opacity:.78;
+}
+.nav-item svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nav-sep{width:48px;height:1px;background:#242528;margin:22px 0 14px}
+.nav-item.active{background:#77787c;color:#070707;opacity:.95}
+.bottom-points{position:absolute;left:18px;bottom:94px;color:#9a9ba0;font-size:20px;font-weight:800;letter-spacing:-1px;opacity:.8}
+.bottom-points span{font-size:13px;margin-left:2px}
+.avatar{
+  position:absolute;left:23px;bottom:20px;width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle at 55% 36%,#7a5737 0 9px,#2a211d 10px 18px,#111 19px 100%);
+  border:2px solid #805000;box-shadow:0 0 0 1px rgba(255,190,30,.22)
+}
+.avatar:after{content:"";position:absolute;right:-7px;bottom:0;width:15px;height:15px;border-radius:50%;background:#6d5209}
+.main{position:absolute;left:86px;top:0;width:1964px;height:968px}
+.title{position:absolute;left:24px;top:36px;font-size:26px;font-weight:700;color:#c3c7cd;letter-spacing:1px}
+.invite{position:absolute;right:43px;top:42px;color:#adb0b5;font-size:14px;display:flex;align-items:center;gap:8px;opacity:.85}
+.ticket{
+  width:22px;height:15px;background:#c6a400;transform:rotate(-14deg);border-radius:2px;display:inline-block;position:relative;opacity:.9
+}
+.ticket:before{content:"";position:absolute;left:9px;top:0;width:1px;height:15px;border-left:1px dashed rgba(0,0,0,.45)}
+.hero{
+  position:absolute;left:469px;top:95px;width:1025px;height:276px;border-radius:23px;overflow:hidden;
+  background:linear-gradient(90deg,#0a0a0b 0%,#090b0d 47%,#07272d 100%);
+}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 46%,rgba(0,155,165,.28),transparent 43%)}
+.hero-num{position:absolute;left:64px;top:26px;font-size:86px;line-height:1;font-weight:900;letter-spacing:-7px;color:#d8d9df;opacity:.36}
+.hero-num small{font-size:38px;margin-left:4px;vertical-align:middle}
+.hero-desc{position:absolute;left:64px;top:234px;transform:translateY(-104px);font-size:16px;line-height:25px;color:#9aa0a8;opacity:.72}
+.hero-btn{
+  position:absolute;left:64px;bottom:36px;width:160px;height:41px;border:0;border-radius:22px;
+  background:#8b520c;color:#e8d3b6;font-size:15px;font-weight:700
+}
+.coin{position:absolute;border-radius:50%;border:8px solid rgba(26,84,91,.72);background:rgba(34,91,99,.22);box-shadow:inset 0 0 14px rgba(0,0,0,.65),0 14px 24px rgba(0,0,0,.35)}
+.c1{width:88px;height:44px;right:350px;top:75px;transform:rotate(-31deg)}
+.c2{width:76px;height:56px;right:268px;top:108px;transform:rotate(34deg)}
+.c3{width:84px;height:116px;right:160px;top:20px;transform:rotate(-18deg)}
+.c4{width:79px;height:57px;right:112px;top:154px;transform:rotate(-24deg)}
+.c5{width:73px;height:105px;right:70px;top:185px;transform:rotate(-7deg)}
+.c6{width:94px;height:41px;right:245px;top:220px;transform:rotate(-29deg)}
+.section-label{position:absolute;left:469px;top:410px;font-size:14px;color:#888e96}
+.task-card{
+  position:absolute;left:469px;top:439px;width:760px;height:105px;background:#0f1012;border-radius:10px;
+  border:1px solid rgba(255,255,255,.018);padding:28px 32px;color:#e0e3e8
+}
+.task-icon{position:absolute;left:32px;top:32px;width:32px;height:32px;border:1px solid #555a62;border-radius:6px;color:#aaa}
+.task-title{position:absolute;left:86px;top:26px;font-size:22px;font-weight:700;color:#d7dbe1}
+.task-sub{position:absolute;left:86px;top:58px;font-size:15px;color:#868c95}
+.task-reward{
+  position:absolute;right:25px;top:23px;width:165px;height:40px;border-radius:21px;border:1px solid #8b610d;color:#d0a743;
+  display:flex;align-items:center;justify-content:center;font-size:15px
+}
+.tabs{position:absolute;left:469px;top:638px;width:121px;height:36px;background:#111214;border-radius:5px;display:flex;padding:3px}
+.tab{width:56px;height:30px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#858b94;font-size:14px}
+.tab.active{background:#e9e9eb;color:#151515}
+.table{
+  position:absolute;left:469px;top:691px;width:1025px;height:108px;background:#080809;border-radius:10px;overflow:hidden;color:#9ca2ab
+}
+.thead{height:53px;border-bottom:1px solid rgba(255,255,255,.025);font-size:16px;font-weight:700;color:#aeb4bd}
+.trow{height:55px;font-size:16px}
+.cell{position:absolute}
+.name{left:32px}.amount{left:455px}.time{right:33px}
+.thead .cell{top:18px}.trow .cell{top:65px}
+.overlay{
+  position:absolute;left:0;top:0;width:2050px;height:968px;background:rgba(0,0,0,.70);z-index:5;
+}
+.modal{
+  position:absolute;left:769px;top:289px;width:511px;height:389px;background:#1b1c20;border-radius:4px;z-index:6;
+  box-shadow:0 16px 40px rgba(0,0,0,.45);color:#f2f5fb;padding:28px 22px;
+}
+.modal h2{margin:0 0 14px 0;font-size:21px;line-height:1;font-weight:800;color:#fff}
+.modal .content{font-size:16px;line-height:21px;color:#f1f4fa;white-space:pre-wrap}
+.modal .strong{font-weight:800}
+.ok{
+  position:absolute;right:24px;bottom:23px;width:59px;height:40px;border:0;border-radius:5px;background:#fff;color:#111;font-size:15px
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M7 5h9v14H7z"/><path d="M4 8h4M4 12h4M4 16h4M12 9h6M12 13h6"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M5 19l14-14"/><path d="M7 5l4 4M5 7l4 4M13 15l4 4M15 13l4 4"/><circle cx="7" cy="17" r="3"/><circle cx="17" cy="7" r="3"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 19V5h4l4 14"/><path d="M14 5h2l5 14"/></svg></div>
+      <div class="nav-sep"></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/><path d="M12 8v5l4 2"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3s1 5-3 8a5 5 0 1 0 8 4c0-3-2-5-5-12z"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 21L3 8l4-5h10l4 5z"/><path d="M3 8h18M8 3l4 18 4-18"/></svg></div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M4 7h15a2 2 0 0 1 2 2v11H4a2 2 0 0 1-2-2V5a2 2 0 0 0 2 2z"/><path d="M15 13h6v5h-6a2.5 2.5 0 0 1 0-5z"/><circle cx="16" cy="15.5" r=".8" fill="currentColor"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 20v-2a4 4 0 0 1 4-4h1"/><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 0 0-3-6"/><path d="M18 20v-2a4 4 0 0 0-3-4"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 2l.05.05-2.12 2.12-.05-.05a1.8 1.8 0 0 0-2-.36 1.8 1.8 0 0 0-1.1 1.65V21h-3v-.07A1.8 1.8 0 0 0 10 19.28a1.8 1.8 0 0 0-2 .36l-.05.05-2.12-2.12.05-.05a1.8 1.8 0 0 0 .36-2 1.8 1.8 0 0 0-1.65-1.1H4v-3h.07A1.8 1.8 0 0 0 5.72 10a1.8 1.8 0 0 0-.36-2l-.05-.05 2.12-2.12.05.05a1.8 1.8 0 0 0 2 .36H10A1.8 1.8 0 0 0 11 4.6V4h3v.07A1.8 1.8 0 0 0 15 5.72a1.8 1.8 0 0 0 2-.36l.05-.05 2.12 2.12-.05.05a1.8 1.8 0 0 0-.36 2V10c.24.74.93 1.25 1.7 1.25H21v3h-.07A1.8 1.8 0 0 0 19.4 15z"/></svg></div>
+    </div>
+    <div class="bottom-points">1000<span>◎</span></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">剧点</div>
+    <div class="invite"><span class="ticket"></span><span>邀请有礼</span></div>
+
+    <section class="hero">
+      <div class="hero-num">1000<small>◎</small></div>
+      <div class="hero-desc">大约还能生成 0 篇剧本<br>查看剧点说明</div>
+      <button class="hero-btn">充值剧点</button>
+      <div class="coin c1"></div><div class="coin c2"></div><div class="coin c3"></div>
+      <div class="coin c4"></div><div class="coin c5"></div><div class="coin c6"></div>
+    </section>
+
+    <div class="section-label">剧点任务</div>
+    <div class="task-card">
+      <div class="task-icon"><svg viewBox="0 0 32 32" width="32" height="32"><circle cx="14" cy="12" r="4" stroke="currentColor" fill="none"/><path d="M7 25c1-5 4-7 7-7s6 2 7 7" stroke="currentColor" fill="none"/><path d="M23 10v6M20 13h6" stroke="currentColor" fill="none"/></svg></div>
+      <div class="task-title">新人注册</div>
+      <div class="task-sub">新注册用户赠送1000剧点，自动到账</div>
+      <div class="task-reward">已领取</div>
+    </div>
+
+    <div class="tabs"><div class="tab active">收入</div><div class="tab">消费</div></div>
+    <div class="table">
+      <div class="thead">
+        <div class="cell name">名称</div>
+        <div class="cell amount">金额</div>
+        <div class="cell time">发生时间</div>
+      </div>
+      <div class="trow">
+        <div class="cell name">领取1000剧点</div>
+        <div class="cell amount">+ 1000</div>
+        <div class="cell time">2026年06月05日 19:48</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="overlay"></div>
+  <div class="modal">
+    <h2>剧点说明</h2>
+    <div class="content"><span class="strong">剧点如何获得?</span>
+1. 新用户注册即送1000剧点
+2. 剧点充值：充值指定金额，获得对应剧点
+3. 充值奖励：用户充值100元多送500剧点，充值300元多送3000剧点
+4. 限时会员权益：会员用户每30天可在线包页面领取500剧点
+5. 更多剧点获取方式，请扫码关注首页下方微信公众号二维码，参与不定时
+剧点领取活动
+
+<span class="strong">剧点如何使用?</span>
+1. 会员用户短剧拉片消耗100剧点
+2. AI功能生成一次消耗对应剧点
+
+注：所有积分的获得/冻结均保留整数</div>
+    <button class="ok">了解</button>
+  </div>
+</div>
+</body>
+</html>

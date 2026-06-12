@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>社区</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    width:2050px;
+    height:968px;
+    overflow:hidden;
+    background:#050506;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    color:#fff;
+  }
+  body{
+    position:relative;
+  }
+  .page{
+    position:relative;
+    width:2050px;
+    height:968px;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 6px),
+      #070708;
+  }
+  .sidebar{
+    position:absolute;
+    left:0;top:0;
+    width:86px;height:968px;
+    background:#08090a;
+    border-right:1px solid rgba(255,255,255,.035);
+  }
+  .logo{
+    position:absolute;
+    left:31px;top:41px;
+    width:25px;height:20px;
+    color:#5b5d61;
+    font-size:34px;
+    font-weight:900;
+    line-height:20px;
+    transform:skewX(-10deg);
+    opacity:.85;
+  }
+  .nav{
+    position:absolute;
+    top:123px;left:0;
+    width:86px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:25px;
+  }
+  .ico{
+    width:24px;height:24px;
+    color:#55575c;
+    opacity:.88;
+  }
+  .divider{
+    width:47px;height:1px;
+    background:#202124;
+    margin:11px 0 7px;
+  }
+  .nav .active{
+    width:46px;height:46px;
+    border-radius:6px;
+    background:#8c8c8f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#090a0b;
+    opacity:1;
+  }
+  .bottom{
+    position:absolute;
+    left:0;bottom:20px;
+    width:86px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+  }
+  .coins{
+    color:#77797e;
+    font-weight:700;
+    font-size:18px;
+    opacity:.9;
+  }
+  .coins small{font-size:10px;margin-left:1px}
+  .avatar{
+    position:relative;
+    width:42px;height:42px;
+    border-radius:50%;
+    overflow:hidden;
+    border:2px solid #76500a;
+    background:radial-gradient(circle at 50% 35%,#59412a 0 18%,#1e1d20 19% 45%,#080809 46%);
+  }
+  .avatar:before{
+    content:"";
+    position:absolute;
+    left:13px;top:9px;width:13px;height:13px;border-radius:50%;
+    background:#5c4733;
+  }
+  .avatar:after{
+    content:"";
+    position:absolute;
+    left:9px;top:23px;width:24px;height:20px;border-radius:12px 12px 0 0;
+    background:#34291f;
+  }
+  .badge{
+    position:absolute;
+    right:17px;bottom:19px;
+    width:14px;height:14px;
+    border-radius:50%;
+    background:#8a6517;
+  }
+  .title{
+    position:absolute;
+    left:110px;top:34px;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:.5px;
+    color:#7c7f85;
+  }
+  .content{
+    position:absolute;
+    left:550px;top:64px;
+    width:1024px;
+    height:804px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:307px 307px 307px;
+    grid-auto-rows:211px;
+    gap:30px 20px;
+  }
+  .card{
+    position:relative;
+    width:307px;height:211px;
+    border-radius:6px;
+    overflow:hidden;
+    background:#141517;
+    box-shadow:0 0 0 1px rgba(255,255,255,.015) inset;
+  }
+  .thumb{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 42% 32%, rgba(219,83,58,.38) 0 32px, transparent 34px),
+      radial-gradient(circle at 72% 14%, rgba(240,244,239,.24) 0 58px, transparent 60px),
+      linear-gradient(160deg, rgba(9,66,82,.28), rgba(223,205,171,.2) 45%, rgba(80,74,89,.22));
+    opacity:.75;
+  }
+  .thumb:before{
+    content:"";
+    position:absolute;
+    right:0;top:0;
+    width:138px;height:108px;
+    background:rgba(255,255,255,.10);
+    clip-path:polygon(32% 0,100% 0,100% 100%,0 48%);
+  }
+  .card-title{
+    position:absolute;
+    left:28px;right:20px;top:78px;
+    color:#121315;
+    font-size:20px;
+    font-weight:800;
+    line-height:1.55;
+    text-align:left;
+    letter-spacing:.2px;
+  }
+  .big .card-title{font-size:28px;top:84px;line-height:1.2}
+  .center .card-title{text-align:center;font-size:24px;top:77px}
+  .time{
+    position:absolute;
+    left:14px;bottom:13px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#85898f;
+    font-size:15px;
+  }
+  .play{
+    position:absolute;
+    right:14px;bottom:14px;
+    width:16px;height:16px;
+  }
+  .play svg{display:block}
+  .toprow{
+    margin-top:-72px;
+    margin-bottom:30px;
+    display:grid;
+    grid-template-columns:307px 307px 307px;
+    gap:20px;
+  }
+  .smallbar{
+    position:relative;
+    width:307px;height:43px;
+    border-radius:6px;
+    background:#151517;
+    overflow:hidden;
+  }
+  .smallbar:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(160deg,transparent 0 55%,rgba(255,255,255,.045));
+  }
+  .smallbar .time{bottom:12px}
+  .smallbar .play{bottom:13px}
+  .info-row{
+    display:grid;
+    grid-template-columns:320px 320px 320px;
+    gap:32px;
+    margin-top:33px;
+  }
+  .info{
+    height:215px;
+    border-radius:7px;
+    background:#111213;
+    padding:30px 31px;
+  }
+  .info h3{
+    margin:0 0 9px;
+    font-size:22px;
+    color:#d0d2d5;
+    font-weight:800;
+  }
+  .info p{
+    margin:0;
+    font-size:16px;
+    line-height:1.55;
+    color:#85888e;
+  }
+  .btn{
+    margin-top:40px;
+    width:89px;height:40px;
+    border-radius:6px;
+    background:#1a1b1d;
+    color:#b8bbc0;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .scrollbar{
+    position:absolute;
+    right:5px;bottom:15px;
+    width:5px;height:228px;
+    border-radius:5px;
+    background:#2d2e31;
+    opacity:.8;
+  }
+  .scrolltop{
+    position:absolute;
+    right:4px;top:67px;
+    width:8px;height:6px;
+    opacity:.35;
+  }
+  .dim{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    z-index:10;
+  }
+  .modal{
+    position:absolute;
+    left:847px;top:283px;
+    width:353px;height:400px;
+    background:#1a1b1f;
+    border-radius:4px;
+    z-index:20;
+    box-shadow:0 16px 48px rgba(0,0,0,.35);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .qrbox{
+    margin-top:45px;
+    width:210px;height:210px;
+    border-radius:7px;
+    background:#fff;
+    padding:16px;
+  }
+  canvas{display:block;width:178px;height:178px}
+  .sub{
+    margin-top:11px;
+    color:#a9abb0;
+    font-size:12px;
+    line-height:16px;
+  }
+  .maintext{
+    color:#f1f1f2;
+    font-size:16px;
+    font-weight:700;
+    line-height:22px;
+  }
+  .joined{
+    margin-top:34px;
+    width:108px;height:40px;
+    border-radius:6px;
+    background:#525357;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+  }
+  svg{stroke:currentColor}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 4h9v6H5z"/><path d="M8 10v4h11v6H8z"/><path d="M3 7h3M3 13h3"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 20l6-6"/><path d="M14 10l6-6"/><path d="M3 8l5-5 13 13-5 5z"/><path d="M15 3l6 6"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 20V4h4l5 16h-4L5 4"/><path d="M14 4h3l2 16h-3z"/></svg>
+      <div class="divider"></div>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l8 4v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/><circle cx="12" cy="12" r="3"/><path d="M15 15l3 3"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 3s1 4-2 7c-2 2-4 4-4 7a5 5 0 0 0 10 0c0-3-2-5-4-7 4 1 6 4 6 7"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l9 6-9 12L3 9z"/><path d="M3 9h18M8 9l4 12 4-12M8 9l4-6 4 6"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="17" height="13" rx="2"/><path d="M7 5V3h10v2"/><path d="M16 12h6v6h-6z"/></svg>
+      <div class="active">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 11a4 4 0 1 0-8 0"/><path d="M3 20c.5-4 3-6 7-6"/><path d="M14 14c4 0 6.5 2 7 6"/><path d="M18 8a3 3 0 0 1 0 6"/></svg>
+      </div>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 2l.05.05-2.1 2.1-.05-.05a1.8 1.8 0 0 0-2-.36 1.8 1.8 0 0 0-1.1 1.66V21h-3v-.6A1.8 1.8 0 0 0 10.4 18.7a1.8 1.8 0 0 0-2 .36l-.05.05-2.1-2.1.05-.05a1.8 1.8 0 0 0 .36-2A1.8 1.8 0 0 0 5 13.9H4v-3h1a1.8 1.8 0 0 0 1.66-1.1 1.8 1.8 0 0 0-.36-2l-.05-.05 2.1-2.1.05.05a1.8 1.8 0 0 0 2 .36A1.8 1.8 0 0 0 11.5 4.4V4h3v.4a1.8 1.8 0 0 0 1.1 1.66 1.8 1.8 0 0 0 2-.36l.05-.05 2.1 2.1-.05.05a1.8 1.8 0 0 0-.36 2 1.8 1.8 0 0 0 1.66 1.1h.6v3h-.6A1.8 1.8 0 0 0 19.4 15z"/></svg>
+    </div>
+    <div class="bottom">
+      <div class="coins">1000<small>◎</small></div>
+      <div style="position:relative"><div class="avatar"></div><div class="badge"></div></div>
+    </div>
+  </aside>
+
+  <div class="title">社区</div>
+
+  <main class="content">
+    <div class="toprow">
+      <div class="smallbar"><div class="time">◷ 54分31秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="smallbar"><div class="time">◷ 69分44秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="smallbar"><div class="time">◷ 12分06秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+    </div>
+    <section class="grid">
+      <div class="card"><div class="thumb"></div><div class="card-title">我想试试！靠梦想，能不能站在互联网上达成共识！从行业生态开呗到春秋大梦</div><div class="time">◷ 34分19秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="card"><div class="thumb"></div><div class="card-title">演示：正确的使用指令设计剧本</div><div class="time">◷ 13分21秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="card center"><div class="thumb"></div><div class="card-title">学习中的3个重要因素：<br>氛围、心态、教材与老师</div><div class="time">◷ 4分09秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="card big"><div class="thumb"></div><div class="card-title">如何理解学习自主</div><div class="time">◷ 4分09秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="card"><div class="thumb"></div><div class="card-title">搭建你自己的工作流并持续完善</div><div class="time">◷ 8分51秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+      <div class="card center"><div class="thumb"></div><div class="card-title">我是如何用“好奇心指引”<br>扩展知识储备的</div><div class="time">◷ 17分19秒</div><div class="play"><svg viewBox="0 0 16 16" fill="none" stroke="#7b7f87"><path d="M4 2l10 6-10 6z"/></svg></div></div>
+    </section>
+
+    <section class="info-row">
+      <div class="info">
+        <h3>参加培训</h3>
+        <p>我们的教学体系清晰分层，满足不同阶段学员的需求。具体信息请添加老师咨询</p>
+        <div class="btn">咨询老师</div>
+      </div>
+      <div class="info">
+        <h3>剧本投稿</h3>
+        <p>直接靠谱平台方，具体信息请添加志编咨询</p>
+        <div class="btn">咨询志编</div>
+      </div>
+      <div class="info">
+        <h3>官方微信群</h3>
+        <p>在群里您的任何咨询都会有专人解答，我们也会不定期开展社群专属福利和活动，扫码立刻加入</p>
+        <div class="btn">立刻进群</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="scrolltop">
+    <svg viewBox="0 0 8 6" fill="#555"><path d="M4 0l4 6H0z"/></svg>
+  </div>
+  <div class="scrollbar"></div>
+
+  <div class="dim"></div>
+  <div class="modal">
+    <div class="qrbox"><canvas id="qr" width="178" height="178"></canvas></div>
+    <div class="sub">扫码加入StoryPlay用户群</div>
+    <div class="maintext">即时解答您的产品问题</div>
+    <div class="joined">已扫码入群</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('qr'),ctx=c.getContext('2d'),n=33,s=c.width/n;
+  ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);
+  function rect(x,y,w,h,col){ctx.fillStyle=col;ctx.fillRect(Math.round(x*s),Math.round(y*s),Math.ceil(w*s),Math.ceil(h*s));}
+  function finder(x,y){
+    rect(x,y,7,7,"#000");rect(x+1,y+1,5,5,"#fff");rect(x+2,y+2,3,3,"#000");
+  }
+  finder(0,0);finder(26,0);finder(0,26);
+  let seed=1234567;
+  function rnd(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
+  for(let y=0;y<n;y++){
+    for(let x=0;x<n;x++){
+      if((x<8&&y<8)||(x>24&&y<8)||(x<8&&y>24)) continue;
+      let v=(rnd()>.57)||((x*y+x+y)%7===0)||((x+2*y)%11===0);
+      if(v) rect(x,y,1,1,"#000");
+    }
+  }
+  for(let i=8;i<25;i+=2){rect(i,6,1,1,"#000");rect(6,i,1,1,"#000");}
+  finder(25,25);
+  rect(14,13,1,1,"#fff");rect(13,14,1,1,"#fff");rect(15,14,1,1,"#fff");
+  ctx.beginPath();ctx.arc(89,89,16,0,Math.PI*2);ctx.fillStyle="#fff";ctx.fill();
+  ctx.lineWidth=4;ctx.strokeStyle="#111";ctx.beginPath();ctx.arc(86,86,13,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(96,96);ctx.lineTo(111,106);ctx.stroke();
+  ctx.beginPath();ctx.arc(108,106,4,0,Math.PI*2);ctx.stroke();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0" />
+<title>会员</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#000;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:#fff}
+  .page{position:relative;width:2050px;height:968px;background:#000;overflow:hidden}
+  .sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#1b1c20;color:#fff}
+  .logo{position:absolute;left:32px;top:40px;font-size:37px;line-height:1;font-weight:900;letter-spacing:-5px;transform:skewX(-9deg)}
+  .nav{position:absolute;left:0;top:125px;width:86px}
+  .nav-item{position:relative;width:86px;height:52px;margin:0 0 2px 0;display:flex;align-items:center;justify-content:center;color:#fff;opacity:.98}
+  .nav-item svg{width:25px;height:25px;stroke:#fff;stroke-width:2.35;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .nav .sep{width:44px;height:1px;background:#5a5b60;margin:22px auto 26px auto}
+  .nav-item.active{height:47px;margin-top:8px}
+  .active .active-box{position:absolute;width:47px;height:47px;border-radius:6px;background:#fff;left:20px;top:0}
+  .active svg{position:relative;z-index:1;stroke:#050505;width:27px;height:27px;stroke-width:2.6}
+  .points{position:absolute;left:18px;bottom:129px;color:#e5e5e5;font-size:21px;font-weight:800;letter-spacing:-2px;text-shadow:1px 0 #fff}
+  .points small{font-size:12px;margin-left:2px;font-weight:400;letter-spacing:0}
+  .avatar{position:absolute;left:23px;bottom:24px;width:43px;height:43px;border-radius:50%;border:3px solid #ff9818;background:
+    radial-gradient(circle at 55% 40%,#d6a05d 0 12%,transparent 13%),
+    radial-gradient(circle at 46% 38%,#111 0 22%,transparent 23%),
+    linear-gradient(135deg,#1d2733,#86572f 55%,#151515);box-shadow:0 0 0 1px #c56d00}
+  .avatar:after{content:"";position:absolute;right:-8px;bottom:0;width:17px;height:17px;background:linear-gradient(135deg,#ffd55e,#f68b08);clip-path:polygon(50% 0,100% 27%,100% 75%,50% 100%,0 75%,0 27%);border:1px solid #ffcc5c}
+
+  .main{position:absolute;left:86px;top:0;width:1964px;height:968px;border-top-left-radius:28px;background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0,rgba(255,255,255,.045) 1px,transparent 1px,transparent 7px),
+    #020202;overflow:hidden}
+  .title{position:absolute;left:25px;top:37px;font-size:28px;font-weight:900;letter-spacing:1px;text-shadow:0 1px 0 #777}
+  .invite{position:absolute;right:91px;top:43px;display:flex;align-items:center;gap:7px;font-size:15px;font-weight:600;color:#fff}
+  .ticket{width:25px;height:18px;border-radius:3px;background:linear-gradient(135deg,#ffe900,#ffa900);transform:rotate(-12deg);position:relative;box-shadow:0 1px 0 rgba(0,0,0,.4)}
+  .ticket:before{content:"INVITE";position:absolute;left:1px;top:-8px;color:#2bff22;font-size:7px;font-weight:900;transform:rotate(-2deg)}
+  .ticket:after{content:"";position:absolute;left:7px;top:4px;width:10px;height:10px;border-radius:50%;background:#ff6b00;box-shadow:8px 0 0 #3f78ff}
+
+  .hero{position:absolute;left:551px;top:95px;width:1025px;height:251px;border-radius:25px;background:
+    radial-gradient(circle at 79% 58%,rgba(86,62,220,.93) 0,rgba(68,49,178,.82) 18%,rgba(39,35,70,.35) 37%,transparent 55%),
+    linear-gradient(100deg,#1b1c21 0%,#1a1b20 50%,#27215e 100%);overflow:hidden}
+  .hero .valid{position:absolute;left:56px;top:47px;color:#cfcfd3;font-size:14px;font-weight:600}
+  .hero h1{position:absolute;left:56px;top:73px;margin:0;font-size:39px;line-height:1.15;font-weight:900;letter-spacing:1px}
+  .hero p{position:absolute;left:56px;top:137px;width:560px;margin:0;color:#e8e8ed;font-size:16px;line-height:24px;font-weight:600}
+  .hero .btn{position:absolute;left:56px;top:199px;width:204px;height:39px;border-radius:20px;background:linear-gradient(90deg,#ff8a17,#ffd161);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;box-shadow:0 3px 0 rgba(68,48,158,.85)}
+  .cube{position:absolute;transform-style:preserve-3d;opacity:.9;filter:drop-shadow(0 6px 12px rgba(62,54,196,.35))}
+  .cube.big{right:137px;top:86px;width:157px;height:157px;background:
+    linear-gradient(135deg,rgba(73,222,220,.35),rgba(183,108,255,.55)),
+    linear-gradient(45deg,transparent 15%,rgba(255,255,255,.28) 18%,transparent 28%),
+    linear-gradient(160deg,rgba(92,134,255,.45),rgba(200,98,233,.58));clip-path:polygon(48% 0,91% 25%,83% 78%,43% 100%,0 70%,10% 26%)}
+  .cube.big:before{content:"";position:absolute;inset:18px;background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(71,199,221,.15));clip-path:polygon(48% 0,91% 25%,83% 78%,43% 100%,0 70%,10% 26%);border:2px solid rgba(171,154,255,.2)}
+  .cube.mid{right:276px;top:47px;width:67px;height:67px;background:linear-gradient(135deg,rgba(104,226,221,.4),rgba(172,110,246,.7));clip-path:polygon(45% 0,91% 28%,84% 75%,46% 100%,7% 80%,0 30%)}
+  .cube.small{right:151px;top:51px;width:36px;height:36px;background:linear-gradient(135deg,rgba(113,223,225,.35),rgba(151,102,255,.7));clip-path:polygon(45% 0,91% 28%,84% 75%,46% 100%,7% 80%,0 30%)}
+
+  .cards{position:absolute;left:551px;top:395px;height:520px}
+  .card{position:absolute;top:0;background:#1b1c20;border-radius:10px}
+  .basic{left:0;width:372px;height:520px}
+  .pro{left:405px;width:620px;height:520px;border:2px solid #ff950e}
+  .card-head{position:absolute;left:25px;top:31px;height:55px;display:flex;align-items:center}
+  .plan-icon{width:52px;height:52px;border-radius:11px;background:#efefff;margin-right:13px;position:relative;overflow:hidden}
+  .plan-icon.basic-i:before{content:"";position:absolute;left:18px;top:14px;width:28px;height:28px;border-radius:50%;background:#aca8ff}
+  .plan-icon.basic-i:after{content:"";position:absolute;left:14px;top:14px;width:18px;height:28px;border-radius:18px 0 0 18px;background:#514bff}
+  .plan-icon.pro-i:before{content:"";position:absolute;left:17px;top:14px;width:15px;height:28px;background:#4c41ff}
+  .plan-icon.pro-i:after{content:"";position:absolute;left:33px;top:14px;width:17px;height:28px;background:#bbb7ff}
+  .plan-title{font-size:22px;font-weight:900;line-height:25px}
+  .plan-sub{font-size:17px;color:#d5d5da;font-weight:500;margin-top:3px}
+  .badge{position:absolute;right:27px;top:30px;width:110px;height:29px;border-radius:15px;background:linear-gradient(90deg,#ffd76b,#ffc04c);color:#222;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+
+  ul{list-style:none;margin:0;padding:0}
+  .features{position:absolute;left:25px;top:100px}
+  .features li{height:32px;display:flex;align-items:center;font-size:17px;font-weight:600;color:#f7f7fb;white-space:nowrap}
+  .check{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-right:9px;color:#fff;font-size:15px;line-height:20px;font-weight:900}
+  .blue{background:#504bff}
+  .orange{background:#ff8916}
+  .pro .features.left{left:25px;top:100px;width:245px}
+  .pro .features.right{left:394px;top:100px;width:260px}
+  .features.right li{font-size:17px}
+  .features.right li.dim{color:#888}
+  .features.right .dim .check{background:#ff8916}
+  .bottom-shadow{position:absolute;left:551px;top:960px;width:1025px;height:16px;background:#1b1c20;border-radius:10px 10px 0 0;opacity:.65}
+  .scrollbar{position:absolute;right:0;top:78px;width:7px;height:890px;background:#1a1b1f;border-radius:5px}
+  .scrollbar:before{content:"";position:absolute;right:0;top:0;width:7px;height:5px;background:#000;border-radius:5px}
+  .scrollbar:after{content:"";position:absolute;right:0;bottom:0;width:7px;height:5px;background:#000;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M7 5h7l3 3v10H8V8H5V5h2z"/><path d="M8 12H5v6h11"/><path d="M10 8h4"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 15l5-5"/><path d="M9 10l3 3"/><path d="M12 13l-5 5a3 3 0 0 1-4-4l5-5"/><path d="M14 4l2 2"/><path d="M20 8l-8 8"/><path d="M16 4l4 4"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 5v16"/><path d="M10 5v16"/><path d="M14 5l6 16"/><path d="M17 5l3 8"/></svg></div>
+      <div class="sep"></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-4 8-8 9-4-1-8-4-8-9V7l8-4z"/><path d="M12 12h5"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3c3 4-2 5 2 9 1 1 2 0 3-1 1 5-2 9-7 9-4 0-7-3-7-7 0-2 1-4 3-6 0 3 2 4 4 4-2-4 2-5 2-8z"/></svg></div>
+      <div class="nav-item active"><div class="active-box"></div><svg viewBox="0 0 24 24"><path d="M12 21L3 8l4-5h10l4 5-9 13z"/><path d="M3 8h18"/><path d="M7 3l5 18"/><path d="M17 3l-5 18"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 6h16v16H4z"/><path d="M4 10h16"/><path d="M8 6V4h8v2"/><circle cx="17" cy="16" r="2"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21v-2c0-3 3-5 7-5"/><path d="M16 11c2 0 4 2 4 4v1"/><path d="M16 7a3 3 0 0 1 0 6"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a8 8 0 0 0 .1-2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1L15 5h-4l-.4 3a8 8 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a8 8 0 0 0 .1 2l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 3h4l.4-3a8 8 0 0 0 1.7-1l2.4 1 2-3.5-2.2-1.5z"/></svg></div>
+    </div>
+    <div class="points">1000<small>∞</small></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">会员</div>
+    <div class="invite"><div class="ticket"></div><span>邀请有礼</span></div>
+
+    <section class="hero">
+      <div class="valid">有效期至 2026-06-06 19:48</div>
+      <h1>剧本专家</h1>
+      <p>您当前已是会员，享受剧点充值 6.7折优惠，还可拥有 短剧拉片 等强大的AI剧本创作功能，更多福利请参阅下方会员权益</p>
+      <div class="btn">续费会员</div>
+      <div class="cube mid"></div>
+      <div class="cube small"></div>
+      <div class="cube big"></div>
+    </section>
+
+    <section class="cards">
+      <div class="card basic">
+        <div class="card-head">
+          <div class="plan-icon basic-i"></div>
+          <div>
+            <div class="plan-title">剧本玩家</div>
+            <div class="plan-sub">普通用户</div>
+          </div>
+        </div>
+        <ul class="features">
+          <li><span class="check blue">✓</span>新建剧本功能</li>
+          <li><span class="check blue">✓</span>剧本专属创作范式</li>
+          <li><span class="check blue">✓</span>在线剧本文件管理</li>
+          <li><span class="check blue">✓</span>安全无限制云存储</li>
+          <li><span class="check blue">✓</span>支持分块导出Word</li>
+          <li><span class="check blue">✓</span>AI剧名生成</li>
+          <li><span class="check blue">✓</span>AI故事设定</li>
+          <li><span class="check blue">✓</span>AI正文初稿</li>
+          <li><span class="check blue">✓</span>AI单集润色</li>
+          <li><span class="check blue">✓</span>AI剧本改写功能</li>
+          <li><span class="check blue">✓</span>AI小说改编剧本</li>
+          <li><span class="check blue">✓</span>AI解析人物小传</li>
+        </ul>
+      </div>
+
+      <div class="card pro">
+        <div class="card-head">
+          <div class="plan-icon pro-i"></div>
+          <div>
+            <div class="plan-title">剧本专家</div>
+            <div class="plan-sub">会员用户</div>
+          </div>
+        </div>
+        <div class="badge">当前权益</div>
+        <ul class="features left">
+          <li><span class="check blue">✓</span>新建剧本功能</li>
+          <li><span class="check blue">✓</span>剧本专属创作范式</li>
+          <li><span class="check blue">✓</span>在线剧本文件管理</li>
+          <li><span class="check blue">✓</span>安全无限制云存储</li>
+          <li><span class="check blue">✓</span>支持分块导出Word</li>
+          <li><span class="check blue">✓</span>AI剧名生成</li>
+          <li><span class="check blue">✓</span>AI故事设定</li>
+          <li><span class="check blue">✓</span>AI正文初稿</li>
+          <li><span class="check blue">✓</span>AI单集润色</li>
+          <li><span class="check blue">✓</span>AI剧本改写功能</li>
+          <li><span class="check blue">✓</span>AI小说改编剧本</li>
+          <li><span class="check blue">✓</span>AI解析人物小传</li>
+        </ul>
+        <ul class="features right">
+          <li><span class="check orange">✓</span>短剧拉片功能</li>
+          <li><span class="check orange">✓</span>剧点充值6.7折优惠</li>
+          <li><span class="check orange">✓</span>每30天领取500剧点</li>
+          <li><span class="check orange">✓</span>每30天免费1次拉片</li>
+          <li><span class="check orange">✓</span>剧本投稿/签约编剧</li>
+          <li><span class="check orange">✓</span>集纲/正文批注服务</li>
+          <li><span class="check orange">✓</span>定制拉片功能</li>
+          <li><span class="check orange">✓</span>灵感策划功能</li>
+          <li><span class="check orange">✓</span>爆款短剧对标策划</li>
+          <li><span class="check orange">✓</span>剧情脉络功能（即将上线）</li>
+          <li><span class="check orange">✓</span>人物关系图谱（即将上线）</li>
+          <li><span class="check orange">✓</span>金手指情节辅助（即将上线）</li>
+          <li class="dim"><span class="check orange">✓</span>更多会员专属功能尽请期待</li>
+        </ul>
+      </div>
+    </section>
+    <div class="bottom-shadow"></div>
+    <div class="scrollbar"></div>
+  </main>
+</div>
+</body>
+</html>

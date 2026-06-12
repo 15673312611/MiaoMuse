@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>社区</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#050505;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#e8e8e8}
+#app{position:relative;width:2050px;height:968px;background:#050505}
+#app:before{content:"";position:absolute;left:86px;top:0;right:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0,rgba(255,255,255,.035) 1px,transparent 1px,transparent 6px);opacity:.72}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#0b0b0d;border-right:1px solid rgba(255,255,255,.035)}
+.logo{position:absolute;left:31px;top:42px;width:24px;height:18px;border-top:6px solid #505053;border-bottom:6px solid #505053;border-radius:8px;transform:skewX(-18deg);opacity:.95}
+.side-icons{position:absolute;left:0;top:124px;width:86px;display:flex;flex-direction:column;align-items:center;gap:25px}
+.ico{width:22px;height:22px;color:#5b5d61;opacity:.9}
+.divider{width:48px;height:1px;background:#242428;margin:4px 0 8px}
+.active{width:46px;height:46px;border-radius:6px;background:#858585;display:flex;align-items:center;justify-content:center;color:#0f0f10;margin:0}
+.bottom{position:absolute;left:0;bottom:20px;width:86px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.coin{font-weight:800;color:#727277;font-size:19px;letter-spacing:-1px}
+.avatar{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 50% 34%,#7b5432 0 12px,#1a1513 13px 29px,#0b0b0b 30px);border:2px solid #7b5a18;position:relative}
+.avatar:after{content:"";position:absolute;right:-7px;bottom:2px;width:15px;height:15px;background:#7d651f;border-radius:50%}
+.content{position:absolute;left:109px;top:0;width:1900px;height:968px}
+h1{margin:36px 0 0 0;font-size:26px;font-weight:700;color:#d8d9db;letter-spacing:1px}
+.grid-wrap{position:absolute;left:441px;top:64px;width:1023px;height:556px;background:rgba(14,14,16,.88);border-radius:0 0 20px 20px;padding:0 32px 32px}
+.card-grid{display:grid;grid-template-columns:repeat(3,307px);gap:30px 20px}
+.video-card{width:307px;height:211px;border-radius:6px;overflow:hidden;background:#151719;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,.02)}
+.video-card .thumb{position:absolute;inset:0;background:
+linear-gradient(to bottom,rgba(7,9,12,.1),rgba(9,9,10,.82)),
+radial-gradient(circle at 68% 18%,rgba(235,238,240,.38) 0 37px,rgba(235,238,240,.17) 38px 74px,transparent 75px),
+radial-gradient(circle at 38% 32%,rgba(185,63,42,.45) 0 30px,transparent 31px),
+linear-gradient(160deg,#0f2832 0%,#273941 34%,#e1d3bf 35%,#d6bfa4 50%,#363a3d 51%,#17191c 100%)}
+.video-card .title{position:absolute;left:23px;right:16px;top:78px;text-align:center;color:#0d0d0f;font-size:24px;font-weight:800;line-height:1.35;text-shadow:0 1px rgba(255,255,255,.15)}
+.video-card.smalltop{height:107px;margin-top:-64px}
+.video-card.smalltop .title{display:none}
+.time{position:absolute;left:13px;bottom:17px;color:#d8dbe0;font-size:16px;display:flex;align-items:center;gap:6px;opacity:.9}
+.play{position:absolute;right:13px;bottom:15px;width:16px;height:16px;border:1.5px solid #ccd0d7;border-left-color:transparent;border-radius:3px;clip-path:polygon(18% 8%,88% 50%,18% 92%);opacity:.8}
+.clock{width:14px;height:14px;border:1.5px solid currentColor;border-radius:50%;display:inline-block;position:relative}
+.clock:before{content:"";position:absolute;left:6px;top:2px;width:1px;height:5px;background:currentColor}
+.clock:after{content:"";position:absolute;left:6px;top:6px;width:4px;height:1px;background:currentColor;transform:rotate(35deg);transform-origin:left center}
+.info-row{position:absolute;left:441px;top:652px;width:1023px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.info-card{height:216px;background:rgba(13,13,14,.94);border-radius:10px;padding:31px 32px;color:#e6e6e6}
+.info-card h2{margin:0 0 8px;font-size:22px;line-height:1;font-weight:800}
+.info-card p{margin:0;width:260px;color:#a4a4a7;font-size:16px;line-height:1.45}
+.info-card button{margin-top:41px;background:#1d1d1f;border:0;border-radius:5px;color:#d4d4d5;font-size:15px;padding:12px 17px}
+.scrollbar{position:absolute;right:10px;top:66px;width:5px;height:887px;background:rgba(255,255,255,.04);border-radius:4px}
+.scrollbar:after{content:"";position:absolute;right:0;bottom:0;width:5px;height:228px;background:#303033;border-radius:4px}
+.tri-top,.tri-bottom{position:absolute;right:8px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.tri-top{top:67px;border-bottom:6px solid #2b2b2d}
+.tri-bottom{bottom:2px;border-top:6px solid #2b2b2d}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.70);z-index:5}
+.modal{position:absolute;z-index:10;left:847px;top:284px;width:353px;height:399px;background:#1b1c20;border-radius:4px;display:flex;flex-direction:column;align-items:center}
+.qrbox{margin-top:44px;width:210px;height:210px;border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#qr{width:200px;height:200px;display:block}
+.scan{margin-top:10px;font-size:12px;color:#8d8f95;line-height:1}
+.work{margin-top:7px;font-size:16px;color:#fff;font-weight:400}
+.done{margin-top:21px;width:108px;height:40px;border:0;border-radius:5px;background:#4a4a4d;color:#fff;font-size:16px}
+svg{display:block}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="sidebar">
+    <div class="logo"></div>
+    <div class="side-icons">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h10v14H6z"/><path d="M3 8h4v12h13v-4"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l8-8M14 6l4-4 2 2-4 4"/><path d="M3 7l5-5 4 4-5 5z"/><path d="M13 13l7 7"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 20V5h4l5 15"/><path d="M12 5h4l3 15"/></svg>
+      <div class="divider"></div>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v6c0 5-4 8-8 9-4-1-8-4-8-9V7z"/><circle cx="12" cy="11" r="3"/><path d="M14.5 13.5l3 3"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3c2 4-3 5-3 10a5 5 0 1 0 9-3c0 4-6 2-6-7z"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l5-6h8l5 6-9 12z"/><path d="M3 9h18M8 3l4 18 4-18"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h15v13H4z"/><path d="M7 3h12v5"/><circle cx="17" cy="13" r="2"/></svg>
+      <div class="active">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.35.15.7.35 1 .6.3.3.6.7.6 1.1V11a2 2 0 1 1 0 4h-.08A1.7 1.7 0 0 0 19.4 15z"/></svg>
+    </div>
+    <div class="bottom"><div class="coin">1000⌾</div><div class="avatar"></div></div>
+  </div>
+
+  <main class="content">
+    <h1>社区</h1>
+    <section class="grid-wrap">
+      <div class="card-grid">
+        <div class="video-card smalltop"><div class="thumb"></div><div class="time"><span class="clock"></span>54分31秒</div><div class="play"></div></div>
+        <div class="video-card smalltop"><div class="thumb"></div><div class="time"><span class="clock"></span>69分44秒</div><div class="play"></div></div>
+        <div class="video-card smalltop"><div class="thumb"></div><div class="time"><span class="clock"></span>12分06秒</div><div class="play"></div></div>
+        <div class="video-card"><div class="thumb"></div><div class="title">我想试试！靠梦想，能不能站在互联网上达成共识！从行业生态开跑到春秋大战</div><div class="time"><span class="clock"></span>34分19秒</div><div class="play"></div></div>
+        <div class="video-card"><div class="thumb"></div><div class="title">演示：正确的使用指令设计剧本</div><div class="time"><span class="clock"></span>18分28秒</div><div class="play"></div></div>
+        <div class="video-card"><div class="thumb"></div><div class="title">学习中的3个重要因素：<br>氛围、心态、教材与老师</div><div class="time"><span class="clock"></span>4分09秒</div><div class="play"></div></div>
+        <div class="video-card"><div class="thumb"></div><div class="title" style="font-size:28px;text-align:left;top:82px">如何理解学习自主性</div><div class="time"><span class="clock"></span>4分09秒</div><div class="play"></div></div>
+        <div class="video-card"><div class="thumb"></div><div class="title">如何建立一个剧本项目</div><div class="time"><span class="clock"></span>12分01秒</div><div class="play"></div></div>
+        <div class="video-card"><div class="thumb"></div><div class="title">我是如何用“好奇心指引”<br>扩展知识储备的</div><div class="time"><span class="clock"></span>17分19秒</div><div class="play"></div></div>
+      </div>
+    </section>
+    <section class="info-row">
+      <div class="info-card"><h2>参加培训</h2><p>我们的教学体系清晰分层，满足不同阶段学员的需求。具体信息请添加老师咨询</p><button>咨询老师</button></div>
+      <div class="info-card"><h2>剧本投稿</h2><p>直接靠谱平台方，具体信息请添加责编咨询</p><button>咨询责编</button></div>
+      <div class="info-card"><h2>官方微信群</h2><p>在群里您的任何咨询都会有专人解答，我们也会不定期开设社群专属福利和活动，扫码立刻加入</p><button>立刻进群</button></div>
+    </section>
+  </main>
+  <div class="scrollbar"></div><div class="tri-top"></div><div class="tri-bottom"></div>
+  <div class="dim"></div>
+  <div class="modal">
+    <div class="qrbox"><canvas id="qr" width="200" height="200"></canvas></div>
+    <div class="scan">扫码添加责编</div>
+    <div class="work">工作日：10:30-19:30</div>
+    <button class="done">已扫码添加</button>
+  </div>
+</div>
+<script>
+(function(){
+  const c=document.getElementById('qr'),ctx=c.getContext('2d'),n=37,s=5,off=7;
+  ctx.fillStyle="#fff";ctx.fillRect(0,0,200,200);
+  function cell(x,y,v){ctx.fillStyle=v?"#000":"#fff";ctx.fillRect(off+x*s,off+y*s,s,s)}
+  function finder(x,y){
+    for(let j=0;j<7;j++)for(let i=0;i<7;i++){
+      let b=i==0||j==0||i==6||j==6||(i>=2&&i<=4&&j>=2&&j<=4);
+      cell(x+i,y+j,b);
+    }
+  }
+  let seed=1234567;
+  function rnd(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff}
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    let reserved=(x<9&&y<9)||(x>27&&y<9)||(x<9&&y>27)||(x>15&&x<22&&y>15&&y<22);
+    if(!reserved){
+      let v=(rnd()>.56)||((x*y+x+y)%7==0)||((x+2*y)%11==0);
+      cell(x,y,v);
+    }
+  }
+  finder(0,0);finder(30,0);finder(0,30);
+  for(let i=9;i<28;i++){cell(i,6,i%2==0);cell(6,i,i%2==0)}
+  finder(27,27);
+  ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(100,100,22,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle="#000";ctx.lineWidth=5;ctx.lineCap="round";
+  ctx.beginPath();ctx.arc(98,98,15,.15,Math.PI*1.65);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(110,111);ctx.lineTo(121,120);ctx.stroke();
+  ctx.beginPath();ctx.arc(119,119,5,0,Math.PI*2);ctx.stroke();
+})();
+</script>
+</body>
+</html>

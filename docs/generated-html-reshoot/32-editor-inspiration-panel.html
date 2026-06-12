@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0">
+<title>灵感策划</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    padding:0;
+    width:2050px;
+    height:968px;
+    overflow:hidden;
+    background:#000;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+  }
+  .page{
+    position:relative;
+    width:2050px;
+    height:968px;
+    color:#fff;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.035) 0px,
+        rgba(255,255,255,0.035) 1px,
+        transparent 1px,
+        transparent 6px
+      ),
+      #000;
+  }
+  .logo{
+    position:absolute;
+    left:78px;
+    top:39px;
+    font-size:26px;
+    line-height:32px;
+    font-weight:800;
+    letter-spacing:-1px;
+    color:#f4f8ff;
+    text-shadow:0 0 10px rgba(105,150,255,.28);
+  }
+  .top-actions{
+    position:absolute;
+    right:80px;
+    top:45px;
+    display:flex;
+    align-items:center;
+    gap:31px;
+    font-size:15px;
+    color:#d8d8df;
+    white-space:nowrap;
+  }
+  .hot{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#cfd0d4;
+  }
+  .hot svg{
+    width:19px;
+    height:22px;
+    display:block;
+    filter:drop-shadow(0 0 2px rgba(255,0,35,.35));
+  }
+  .skip{
+    color:#f1f1f3;
+    font-weight:500;
+  }
+  .center{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+  }
+  .title{
+    position:absolute;
+    top:329px;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:33px;
+    line-height:42px;
+    font-weight:800;
+    letter-spacing:-1.2px;
+    background:linear-gradient(90deg,#6f55e8 0%,#8c4fe0 43%,#d34f88 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    position:absolute;
+    top:389px;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:24px;
+    line-height:30px;
+    font-weight:700;
+    color:#c6cbd4;
+    letter-spacing:-.8px;
+    text-shadow:0 1px 0 rgba(255,255,255,.06);
+  }
+  .panel{
+    position:absolute;
+    left:599px;
+    top:451px;
+    width:836px;
+    height:150px;
+    border-radius:25px;
+    background:#191a1f;
+    border:1.5px solid #858b98;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.03),
+      0 0 0 1px rgba(255,255,255,.015);
+    overflow:hidden;
+  }
+  .placeholder{
+    position:absolute;
+    left:19px;
+    top:19px;
+    font-size:16px;
+    line-height:20px;
+    font-weight:400;
+    color:#77849d;
+    letter-spacing:-.15px;
+  }
+  .options{
+    position:absolute;
+    left:20px;
+    bottom:19px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    color:#eef1f6;
+    font-size:13px;
+    line-height:18px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .option{
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .option svg{
+    width:13px;
+    height:13px;
+    stroke:#eef1f6;
+    fill:none;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    opacity:.96;
+  }
+  .option .icon-fill{
+    fill:#eef1f6;
+    stroke:none;
+  }
+  .start{
+    position:absolute;
+    right:10px;
+    bottom:8px;
+    height:32px;
+    min-width:116px;
+    padding:0 13px;
+    border:0;
+    border-radius:18px;
+    color:rgba(255,255,255,.46);
+    font-size:13px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    background:linear-gradient(90deg,rgba(104,77,190,.82),rgba(181,76,119,.76));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .start svg{
+    width:15px;
+    height:15px;
+    stroke:rgba(255,255,255,.45);
+    fill:none;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="logo">灵感策划</div>
+
+    <div class="top-actions">
+      <div class="hot">
+        <svg viewBox="0 0 24 28" aria-hidden="true">
+          <path d="M12.8 26.1c-5.3 0-9.5-3.7-9.5-8.9 0-3.7 2.1-6.3 4.3-8.6.7 2.6 2 4.1 3.8 4.8-.9-4 .4-7.7 3.3-10.9.4 4.6 6 7.3 6 14.2 0 5.6-3.6 9.4-7.9 9.4z" fill="none" stroke="#e60024" stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="M12.3 24.4c-2.6 0-4.7-1.8-4.7-4.5 0-2.1 1.3-3.7 2.8-5.3.3 2.2 1.3 3.4 2.8 4- .4-2.7.5-5 2.2-6.8.5 3.2 3.5 5 3.5 8.3 0 2.7-2.3 4.3-6.6 4.3z" fill="#e60024" opacity=".55"/>
+        </svg>
+        <span>爆款榜单</span>
+      </div>
+      <div class="skip">跳过</div>
+    </div>
+
+    <div class="center">
+      <div class="title">AI灵感策划</div>
+      <div class="subtitle">基于您对剧本的初步设定策划多个故事题材方向</div>
+
+      <div class="panel">
+        <div class="placeholder">选择下方的题材设定或输入您的想法，AI将自动生成三种剧本策划方案</div>
+
+        <div class="options">
+          <div class="option">
+            <svg viewBox="0 0 16 16">
+              <circle cx="5.2" cy="4.5" r="1.9"></circle>
+              <path d="M2.2 13.1c.2-2.3 1.3-3.8 3-3.8s2.8 1.5 3 3.8"></path>
+              <path d="M10.4 5.2h3.2M12 3.6v3.2"></path>
+            </svg>
+            <span>目标受众</span>
+          </div>
+          <div class="option">
+            <svg viewBox="0 0 16 16">
+              <rect x="2" y="4" width="12" height="8" rx="1.2"></rect>
+              <path d="M4.5 6.5h7M4.5 9.5h4"></path>
+            </svg>
+            <span>题材类型</span>
+          </div>
+          <div class="option">
+            <svg viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="5.5"></circle>
+              <path d="M8 2.5v3M8 10.5v3M2.5 8h3M10.5 8h3"></path>
+            </svg>
+            <span>核心设定</span>
+          </div>
+          <div class="option">
+            <svg viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="5.5"></circle>
+              <path d="M8 2.5c1.2 1.4 1.8 3.2 1.8 5.5S9.2 12.1 8 13.5M8 2.5C6.8 3.9 6.2 5.7 6.2 8s.6 4.1 1.8 5.5M3 8h10"></path>
+            </svg>
+            <span>风格元素</span>
+          </div>
+        </div>
+
+        <button class="start">
+          <svg viewBox="0 0 16 16">
+            <path d="M14 2L7.1 9"></path>
+            <path d="M14 2L9.5 14 7.1 9 2 6.7 14 2z"></path>
+          </svg>
+          <span>开始策划</span>
+          <span>50</span>
+          <span style="font-size:12px;opacity:.8;">◉</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

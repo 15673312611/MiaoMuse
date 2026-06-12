@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1605, height=1125, initial-scale=1.0">
+<title>剧本改写</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:1605px;height:1125px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+  .page{position:relative;width:1605px;height:1125px;background:#000}
+  .sidebar{position:absolute;left:0;top:0;width:108px;height:1125px;background:#1b1c20}
+  .logo{position:absolute;left:40px;top:49px;width:30px;height:28px;color:#f7f7f8;font-weight:900;font-size:43px;line-height:24px;letter-spacing:-6px;transform:skewX(-10deg)}
+  .nav{position:absolute;left:0;top:151px;width:108px}
+  .nav-item{position:relative;margin:0 auto 20px;width:58px;height:58px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff}
+  .nav-item.active{background:#f7f7f8;color:#050505}
+  .nav-item svg{width:28px;height:28px;stroke:currentColor;stroke-width:2.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .nav-item.small svg{width:27px;height:27px}
+  .divider{position:absolute;left:25px;top:357px;width:58px;height:1px;background:#5e5e61}
+  .nav2{position:absolute;left:0;top:397px;width:108px}
+  .nav2 .nav-item{margin-bottom:17px}
+  .credits{position:absolute;left:26px;bottom:111px;color:#e8e8ea;font-size:26px;font-weight:800;letter-spacing:-2px}
+  .credits .coin{font-size:12px;margin-left:2px;vertical-align:middle;color:#cfcfd2}
+  .avatar{position:absolute;left:29px;bottom:23px;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 55% 35%,#ffb232 0 15%,#6c3a18 16% 33%,#151923 34% 100%);border:2px solid #37383d;overflow:hidden}
+  .avatar:before{content:"";position:absolute;left:10px;top:15px;width:24px;height:28px;background:linear-gradient(135deg,#1a1a1d,#c98b35);border-radius:12px 12px 8px 8px;transform:rotate(-18deg)}
+  .avatar:after{content:"";position:absolute;left:22px;top:7px;width:16px;height:16px;background:#d69538;border-radius:50%;box-shadow:-7px 8px 0 #1b1b21}
+  .main{position:absolute;left:108px;top:0;width:1497px;height:1125px;border-top-left-radius:31px;border-bottom-left-radius:31px;overflow:hidden;background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0px,rgba(255,255,255,.045) 1px,transparent 1px,transparent 7px),
+    #000}
+  .title{position:absolute;left:29px;top:45px;font-size:32px;font-weight:800;letter-spacing:.5px;line-height:38px;text-shadow:0 1px 0 rgba(255,255,255,.15)}
+  .search{position:absolute;left:522px;top:38px;width:449px;height:50px;background:#1d1e22;border-radius:4px;color:#8e939c;display:flex;align-items:center}
+  .search span{font-size:19px;margin-left:15px;color:#8b9099;font-weight:400}
+  .search .searchbox{position:absolute;right:10px;top:11px;width:30px;height:30px;border:1px solid #777a82;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .search svg{width:17px;height:17px;stroke:#868a92;stroke-width:2;fill:none}
+  .tutorial{position:absolute;right:242px;top:53px;font-size:16px;font-weight:700;color:#fff;line-height:20px}
+  .import{position:absolute;right:62px;top:36px;width:140px;height:50px;border-radius:6px;background:#1f2024;display:flex;align-items:center;justify-content:center;gap:12px;color:#fff;font-size:16px;font-weight:700}
+  .import svg{width:21px;height:21px;stroke:#fff;stroke-width:2.3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .sort{position:absolute;left:137px;top:105px;height:24px;display:flex;align-items:center;gap:8px;color:#fff;font-size:18px;font-weight:700}
+  .sort .hamb{width:16px;height:12px;position:relative}
+  .sort .hamb:before,.sort .hamb:after,.sort .hamb i{content:"";position:absolute;left:0;width:15px;height:1px;background:#fff}
+  .sort .hamb:before{top:0}.sort .hamb i{top:5px}.sort .hamb:after{top:10px}
+  .card{position:absolute;left:127px;top:175px;width:410px;height:112px}
+  .thumb{position:absolute;left:0;top:0;width:150px;height:112px;border-radius:13px;overflow:hidden;background:
+    radial-gradient(circle at 78% 25%,rgba(255,248,147,.95) 0 27%,rgba(255,248,147,0) 28%),
+    radial-gradient(circle at 74% 66%,#fffef8 0 28%,rgba(255,255,255,0) 39%),
+    radial-gradient(circle at 31% 25%,#ff6f91 0 25%,rgba(255,111,145,0) 44%),
+    radial-gradient(circle at 45% 73%,#ff996e 0 15%,rgba(255,153,110,0) 39%),
+    linear-gradient(135deg,#cf3e78 0%,#f8897f 45%,#fff4a8 100%)}
+  .thumb:before{content:"";position:absolute;left:37px;top:47px;width:43px;height:43px;border:1px solid rgba(255,255,255,.48);background:rgba(255,255,255,.08)}
+  .thumb:after{content:"";position:absolute;left:58px;top:24px;width:45px;height:45px;background:rgba(255,255,255,.18)}
+  .thumb .sq{position:absolute;left:49px;top:58px;width:24px;height:24px;border:1px solid rgba(255,255,255,.55)}
+  .badge{position:absolute;left:0;top:0;width:48px;height:34px;border-radius:13px 0 13px 0;background:#cf437b;color:#fff;font-size:14px;font-weight:700;line-height:34px;text-align:center}
+  .card-title{position:absolute;left:169px;top:13px;font-size:22px;font-weight:800;line-height:28px;text-shadow:1px 1px 0 #000}
+  .card-sub{position:absolute;left:169px;top:52px;font-size:14px;color:#a8acb2;line-height:20px}
+  .bot{position:absolute;right:59px;bottom:254px;width:66px;height:63px}
+  .bot .glow{position:absolute;left:3px;top:17px;width:58px;height:43px;border-radius:22px;background:#6038ff;filter:blur(8px);opacity:.85}
+  .bot .head{position:absolute;left:7px;top:18px;width:52px;height:38px;border-radius:20px;background:#623cf0;border:3px solid #9b7dff;box-shadow:0 0 0 2px rgba(74,39,209,.6)}
+  .bot .face{position:absolute;left:15px;top:25px;width:35px;height:18px;border-radius:8px;background:#fff}
+  .bot .eye{position:absolute;top:31px;width:6px;height:6px;border-radius:50%;background:#6544e8}
+  .bot .eye.l{left:24px}.bot .eye.r{left:39px}
+  .bot .mouth{position:absolute;left:35px;top:48px;width:13px;height:4px;border-radius:4px;background:#fff}
+  .bot .ant{position:absolute;left:34px;top:1px;width:3px;height:19px;background:#9d7cff}
+  .bot .dot{position:absolute;left:29px;top:0;width:11px;height:11px;border-radius:50%;background:#9d7cff}
+  .bot .tail{position:absolute;right:4px;top:42px;width:15px;height:17px;border:3px solid #6a42f2;border-left:0;border-top:0;transform:skewY(28deg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="nav-item small">
+        <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v13H8a2 2 0 0 1-2-2V3z"/><path d="M14 3v5h5"/><path d="M3 6h6v13h9"/><path d="M6 10h5"/></svg>
+      </div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M14.5 4.5l5 5-10 10-5 1 1-5 10-10z"/><path d="M4.5 4.5l15 15"/><path d="M8 16l-3-3 3-3"/><path d="M16 8l3 3-3 3"/></svg>
+      </div>
+      <div class="nav-item small">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5h3l4 14H8L4 5"/><path d="M13 5v14"/><path d="M16 5l4 14"/></svg>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="nav2">
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4z"/><path d="M14.5 10.2a3.2 3.2 0 1 0 1.1 3.5l2.4 2.3"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M13 2s1 4-2 7c-2 2-4 4-4 7a5 5 0 0 0 10 0c0-2-1-4-3-6 0 0 5 2 5 8a7 7 0 0 1-14 0c0-4 3-6 5-9 1.5-2.3 3-7 3-7z"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M6 4h12l4 6-10 12L2 10l4-6z"/><path d="M2 10h20"/><path d="M8 4l-2 6 6 12 6-12-2-6"/><path d="M8 10l4-6 4 6"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M4 6h15a2 2 0 0 1 2 2v11H5a2 2 0 0 1-2-2V7a1 1 0 0 1 1-1z"/><path d="M4 6V5a2 2 0 0 1 2-2h12"/><path d="M17 12h5v5h-5a2.5 2.5 0 0 1 0-5z"/><path d="M18 14.5h.1"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.8"/><path d="M16 3.2a4 4 0 0 1 0 7.6"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1a2.1 2.1 0 0 1-3 3l-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1 1.6V21a2.1 2.1 0 0 1-4.2 0v-.2a1.8 1.8 0 0 0-1.1-1.6 1.8 1.8 0 0 0-2 .4l-.1.1a2.1 2.1 0 0 1-3-3l.1-.1a1.8 1.8 0 0 0 .4-2 1.8 1.8 0 0 0-1.6-1H3a2.1 2.1 0 0 1 0-4.2h.2a1.8 1.8 0 0 0 1.6-1.1 1.8 1.8 0 0 0-.4-2l-.1-.1a2.1 2.1 0 0 1 3-3l.1.1a1.8 1.8 0 0 0 2 .4 1.8 1.8 0 0 0 1-1.6V3a2.1 2.1 0 0 1 4.2 0v.2a1.8 1.8 0 0 0 1.1 1.6 1.8 1.8 0 0 0 2-.4l.1-.1a2.1 2.1 0 0 1 3 3l-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.6 1h.2a2.1 2.1 0 0 1 0 4.2h-.2a1.8 1.8 0 0 0-1.5.4z"/></svg>
+      </div>
+    </div>
+    <div class="credits">570<span class="coin">◎</span></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">剧本改写</div>
+    <div class="search">
+      <span>根据名称、核心梗概进行搜索</span>
+      <div class="searchbox">
+        <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      </div>
+    </div>
+    <div class="tutorial">使用教程</div>
+    <div class="import">
+      <svg viewBox="0 0 24 24"><path d="M8 3h8l3 3v13H8a2 2 0 0 1-2-2V3z"/><path d="M15 3v5h5"/><path d="M3 7h6v13h10"/></svg>
+      <span>导入剧本</span>
+    </div>
+    <div class="sort"><span class="hamb"><i></i></span><span>排序方式</span></div>
+
+    <div class="card">
+      <div class="thumb"><div class="badge">实拍</div><div class="sq"></div></div>
+      <div class="card-title">新建 DOCX 文档</div>
+      <div class="card-sub">上次修改于 06月07日 10:08</div>
+    </div>
+
+    <div class="bot">
+      <div class="glow"></div>
+      <div class="ant"></div>
+      <div class="dot"></div>
+      <div class="head"></div>
+      <div class="face"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="mouth"></div>
+      <div class="tail"></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1605, initial-scale=1.0">
+<title>新建 DOCX 文档</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1605px;height:1125px;overflow:hidden;background:#000;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:#fff}
+.page{position:relative;width:1605px;height:1125px;background:#000}
+.sidebar{position:absolute;left:0;top:0;width:108px;height:1125px;background:#1b1c20;color:#fff}
+.logo{position:absolute;left:40px;top:52px;width:30px;height:24px}
+.logo:before,.logo:after{content:"";position:absolute;left:0;height:5px;background:#f4f4f5;border-radius:4px}
+.logo:before{top:2px;width:29px}
+.logo:after{top:16px;width:25px}
+.logo i{position:absolute;right:1px;top:9px;width:20px;height:5px;background:#f4f4f5;border-radius:4px;display:block}
+.nav{position:absolute;top:153px;left:0;width:108px}
+.nav-item{position:relative;width:108px;height:62px;margin:0 0 0 0;display:flex;align-items:center;justify-content:center;color:#fff}
+.nav-item svg{width:29px;height:29px;stroke:#fff;stroke-width:2.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active{width:58px;height:57px;margin-left:24px;margin-top:-1px;margin-bottom:8px;background:#fff;border-radius:7px}
+.nav-item.active svg{stroke:#000}
+.sep{position:absolute;left:25px;top:357px;width:58px;height:1px;background:#515257}
+.nav2{position:absolute;top:391px;left:0;width:108px}
+.nav2 .nav-item{height:63px}
+.bottom-num{position:absolute;left:26px;bottom:112px;font-weight:700;font-size:25px;color:#dedee1;letter-spacing:-2px}
+.bottom-num span{font-size:12px;margin-left:1px}
+.avatar{position:absolute;left:29px;bottom:23px;width:50px;height:50px;border-radius:50%;background:#2d2f35;border:2px solid #333;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.avatar:before{content:"";width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 60% 36%,#ffd58a 0 12%,#91551f 13% 30%,#1f242a 31% 48%,#d89324 49% 58%,#1b1b1c 59% 100%)}
+.canvas{position:absolute;left:108px;top:0;width:1497px;height:1125px;border-top-left-radius:31px;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0px,rgba(255,255,255,.055) 1px,transparent 1px,transparent 7px),
+#020202;overflow:hidden}
+.title{position:absolute;left:72px;top:44px;font-size:31px;font-weight:800;letter-spacing:.2px;text-shadow:2px 2px 0 #07375f}
+.spark{position:absolute;left:35px;top:52px;width:27px;height:27px;border-radius:4px;background:rgba(255,255,255,.04)}
+.spark:before{content:"✦";position:absolute;left:5px;top:1px;font-size:23px;color:#a78bfa;text-shadow:2px 2px 0 #243b60}
+.top-controls{position:absolute;left:107px;top:120px;height:49px;display:flex;align-items:center}
+.info-btn{width:111px;height:48px;border-radius:7px;background:linear-gradient(135deg,#9af58e 0%,#0e8fe9 100%);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#fff;margin-right:20px}
+.tabs{height:49px;background:#1c1d22;border-radius:7px;display:flex;align-items:center;padding:0 6px}
+.tab{height:40px;line-height:40px;padding:0 16px;font-size:17px;font-weight:600;color:#fff;border-radius:4px;margin-right:7px;white-space:nowrap}
+.tab:last-child{margin-right:0}
+.tab.active{background:#fff;color:#000}
+.undo-box{position:absolute;right:270px;top:120px;width:120px;height:49px;background:rgba(25,26,31,.8);border-radius:2px;display:flex}
+.undo-box div{width:60px;height:49px;display:flex;align-items:center;justify-content:center;color:#8f9299}
+.undo-box svg{width:22px;height:22px;stroke:#8b8e96;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.plan-btn{position:absolute;right:110px;top:120px;width:140px;height:49px;border-radius:7px;background:linear-gradient(100deg,#6546d8 0%,#e95478 100%);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600}
+.plan-btn svg{width:20px;height:20px;margin-right:10px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.form{position:absolute;left:107px;top:213px;width:1065px}
+.section-title{font-size:22px;font-weight:800;margin:0 0 47px 0}
+.grid{display:grid;grid-template-columns:513px 513px;column-gap:40px;row-gap:43px}
+.field label,.wide label{display:block;font-size:18px;font-weight:500;margin-bottom:10px;color:#fff}
+.req{color:#ff1616;font-weight:800}
+.select,.textline,.textarea{background:#1b1c20;border:none;border-radius:7px;color:#5f6f82;font-size:17px}
+.select{position:relative;width:513px;height:51px;line-height:51px;padding:0 46px 0 15px}
+.select:after{content:"";position:absolute;right:19px;top:19px;width:10px;height:10px;border-right:2px solid #9aa6b7;border-bottom:2px solid #9aa6b7;transform:rotate(45deg)}
+.audience{display:flex;gap:15px}
+.choice{width:193px;height:50px;border-radius:8px;background:transparent;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600}
+.choice.male{border:1px solid #1689e8;color:#20a1ff}
+.choice.female{border:1px solid #d99b08;color:#ffbf1f}
+.choice .sym{font-size:24px;margin-right:8px;font-family:Arial}
+.wide{margin-top:38px}
+.textline{width:1065px;height:80px;line-height:31px;padding:13px 15px;color:#526273}
+.one{height:50px;line-height:50px;padding-top:0;padding-bottom:0}
+.textarea{width:1065px;height:79px;margin-top:10px}
+.anchor{position:absolute;right:108px;top:289px;width:118px;height:455px}
+.anchor-line{position:absolute;right:11px;top:10px;width:3px;height:435px;background:#202128}
+.anchor-item{position:absolute;right:0;width:118px;height:22px;font-size:18px;color:#d5d8df;line-height:22px}
+.anchor-item span{position:absolute;right:0;top:0;width:20px;height:20px;border-radius:50%;background:#202128}
+.anchor-item em{font-style:normal;position:absolute;right:38px;top:-1px;white-space:nowrap}
+.a1{top:0}.a2{top:72px}.a3{top:144px}.a4{top:216px}.a5{top:288px}.a6{top:360px}.a7{top:432px}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo"><i></i></div>
+    <div class="nav">
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M8 8h13a3 3 0 0 1 3 3v13H11a3 3 0 0 1-3-3z"/><path d="M8 13H5a2 2 0 0 0-2 2v10a3 3 0 0 0 3 3h14"/><path d="M13 13h7M13 18h7"/></svg>
+      </div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 32 32"><path d="M5 18l9-9 4 4 5-5 4 4-5 5 5 5-4 4-5-5-5 5-4-4 5-5-4-4-5 5z"/><path d="M14 9l9 9"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 32 32"><path d="M8 26V7a2 2 0 0 1 2-2h3l7 21"/><path d="M14 5h4l7 21"/><path d="M6 26h4"/></svg>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="nav2">
+      <div class="nav-item"><svg viewBox="0 0 32 32"><path d="M16 5l11 6v8c0 6-5 9-11 11C10 28 5 25 5 19v-8z"/><path d="M20 14a5 5 0 1 0 0 7"/><path d="M20 14h5v5"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 32 32"><path d="M17 4c3 5-3 7 1 11 2 2 4 0 4-3 4 4 5 12-2 16-6 3-14-1-13-8 1-4 4-6 7-9-1 4 0 6 3 7"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 32 32"><path d="M4 12l5-6h14l5 6-12 16z"/><path d="M4 12h24M10 6l6 22M22 6l-6 22"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 32 32"><path d="M6 8h19a2 2 0 0 1 2 2v16H8a2 2 0 0 1-2-2z"/><path d="M6 13h21"/><path d="M23 19h5a2 2 0 0 1 0 4h-5z"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 32 32"><path d="M11 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/><path d="M3 27v-3c0-4 4-7 8-7s8 3 8 7v3"/><path d="M23 14a4 4 0 1 0-2-7"/><path d="M22 18c4 0 7 3 7 7v2"/></svg></div>
+      <div class="nav-item"><svg viewBox="0 0 32 32"><path d="M13 4h6l1 4 4 2 4-1 3 5-3 3v4l3 3-3 5-4-1-4 2-1 4h-6l-1-4-4-2-4 1-3-5 3-3v-4l-3-3 3-5 4 1 4-2z"/><circle cx="16" cy="17" r="4"/></svg></div>
+    </div>
+    <div class="bottom-num">463<span>☕</span></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="canvas">
+    <div class="spark"></div>
+    <div class="title">新建 DOCX 文档</div>
+
+    <div class="top-controls">
+      <div class="info-btn">信息流</div>
+      <div class="tabs">
+        <div class="tab active">故事梗概</div>
+        <div class="tab">人物小传</div>
+        <div class="tab">分集大纲</div>
+        <div class="tab">剧本正文</div>
+      </div>
+    </div>
+
+    <div class="undo-box">
+      <div><svg viewBox="0 0 24 24"><path d="M9 7H4v5"/><path d="M5 12a8 8 0 1 0 2-6"/></svg></div>
+      <div><svg viewBox="0 0 24 24"><path d="M15 7h5v5"/><path d="M19 12a8 8 0 1 1-2-6"/></svg></div>
+    </div>
+    <div class="plan-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8 10a4 4 0 1 1 8 0c0 2-2 3-2 5h-4c0-2-2-3-2-5z"/></svg>
+      改写策划
+    </div>
+
+    <div class="form">
+      <div class="section-title">故事设定</div>
+      <div class="grid">
+        <div class="field">
+          <label>目标受众<span class="req">*</span></label>
+          <div class="audience">
+            <div class="choice male"><span class="sym">♂</span>男频</div>
+            <div class="choice female"><span class="sym">♀</span>女频</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>时代背景<span class="req">*</span>（不超过3个）</label>
+          <div class="select">选择或自定义输入背景</div>
+        </div>
+        <div class="field">
+          <label>题材类型<span class="req">*</span>（不超过3个）</label>
+          <div class="select">选择或自定义输入类型</div>
+        </div>
+        <div class="field">
+          <label>核心设定<span class="req">*</span>（不超过5个）</label>
+          <div class="select">选择或自定义输入设定</div>
+        </div>
+      </div>
+
+      <div class="wide">
+        <label>故事背景（选填）</label>
+        <div class="textline">例：1932年，伪满洲国成立前夕的北平。表面繁华依旧，实则暗流涌动，文物界人人自危。</div>
+      </div>
+
+      <div class="wide" style="margin-top:43px">
+        <label>核心亮点（选填）</label>
+        <div class="textline one">例：穿书成作死女配，她反向操作，用沙雕和直球硬核攻略哑巴老公，结果把冰山霸总撩到开口说话！</div>
+      </div>
+
+      <div class="wide" style="margin-top:43px">
+        <label>核心梗概<span class="req">*</span></label>
+        <div class="textarea"></div>
+      </div>
+    </div>
+
+    <div class="anchor">
+      <div class="anchor-line"></div>
+      <div class="anchor-item a1"><em>目标受众</em><span></span></div>
+      <div class="anchor-item a2"><em>时代背景</em><span></span></div>
+      <div class="anchor-item a3"><em>题材类型</em><span></span></div>
+      <div class="anchor-item a4"><em>核心设定</em><span></span></div>
+      <div class="anchor-item a5"><em>故事背景</em><span></span></div>
+      <div class="anchor-item a6"><em>核心亮点</em><span></span></div>
+      <div class="anchor-item a7"><em>核心梗概</em><span></span></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

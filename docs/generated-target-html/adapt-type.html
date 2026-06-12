@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1605, initial-scale=1.0">
+<title>网文改编</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1605px;height:1125px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+.page{position:relative;width:1605px;height:1125px;background:#020303}
+.sidebar{position:absolute;left:0;top:0;width:108px;height:1125px;background:#050607;border-right:1px solid rgba(255,255,255,.01)}
+.logo{position:absolute;left:39px;top:52px;width:31px;height:24px}
+.logo:before{content:"";position:absolute;left:0;top:0;width:30px;height:6px;background:#595b5f;border-radius:6px;box-shadow:0 10px 0 #595b5f}
+.logo:after{content:"";position:absolute;right:0;bottom:0;width:22px;height:6px;background:#595b5f;border-radius:6px}
+.nav{position:absolute;left:0;top:145px;width:108px}
+.nav-item{position:relative;width:108px;height:62px;margin-bottom:0;color:#3d3f43}
+.nav-item svg{position:absolute;left:39px;top:18px;width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active{height:58px;margin-top:12px;margin-bottom:18px}
+.nav-item.active .active-bg{position:absolute;left:24px;top:0;width:59px;height:58px;background:#55575b;border-radius:7px}
+.nav-item.active svg{color:#060708;left:39px;top:15px}
+.separator{position:absolute;left:24px;top:357px;width:59px;height:1px;background:#1b1c1f}
+.bottom-score{position:absolute;left:27px;bottom:113px;font-size:23px;line-height:25px;color:#57595d;font-weight:700;letter-spacing:-1px}
+.bottom-score small{font-size:12px;margin-left:1px}
+.avatar{position:absolute;left:29px;bottom:19px;width:51px;height:51px;border-radius:50%;background:
+radial-gradient(circle at 55% 42%,#d09b4d 0 8px,transparent 9px),
+radial-gradient(circle at 45% 42%,#1e1a17 0 18px,transparent 19px),
+linear-gradient(135deg,#141719,#070808);border:1px solid #141517;overflow:hidden}
+.avatar:after{content:"";position:absolute;left:8px;bottom:-6px;width:35px;height:27px;border-radius:50%;background:#2a1d16}
+.main{position:absolute;left:108px;top:0;width:1497px;height:1125px;background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.021) 0px,rgba(255,255,255,.021) 1px,transparent 1px,transparent 7px),
+#020303;border-top-left-radius:0}
+.main:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55);pointer-events:none}
+.title{position:absolute;left:30px;top:45px;font-size:29px;font-weight:700;color:#56606b;letter-spacing:-1px;z-index:2}
+.search{position:absolute;left:522px;top:37px;width:449px;height:52px;border-radius:8px;background:#080909;border:1px solid #111316;z-index:2}
+.search span{position:absolute;left:14px;top:13px;font-size:18px;color:#303237;letter-spacing:.5px}
+.search .glass{position:absolute;right:11px;top:10px;width:31px;height:31px;border-radius:7px;border:1px solid #202329}
+.search .glass:before{content:"";position:absolute;left:8px;top:7px;width:10px;height:10px;border:2px solid #25282d;border-radius:50%}
+.search .glass:after{content:"";position:absolute;left:18px;top:18px;width:8px;height:2px;background:#25282d;transform:rotate(45deg);border-radius:2px}
+.help{position:absolute;right:64px;top:56px;font-size:16px;color:#52565e;z-index:2}
+.choice-modal{position:absolute;left:384px;top:331px;width:837px;height:466px;border-radius:6px;border:3px solid #25262c;background:#111;overflow:hidden;z-index:5;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
+.choice-modal svg{display:block;width:100%;height:100%}
+.note{position:absolute;left:0;right:0;bottom:29px;text-align:center;font-size:16px;color:#30343b;z-index:2}
+.note:before{content:"ⓘ";font-size:18px;margin-right:7px;color:#343841}
+.bot{position:absolute;right:53px;top:807px;width:65px;height:68px;z-index:3;opacity:.68}
+.bot .head{position:absolute;left:6px;top:20px;width:54px;height:41px;background:#352072;border-radius:24px;box-shadow:0 0 13px rgba(91,57,203,.45)}
+.bot .face{position:absolute;left:13px;top:27px;width:40px;height:25px;background:#1d1e25;border-radius:14px;border:3px solid #47308c}
+.bot .eye{position:absolute;top:36px;width:6px;height:6px;border-radius:50%;background:#8170c9}
+.bot .eye.l{left:24px}.bot .eye.r{right:22px}
+.bot .mouth{position:absolute;left:29px;top:47px;width:13px;height:3px;border-radius:4px;background:#7565b7}
+.bot .ant{position:absolute;left:32px;top:5px;width:4px;height:19px;background:#4d3b86;border-radius:3px}
+.bot .ant:before{content:"";position:absolute;left:-4px;top:-7px;width:12px;height:12px;border-radius:50%;background:#574594}
+.bot .ear{position:absolute;top:35px;width:8px;height:16px;border:2px solid #47308c;border-radius:8px}
+.bot .ear.l{left:2px}.bot .ear.r{right:0}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.08);z-index:4;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><path d="M7 6h12v15H8a3 3 0 0 1-3-3V8a2 2 0 0 1 2-2z"/><path d="M10 10h8M10 14h8"/><path d="M5 9H3v5h2"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><path d="M5 21 21 5M7 5l16 16"/><path d="M4 9c3-5 8-5 10 0M14 19c2 5 7 5 10 0"/></svg>
+      </div>
+      <div class="nav-item active">
+        <div class="active-bg"></div>
+        <svg viewBox="0 0 28 28"><path d="M7 5h4v22H7z"/><path d="M13 5h4l5 22h-4z"/><path d="M5 5h2v22H5z"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><path d="M14 4 24 8v7c0 6-4 9-10 11C8 24 4 21 4 15V8z"/><path d="M11 13a4 4 0 1 0 7 2l3 3"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><path d="M15 4c1 5 7 7 7 13a8 8 0 0 1-16 0c0-3 2-6 5-8-1 5 4 5 4 1z"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><path d="M4 10h20l-10 16z"/><path d="M9 10l5 16 5-16M8 10l4-6h8l4 6"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><rect x="4" y="7" width="20" height="18" rx="2"/><path d="M4 12h20"/><path d="M19 18h6v5h-6a2.5 2.5 0 0 1 0-5z"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><path d="M5 22c0-4 3-6 7-6s7 2 7 6"/><circle cx="12" cy="10" r="4"/><path d="M20 8c3 1 4 3 4 6M21 17c2 1 3 3 3 5"/></svg>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="4"/><path d="M14 2v4M14 22v4M2 14h4M22 14h4M5.5 5.5l3 3M19.5 19.5l3 3M22.5 5.5l-3 3M8.5 19.5l-3 3"/></svg>
+      </div>
+    </div>
+    <div class="separator"></div>
+    <div class="bottom-score">467<small>◎</small></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title">网文改编</div>
+    <div class="search"><span>根据名称、 核心梗概进行搜索</span><div class="glass"></div></div>
+    <div class="help">使用教程</div>
+    <div class="dim"></div>
+
+    <div class="choice-modal">
+      <svg viewBox="0 0 837 466" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="leftClip"><polygon points="0,0 452,0 377,466 0,466"/></clipPath>
+          <clipPath id="rightClip"><polygon points="452,0 837,0 837,466 377,466"/></clipPath>
+
+          <radialGradient id="leftBg1" cx="70%" cy="11%" r="78%">
+            <stop offset="0" stop-color="#ffcf64"/>
+            <stop offset=".25" stop-color="#f66f43"/>
+            <stop offset=".58" stop-color="#7bc6b6"/>
+            <stop offset="1" stop-color="#18151a"/>
+          </radialGradient>
+          <radialGradient id="skin" cx="55%" cy="44%" r="58%">
+            <stop offset="0" stop-color="#ffd2b8"/>
+            <stop offset=".48" stop-color="#d98472"/>
+            <stop offset=".84" stop-color="#6b2d31"/>
+            <stop offset="1" stop-color="#241114"/>
+          </radialGradient>
+          <radialGradient id="eyeGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#4aa2ff"/>
+            <stop offset=".34" stop-color="#5cd16c"/>
+            <stop offset=".61" stop-color="#226bd7"/>
+            <stop offset="1" stop-color="#0b244b"/>
+          </radialGradient>
+          <linearGradient id="rightBg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1e1d19"/>
+            <stop offset=".35" stop-color="#050607"/>
+            <stop offset=".7" stop-color="#1d1a15"/>
+            <stop offset="1" stop-color="#050505"/>
+          </linearGradient>
+          <radialGradient id="face" cx="46%" cy="38%" r="57%">
+            <stop offset="0" stop-color="#c59672"/>
+            <stop offset=".31" stop-color="#8b5f44"/>
+            <stop offset=".62" stop-color="#3f291e"/>
+            <stop offset="1" stop-color="#080706"/>
+          </radialGradient>
+          <filter id="blur"><feGaussianBlur stdDeviation="1.3"/></filter>
+          <filter id="shadow"><feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity=".55"/></filter>
+        </defs>
+
+        <g clip-path="url(#leftClip)">
+          <rect width="452" height="466" fill="url(#leftBg1)"/>
+          <circle cx="365" cy="42" r="95" fill="#ff9338" opacity=".55" filter="url(#blur)"/>
+          <circle cx="360" cy="390" r="110" fill="#20b9c9" opacity=".6" filter="url(#blur)"/>
+          <circle cx="418" cy="325" r="48" fill="#7ce6ff" opacity=".35"/>
+          <path d="M0 13 C88 20 151 6 241 39 C293 59 350 90 373 156 C398 228 377 315 332 377 C289 436 201 466 0 466z" fill="url(#skin)"/>
+          <path d="M0 0h300c-40 20-90 43-118 88-48 77-54 162-51 234-40-43-74-95-108-132C13 118 3 56 0 0z" fill="#0d090c"/>
+          <path d="M108 95 C177 69 245 76 315 108 C248 92 181 97 112 120z" fill="#1a0b0f"/>
+          <path d="M138 150 C206 116 277 122 326 153 C263 136 201 138 145 168z" fill="#221016"/>
+          <path d="M185 183 C235 166 282 172 321 196 C272 196 228 191 185 183z" fill="#141215"/>
+          <path d="M187 184 C232 158 283 163 324 196 C275 183 231 180 187 184z" fill="#f0c0a0"/>
+          <ellipse cx="284" cy="191" rx="20" ry="18" fill="url(#eyeGrad)" transform="rotate(12 284 191)"/>
+          <circle cx="284" cy="191" r="8" fill="#101018"/>
+          <circle cx="276" cy="184" r="4" fill="#fff" opacity=".85"/>
+          <path d="M262 145 C288 139 316 144 340 158" stroke="#2a1012" stroke-width="5" fill="none"/>
+          <path d="M140 194 C208 178 281 198 341 229" stroke="#151014" stroke-width="5" fill="none" opacity=".5"/>
+          <path d="M331 238 C360 272 342 311 305 327" stroke="#b65e55" stroke-width="4" fill="none"/>
+          <path d="M218 345 C257 327 301 329 334 354 C300 362 252 363 218 345z" fill="#7e171c"/>
+          <path d="M229 346 C268 339 295 340 324 352" stroke="#d98a79" stroke-width="3" opacity=".45"/>
+          <path d="M34 171 C65 236 64 301 30 353 C9 362 3 348 7 329 C31 301 24 240 16 191z" fill="#0b090b"/>
+          <path d="M292 -8 C310 37 350 58 398 50 C382 24 357 4 330 -10z" fill="#8d561d"/>
+          <path d="M318 -1 C325 32 350 43 380 40" stroke="#ffd96b" stroke-width="5" fill="none"/>
+          <circle cx="327" cy="23" r="12" fill="#3e9b7b" stroke="#ffd66d" stroke-width="3"/>
+          <path d="M390 0 L452 0 L452 466 L377 466 C383 386 398 289 414 197 C426 126 407 50 390 0z" fill="#000" opacity=".13"/>
+          <text x="162" y="424" fill="rgba(255,255,255,.0)" font-size="34" font-weight="700">AI短剧</text>
+        </g>
+
+        <g clip-path="url(#rightClip)">
+          <rect x="377" y="0" width="460" height="466" fill="url(#rightBg)"/>
+          <circle cx="637" cy="170" r="210" fill="url(#face)"/>
+          <path d="M511 0 C498 71 507 137 489 213 C476 266 456 335 466 466 L377 466 L452 0z" fill="#0a0a09"/>
+          <path d="M548 0 C535 50 527 105 535 174 C545 262 573 342 549 466 L470 466 C471 393 464 318 482 247 C495 194 507 139 502 79 C500 44 509 16 523 0z" fill="#12100d"/>
+          <path d="M579 0 C552 55 560 111 586 166 C602 201 606 246 590 306 C575 365 586 420 600 466 L462 466 C473 377 486 310 478 234 C471 166 479 65 504 0z" fill="#211b15" opacity=".85"/>
+          <ellipse cx="628" cy="193" rx="132" ry="170" fill="url(#face)"/>
+          <path d="M547 119 C585 95 641 91 691 119 C639 109 594 108 547 119z" fill="#16110e"/>
+          <path d="M682 119 C722 100 766 103 805 126 C765 119 723 121 682 134z" fill="#15100d"/>
+          <path d="M555 179 C593 157 635 159 666 184 C622 178 591 177 555 179z" fill="#080807"/>
+          <path d="M690 179 C728 159 772 160 811 187 C766 178 729 177 690 179z" fill="#080807"/>
+          <ellipse cx="625" cy="190" rx="19" ry="15" fill="#5a3923"/>
+          <circle cx="625" cy="190" r="7" fill="#0b0b0b"/>
+          <ellipse cx="750" cy="190" rx="20" ry="15" fill="#5a3923"/>
+          <circle cx="750" cy="190" r="7" fill="#0b0b0b"/>
+          <path d="M667 199 C652 248 637 279 651 313 C660 330 690 327 704 317" stroke="#4c3022" stroke-width="8" fill="none"/>
+          <path d="M594 338 C629 352 684 353 730 337 C709 377 626 378 594 338z" fill="#2b1612"/>
+          <path d="M606 340 C648 348 686 349 718 339" stroke="#c08f78" stroke-width="3" opacity=".45"/>
+          <path d="M532 331 C575 368 633 396 714 407 C655 432 583 418 521 391z" fill="#d7dde0"/>
+          <path d="M470 466 C521 404 574 364 633 330 C579 352 513 364 453 396 L377 466z" fill="#f4f5f4"/>
+          <path d="M504 410 C555 393 612 384 675 385" stroke="#8a815f" stroke-width="18" opacity=".65"/>
+          <path d="M515 397 C573 404 620 411 674 428" stroke="#372d20" stroke-width="5" opacity=".8"/>
+          <path d="M806 0 h31 v466 h-65 C808 352 803 246 795 152 C790 85 789 36 806 0z" fill="#070707"/>
+          <circle cx="543" cy="92" r="95" fill="#ffffff" opacity=".09" filter="url(#blur)"/>
+          <rect x="377" y="0" width="460" height="466" fill="#000" opacity=".05"/>
+          <text x="570" y="424" fill="rgba(255,255,255,.0)" font-size="34" font-weight="700">真人实拍</text>
+        </g>
+
+        <polygon points="452,0 463,0 388,466 377,466" fill="#080909" opacity=".86"/>
+        <rect x="0" y="0" width="837" height="466" fill="none" stroke="#17191e" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="bot">
+      <div class="ant"></div><div class="head"></div><div class="ear l"></div><div class="ear r"></div><div class="face"></div><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div>
+    </div>
+    <div class="note">您拥有剧本所有权与控制，我们承诺不利用数据进行任何商业用途</div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+api.txt
+ai-config.local.json
+*.local.json
+
+frontend/dist/
+frontend/node_modules/
+logs/
+target-upload/
+需求.txt
+dummy-script.txt
+
+backend/*.exe
+backend/data/
+backend/*.db
+backend/*.db-*

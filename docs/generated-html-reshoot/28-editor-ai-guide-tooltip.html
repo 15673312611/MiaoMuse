@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=2050, initial-scale=1.0" />
+<title>复刻</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#030303;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+  .page{position:relative;width:2050px;height:968px;background:#050505}
+  .main{
+    position:absolute;left:86px;top:0;width:1964px;height:968px;
+    background:
+      repeating-linear-gradient(135deg,rgba(255,255,255,.022) 0,rgba(255,255,255,.022) 1px,transparent 1px,transparent 7px),
+      #050505;
+    border-top-left-radius:24px;
+  }
+  .sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#08090a}
+  .logo{position:absolute;left:32px;top:43px;width:25px;height:18px;color:#6d7078;font-weight:900;font-size:37px;line-height:18px;transform:skewX(-10deg);opacity:.7}
+  .nav{position:absolute;left:20px;top:113px;width:48px;height:48px;border-radius:6px;background:#efefef;opacity:.48}
+  .nav svg{position:absolute;left:12px;top:12px;width:24px;height:24px;stroke:#060606;stroke-width:2.4;fill:none}
+  .ico{position:absolute;left:32px;width:24px;height:24px;opacity:.42}
+  .ico svg{width:24px;height:24px;stroke:#a6aab3;stroke-width:2.25;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .i2{top:176px}.i3{top:226px}.sep{position:absolute;left:20px;top:284px;width:48px;height:1px;background:#202126}
+  .i4{top:320px}.i5{top:371px}.i6{top:421px}.i7{top:470px}.i8{top:521px}.i9{top:571px}
+  .coin{position:absolute;left:18px;bottom:92px;font-size:21px;font-weight:700;color:#b8bbc3;opacity:.42}.coin small{font-size:10px}
+  .avatar{position:absolute;left:23px;bottom:25px;width:40px;height:40px;border-radius:50%;border:2px solid rgba(184,120,18,.8);background:radial-gradient(circle at 50% 35%,#594018 0 14px,#171717 15px 40px);opacity:.75}
+  .avatar:after{content:"";position:absolute;right:-8px;bottom:2px;width:16px;height:16px;background:#7d611d;border-radius:4px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+  .title{position:absolute;left:143px;top:37px;height:30px;display:flex;align-items:center;gap:12px;color:#7f8290;opacity:.36;font-size:26px;font-weight:800}
+  .spark{color:#9b6cff;font-size:17px}
+  .tabs{position:absolute;left:555px;top:95px;width:354px;height:40px;background:#17191f;border-radius:4px;display:flex;align-items:center;padding:0 6px;opacity:.78}
+  .tab{height:32px;padding:0 16px;display:flex;align-items:center;justify-content:center;color:#8d92a0;font-size:15px}
+  .tab.active{background:#dbdce1;color:#111;border-radius:3px}
+  .undo{position:absolute;left:1278px;top:95px;width:77px;height:40px;background:#14161b;border-radius:3px;display:flex;align-items:center;justify-content:space-around;opacity:.65}
+  .undo span{font-size:21px;color:#747884}
+  .ai-btn{position:absolute;left:1388px;top:95px;width:190px;height:40px;border:0;border-radius:4px;background:linear-gradient(135deg,#7e49b8,#5b2acd);color:#e9dbff;font-weight:700;font-size:15px;box-shadow:0 0 0 1px rgba(255,255,255,.03) inset;opacity:.92}
+  .ai-btn .s{color:#d7c4ff;margin-right:6px}.ai-btn .c{opacity:.8;margin-left:4px}
+  .form{position:absolute;left:555px;top:167px;width:850px}
+  .label{font-size:15px;color:#777d8a;font-weight:700;margin:0 0 20px 16px}
+  .label .red{color:#bb2a35;margin-left:3px}
+  .textarea{width:850px;height:191px;background:#08090b;border-radius:9px;color:#464b55;padding:58px 17px;font-size:16px;line-height:24px;box-shadow:0 0 0 1px rgba(255,255,255,.01) inset}
+  .label2{margin-top:30px}
+  .input{position:relative;width:850px;height:83px;background:#08090b;border-radius:9px;color:#626979;padding:18px 17px;font-size:16px;line-height:24px}
+  .field-spark{position:absolute;right:22px;top:216px;color:#9870df;font-size:19px;opacity:.7}
+  .right{position:absolute;left:1448px;top:166px;width:130px}
+  .box{width:130px;height:132px;border-radius:9px;background:#07080a;border:2px solid rgba(222,226,235,.55);margin-bottom:12px;position:relative}
+  .box.dim{border:0;background:rgba(9,10,12,.58);height:132px}
+  .tag{position:absolute;right:0;top:0;width:34px;height:36px;border-radius:0 9px 0 13px;background:#101116;color:#858894;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .dash{position:absolute;left:0;right:0;top:64px;text-align:center;color:#555b65;font-size:16px}
+  .tooltip{position:absolute;left:1338px;top:143px;width:240px;height:110px;background:#202126;border-radius:12px;padding:17px 14px 12px 16px;box-shadow:0 12px 30px rgba(0,0,0,.35);z-index:5}
+  .tooltip:before{content:"";position:absolute;top:-8px;right:53px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #202126}
+  .tooltip h3{margin:0 0 7px 0;font-size:16px;line-height:22px;color:#fff;font-weight:800}
+  .tooltip p{margin:0;color:#a8abb5;font-size:14px;line-height:21px}
+  .next{position:absolute;right:16px;bottom:14px;width:49px;height:24px;border-radius:4px;background:#2c2d31;color:#fff;font-size:12px;line-height:24px;text-align:center}
+  .dimall{position:absolute;left:0;top:0;width:2050px;height:968px;background:rgba(0,0,0,.38);pointer-events:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24"><path d="M8 5h10v14H8z"/><path d="M5 8h10v14H5z"/><path d="M10 10h4M10 14h4"/></svg>
+    </div>
+    <div class="ico i2"><svg viewBox="0 0 24 24"><path d="M14 7l3-3 3 3-3 3z"/><path d="M4 20l7-7"/><path d="M4 14l6 6"/><path d="M12 4l8 8"/><path d="M4 4l16 16"/></svg></div>
+    <div class="ico i3"><svg viewBox="0 0 24 24"><path d="M5 20V5h4l5 15"/><path d="M12 5h3l4 15"/></svg></div>
+    <div class="sep"></div>
+    <div class="ico i4"><svg viewBox="0 0 24 24"><path d="M12 21s8-4 8-11V5l-8-3-8 3v5c0 7 8 11 8 11z"/><path d="M12 8v4l3 2"/></svg></div>
+    <div class="ico i5"><svg viewBox="0 0 24 24"><path d="M9 18a6 6 0 0 0 6-6c0-4-4-5-2-9-5 3-8 7-8 11a7 7 0 0 0 14 0"/></svg></div>
+    <div class="ico i6"><svg viewBox="0 0 24 24"><path d="M3 8l4-5h10l4 5-9 13z"/><path d="M3 8h18M7 3l5 18M17 3l-5 18"/></svg></div>
+    <div class="ico i7"><svg viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 11h16"/><path d="M17 15h5v4h-5z"/></svg></div>
+    <div class="ico i8"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <div class="ico i9"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.15.36.36.7.6 1 .3.25.7.4 1.1.4H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg></div>
+    <div class="coin">1000<small>◎</small></div>
+    <div class="avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="title"><span class="spark">✦</span><span>剧本名称</span></div>
+    <div class="tabs">
+      <div class="tab">故事梗概</div>
+      <div class="tab">人物小传</div>
+      <div class="tab active">分集大纲</div>
+      <div class="tab">剧本正文</div>
+    </div>
+    <div class="undo"><span>↶</span><span>↷</span></div>
+    <button class="ai-btn"><span class="s">✧</span>AI生成全部粗纲 80<span class="c">◎</span></button>
+
+    <section class="form">
+      <div class="label">粗纲 <span class="red">*</span></div>
+      <div class="textarea">请输入内容，3000字以内</div>
+      <div class="label label2">集纲 <span class="red">*</span></div>
+      <div class="input">第1集</div>
+      <div class="field-spark">✦</div>
+    </section>
+
+    <section class="right">
+      <div class="box"></div>
+      <div class="box dim"><div class="tag">承</div><div class="dash">-</div></div>
+      <div class="box dim"><div class="tag">转</div><div class="dash">-</div></div>
+      <div class="box dim"><div class="tag">合</div><div class="dash">-</div></div>
+    </section>
+
+    <div class="tooltip">
+      <h3>点击AI，一键生成全部粗纲</h3>
+      <p>根据梗概&amp;人物一键生成所有粗纲</p>
+      <div class="next">下一步</div>
+    </div>
+  </main>
+  <div class="dimall"></div>
+</div>
+</body>
+</html>

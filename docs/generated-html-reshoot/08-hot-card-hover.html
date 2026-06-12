@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=2050, height=968, initial-scale=1.0" />
+<title>拉片</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+body{position:relative}
+.page{
+  width:2050px;height:968px;position:relative;overflow:hidden;background:#000;
+}
+.page:before{
+  content:"";position:absolute;left:86px;top:0;right:0;bottom:0;
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 1px,transparent 1px 7px),
+    #030303;
+  border-top-left-radius:24px;border-bottom-left-radius:24px;
+}
+.side{
+  position:absolute;left:0;top:0;width:86px;height:968px;background:#191a1e;z-index:5;
+}
+.logo{
+  position:absolute;left:31px;top:42px;width:25px;height:18px;
+}
+.logo:before,.logo:after{content:"";position:absolute;left:0;width:24px;height:4px;background:#fff;border-radius:4px}
+.logo:before{top:0;box-shadow:0 7px 0 #fff}
+.logo:after{top:14px;width:18px}
+.nav{position:absolute;top:126px;left:0;width:86px}
+.nav .item{width:86px;height:50px;margin:0 0 4px;display:flex;align-items:center;justify-content:center;color:#fff}
+.nav .item svg{width:25px;height:25px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav .sep{width:43px;height:1px;background:#68696d;margin:22px auto 26px;opacity:.8}
+.nav .active{width:46px;height:46px;margin:8px auto 10px;border-radius:6px;background:#fff;color:#111}
+.nav .active svg{stroke:#111}
+.side-bottom{position:absolute;left:0;bottom:20px;width:86px;text-align:center}
+.points{font-size:19px;font-weight:800;color:#e6e6e6;letter-spacing:-1px;margin-bottom:46px}
+.points small{font-size:10px;font-weight:500;margin-left:2px;color:#d9d9d9}
+.avatar{position:relative;width:40px;height:40px;margin:0 auto;border-radius:50%;background:radial-gradient(circle at 45% 38%,#ffc26b 0 8px,#68412b 9px 16px,#1c252f 17px 40px);border:3px solid #ff9f12;box-shadow:0 0 0 2px rgba(0,0,0,.35)}
+.avatar:after{content:"";position:absolute;right:-8px;bottom:0;width:16px;height:16px;border-radius:4px;background:#ffb222;border:1px solid rgba(255,255,255,.6)}
+.header-title{
+  position:absolute;z-index:2;left:110px;top:39px;font-size:27px;line-height:36px;font-weight:800;text-shadow:0 2px 6px rgba(0,0,0,.5)
+}
+.search{
+  position:absolute;z-index:3;left:818px;top:30px;width:518px;height:40px;border-radius:5px;background:#1b1c20;border:1px solid #25262b;display:flex;align-items:center;
+}
+.search input{flex:1;height:100%;background:transparent;border:0;outline:0;color:#aaa;font-size:15px;padding:0 14px}
+.search input::placeholder{color:#74757b}
+.search .sicon{width:27px;height:27px;margin-right:7px;border:1px solid #3c3d43;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.search .sicon svg{width:16px;height:16px;stroke:#777}
+.top-actions{
+  position:absolute;z-index:3;right:40px;top:30px;height:40px;display:flex;background:#1b1c20;border-radius:4px;overflow:hidden
+}
+.top-actions .btn{height:40px;padding:0 18px;display:flex;align-items:center;gap:8px;color:#d8d8dc;font-size:16px;font-weight:500}
+.top-actions .btn + .btn{border-left:1px solid #2a2b30}
+.top-actions svg{width:18px;height:18px;stroke:#dedee4;fill:none;stroke-width:2.2}
+.filter{
+  position:absolute;z-index:2;left:556px;top:95px;width:1024px;height:240px;border-radius:13px;background:#1b1c20;box-shadow:0 12px 22px rgba(0,0,0,.2);padding:40px 44px;
+}
+.filter .mine{position:absolute;right:57px;top:58px;color:#f0f0f2;font-size:18px;display:flex;align-items:center;gap:6px;font-weight:600}
+.filter .mine svg{width:15px;height:15px;stroke:#e5e5ea;fill:none}
+.frow{height:50px;display:flex;align-items:center;margin-bottom:0}
+.frow span{font-size:18px;color:#fff;margin-right:43px;white-space:nowrap}
+.frow .pill{width:104px;height:36px;margin-right:27px;border-radius:5px;background:#37383c;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.frow.bg span{margin-right:60px}
+.frow.bg .pill{margin-right:27px}
+.grid{
+  position:absolute;z-index:2;left:546px;top:357px;width:1090px;height:610px;
+  display:grid;grid-template-columns:repeat(5,190px);grid-auto-rows:278px;gap:20px 20px;
+  overflow:hidden;
+}
+.poster{
+  position:relative;width:190px;height:278px;border-radius:10px;overflow:hidden;background:#333;box-shadow:0 0 0 1px rgba(255,255,255,.06) inset;
+}
+.poster:after{content:"";position:absolute;left:0;right:0;bottom:0;height:92px;background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,.05));pointer-events:none}
+.poster .title{position:absolute;left:10px;right:10px;bottom:15px;z-index:2;text-align:center;font-weight:900;line-height:1.05;text-shadow:0 2px 4px #000,0 0 8px rgba(0,0,0,.65)}
+.poster .small{font-size:16px}
+.p1{background:
+ radial-gradient(circle at 18% 15%,#c6805f 0 28px,transparent 29px),
+ radial-gradient(circle at 47% 14%,#e9b08d 0 29px,transparent 30px),
+ radial-gradient(circle at 78% 16%,#91b6df 0 30px,transparent 31px),
+ linear-gradient(180deg,#402316 0 32%,#b5211e 33% 53%,#101010 54% 100%)}
+.p1:before{content:"";position:absolute;left:-14px;top:92px;width:220px;height:47px;background:#d32a25;transform:rotate(-3deg);box-shadow:0 3px 0 rgba(255,255,255,.45),0 -3px 0 rgba(255,255,255,.35)}
+.p1 .title{font-size:31px;color:#d39a62;bottom:106px;transform:rotate(-4deg)}
+.p1 .sub{position:absolute;bottom:11px;left:18px;width:74px;height:38px;background:#c03935;border-radius:4px;z-index:1}
+.p2{background:
+ radial-gradient(circle at 42% 19%,#111 0 14px,transparent 15px),
+ linear-gradient(135deg,#f4f6fa 0 32%,#20232b 33% 48%,#e7e7e7 49% 58%,#141414 59%),
+ linear-gradient(#fff,#111)}
+.p2:before{content:"";position:absolute;left:12px;top:30px;width:74px;height:160px;background:linear-gradient(#12151b,#2f3540);border-radius:36px 36px 8px 8px;box-shadow:58px 25px 0 -8px #e9edf2,105px 58px 0 -12px #111}
+.p2 .paper{position:absolute;left:62px;top:74px;width:48px;height:70px;background:#fafafa;border:1px solid #ccc;transform:rotate(-7deg)}
+.p2 .title{font-size:23px;color:#e5c06c;bottom:18px;text-align:left;left:15px}
+.p3{background:
+ radial-gradient(circle at 54% 18%,#f5cc9c 0 21px,transparent 22px),
+ radial-gradient(circle at 23% 21%,#f1bf8a 0 23px,transparent 24px),
+ radial-gradient(circle at 66% 62%,#f0be88 0 21px,transparent 22px),
+ linear-gradient(135deg,#c0a65b 0,#fff3cc 20%,#8ad6c7 52%,#544525 100%)}
+.p3:before{content:"";position:absolute;left:82px;top:20px;width:48px;height:88px;background:#0c0c0d;border-radius:24px 24px 8px 8px;box-shadow:-46px 22px 0 -5px #202115,32px 87px 0 -7px #232015}
+.p3 .title{font-size:24px;color:#ffe078;bottom:28px;text-align:left;left:22px;transform:rotate(-5deg)}
+.p4{background:
+ radial-gradient(circle at 54% 36%,#efc49a 0 25px,transparent 26px),
+ radial-gradient(circle at 82% 33%,#d7b08b 0 23px,transparent 24px),
+ linear-gradient(180deg,#536677 0 32%,#e7cfa8 33% 45%,#57616b 46% 100%)}
+.p4:before{content:"凡人百世书";position:absolute;left:14px;top:18px;font-size:28px;font-weight:900;color:#f8f0d8;text-shadow:0 2px 4px #333;transform:rotate(-5deg)}
+.p4 .robe{position:absolute;left:42px;bottom:0;width:68px;height:160px;background:#4b3326;border-radius:34px 34px 0 0;box-shadow:72px 13px 0 -5px #171a1b}
+.p5{background:
+ radial-gradient(circle at 54% 52%,#d5b28f 0 22px,transparent 23px),
+ linear-gradient(135deg,#06152a 0,#0b345b 26%,#0d0f16 42%,#1395db 65%,#05101b 100%)}
+.p5:before{content:"狂浪·深海帝王";position:absolute;left:13px;top:14px;font-size:21px;font-weight:900;color:#cfd7dc;text-shadow:0 2px 5px #000}
+.p5 .wave{position:absolute;left:-38px;top:86px;width:154px;height:126px;border-radius:50%;border:24px solid rgba(67,183,255,.55);box-shadow:0 0 24px #39a7ff}
+.p5 .title{font-size:15px;color:#c8d7e8;bottom:15px}
+.p6{background:linear-gradient(160deg,#0d668c 0,#f5f0c6 42%,#c38328 52%,#20110a 100%)}
+.p6:before{content:"";position:absolute;left:59px;top:92px;width:52px;height:105px;background:#efe4cf;border-radius:28px 28px 4px 4px;box-shadow:38px 36px 0 34px #d69c23}
+.p6 .title{font-size:27px;color:#fff;top:22px;bottom:auto;text-align:left;text-shadow:0 3px 4px #31647a}
+.p7{background:
+ radial-gradient(circle at 50% 30%,#d6b28c 0 23px,transparent 24px),
+ radial-gradient(circle at 72% 38%,#e1b690 0 19px,transparent 20px),
+ linear-gradient(180deg,#0b2935 0,#1b5c70 33%,#23120e 68%,#0b0b0d 100%)}
+.p7:before{content:"";position:absolute;left:40px;top:70px;width:60px;height:125px;background:#123247;border-radius:30px 30px 5px 5px;box-shadow:54px 28px 0 -8px #222}
+.p7 .title{font-size:30px;color:#e7c08c;bottom:20px}
+.p8{background:
+ radial-gradient(circle at 52% 26%,#c8a17d 0 26px,transparent 27px),
+ linear-gradient(90deg,rgba(255,255,255,.2),transparent 42%),
+ linear-gradient(180deg,#54422f 0,#201b17 45%,#caa164 100%)}
+.p8:before{content:"";position:absolute;left:88px;top:50px;width:12px;height:172px;background:#d8c79c;box-shadow:0 0 18px #fff}
+.p8 .title{font-size:22px;color:#d6a65b;text-align:left;bottom:22px;left:18px}
+.p9{background:
+ radial-gradient(circle at 52% 27%,#e2b083 0 24px,transparent 25px),
+ linear-gradient(135deg,#141912 0,#35523b 38%,#b83b25 100%)}
+.p9:before{content:"";position:absolute;left:50px;top:40px;width:70px;height:158px;background:#33200f;border-radius:35px 35px 0 0;box-shadow:0 0 0 999px rgba(0,0,0,.05)}
+.p9:after{height:130px;background:linear-gradient(to top,rgba(120,16,10,.8),rgba(0,0,0,.05))}
+.p9 .gold{position:absolute;left:-18px;top:126px;width:230px;height:18px;background:#e8c166;transform:rotate(14deg);filter:blur(1px);box-shadow:0 0 14px #ffdc63}
+.p9 .title{font-size:19px;color:#e1c16f;bottom:28px}
+.p10{background:linear-gradient(135deg,#e24d19 0,#f4b33f 28%,#982b19 58%,#ed751d 100%)}
+.p10:before{content:"";position:absolute;left:60px;top:34px;width:70px;height:78px;border-radius:50%;background:#d2ab7a;box-shadow:0 0 0 5px rgba(0,0,0,.22)}
+.p10 .title{font-size:28px;color:#2e8e2e;bottom:49px;transform:rotate(-5deg);-webkit-text-stroke:1px #ffe48a;text-shadow:0 2px 0 #8b190d}
+.p10 .tag{position:absolute;left:9px;top:8px;background:#f7d35a;color:#b51b13;font-size:12px;font-weight:900;padding:6px;border-radius:2px;transform:rotate(-5deg)}
+.p11{background:linear-gradient(135deg,#8c2c23,#e6a568 45%,#211);margin-top:0}
+.p12{background:linear-gradient(135deg,#161225,#b7a17e 45%,#020205)}
+.p13{background:linear-gradient(135deg,#063663,#0b87c9 45%,#0b0b13)}
+.p14{background:linear-gradient(135deg,#27123a,#9a52da 45%,#111)}
+.p15{background:linear-gradient(135deg,#2a180c,#caa55c 45%,#111)}
+.fake-bottom{position:absolute;z-index:1;left:546px;top:944px;display:grid;grid-template-columns:repeat(5,190px);gap:20px}
+.fake-bottom .poster{height:278px}
+.scrollbar{
+  position:absolute;z-index:10;right:0;top:0;width:12px;height:968px;background:transparent;
+}
+.scrollbar .thumb{position:absolute;right:2px;top:68px;width:6px;height:96px;border-radius:4px;background:#4e4f53}
+.corner-mask{position:absolute;left:86px;top:0;width:70px;height:70px;border-top-left-radius:24px;box-shadow:-22px -22px 0 22px #191a1e;z-index:4;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="side">
+    <div class="logo"></div>
+    <div class="nav">
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M7 5h8a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h9"/><path d="M4 5h3v6H4z"/><path d="M17 11h3v6h-3z"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M4 18l7-7"/><path d="M9 5l10 10"/><path d="M5 9l4-4 3 3-4 4z"/><path d="M13 19l6-6 2 2-6 6z"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 5v14"/><path d="M9 5v14"/><path d="M13 5l5 14"/><path d="M17 5l2 6"/></svg></div>
+      <div class="sep"></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-4 8-8 9-4-1-8-4-8-9V7z"/><path d="M12 12h5"/><path d="M12 8v8"/></svg></div>
+      <div class="item active"><svg viewBox="0 0 24 24"><path d="M12 3c2 4-2 5 1 9 1-2 3-3 4-5 2 3 4 6 2 10a7 7 0 0 1-14-1c0-3 2-5 5-8-.4 3 1 4 2 5"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M12 3l8 6-8 12L4 9z"/><path d="M4 9h16"/><path d="M8 9l4 12 4-12"/><path d="M9 3l-5 6"/><path d="M15 3l5 6"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M4 7h16v14H4z"/><path d="M7 7V4h10v3"/><path d="M16 14h4"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a5 5 0 0 1 10 0v2"/><circle cx="17" cy="10" r="2"/><path d="M15 20v-1a4 4 0 0 1 6 0v1"/></svg></div>
+      <div class="item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2.1-1.6-2-3.5-2.5 1a7 7 0 0 0-1.7-1L14.5 3h-4l-.4 2.9a7 7 0 0 0-1.7 1l-2.5-1-2 3.5L6 11a7 7 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7 7 0 0 0 1.7 1l.4 2.9h4l.4-2.9a7 7 0 0 0 1.7-1l2.5 1 2-3.5L18.9 13a7 7 0 0 0 .1-1z"/></svg></div>
+    </div>
+    <div class="side-bottom">
+      <div class="points">1000<small>贝</small></div>
+      <div class="avatar"></div>
+    </div>
+  </div>
+  <div class="corner-mask"></div>
+  <div class="header-title">拉片</div>
+  <div class="search">
+    <input placeholder="搜索" />
+    <div class="sicon"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+  </div>
+  <div class="top-actions">
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg><span>返回</span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M7 3h10l3 3v18H7z"/><path d="M17 3v6h6"/><path d="M11 13h6"/><path d="M11 17h6"/><path d="M9 13h.1"/></svg><span>定制拉片</span></div>
+  </div>
+  <div class="filter">
+    <div class="mine"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z"/><circle cx="12" cy="9" r="2"/><path d="M8 18c1-3 7-3 8 0"/></svg>我的拉片</div>
+    <div class="frow"><div class="pill">全部类型</div><span>实拍</span><span>AI</span></div>
+    <div class="frow"><div class="pill">全部受众</div><span>男频</span><span>女频</span></div>
+    <div class="frow"><div class="pill">全部时间</div><span>最近14天</span><span>最近30天</span><span>更早</span></div>
+    <div class="frow bg"><div class="pill">全部背景</div><span>现代</span><span>都市</span><span>古代</span><span>乡村</span><span>年代</span><span>职场</span><span>架空</span><span>宫廷</span><span>民国</span><span>校园</span><span>荒岛</span></div>
+  </div>
+  <div class="grid">
+    <div class="poster p1"><div class="title">长姐进门</div><div class="sub"></div></div>
+    <div class="poster p2"><div class="paper"></div><div class="title">判出家门后，<br>我登顶全国状元</div></div>
+    <div class="poster p3"><div class="title">女帝逼走我后<br>才发现我无敌天下</div></div>
+    <div class="poster p4"><div class="robe"></div></div>
+    <div class="poster p5"><div class="wave"></div><div class="title">麻浪号</div></div>
+    <div class="poster p6"><div class="title">表哥送我<br>一辆黄金车</div></div>
+    <div class="poster p7"><div class="title">无声<br>的偏爱</div></div>
+    <div class="poster p8"><div class="title">打薪一万<br>我在博物馆值夜班</div></div>
+    <div class="poster p9"><div class="gold"></div><div class="title">聚宝仙盆之<br>杂灵根才是真BOSS<br><span class="small">第三季</span></div></div>
+    <div class="poster p10"><div class="tag">龙套也是戏<br>人生自有光</div><div class="title">两界跑龙套</div></div>
+  </div>
+  <div class="fake-bottom">
+    <div class="poster p11"></div>
+    <div class="poster p12"></div>
+    <div class="poster p13"></div>
+    <div class="poster p14"></div>
+    <div class="poster p15"></div>
+  </div>
+  <div class="scrollbar"><div class="thumb"></div></div>
+</div>
+</body>
+</html>

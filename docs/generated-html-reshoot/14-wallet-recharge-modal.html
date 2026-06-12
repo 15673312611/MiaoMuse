@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=2050, initial-scale=1.0">
+<title>剧点充值</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:2050px;height:968px;overflow:hidden;background:#050505;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:#fff}
+#app{position:relative;width:2050px;height:968px;background:#060606}
+#app:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 2px,transparent 2px,transparent 8px)}
+.sidebar{position:absolute;left:0;top:0;width:86px;height:968px;background:#08090a;border-right:1px solid #101112;z-index:1}
+.logo{position:absolute;left:32px;top:42px;font-size:32px;font-weight:900;color:#555;letter-spacing:-3px;font-style:italic}
+.nav{position:absolute;top:126px;left:0;width:86px}
+.nav .ico{width:86px;height:50px;display:flex;align-items:center;justify-content:center;color:#52545a;font-size:25px;font-weight:600;margin:0 0 2px}
+.nav .line{width:48px;height:1px;background:#242529;margin:19px auto}
+.nav .active span{width:47px;height:47px;border-radius:6px;background:#6d6d6d;display:flex;align-items:center;justify-content:center;color:#090909}
+.bottom{position:absolute;bottom:22px;left:0;width:86px;text-align:center;color:#6a6a6a;font-weight:700}
+.points{font-size:19px;margin-bottom:24px;letter-spacing:-1px}
+.points small{font-size:12px}
+.avatar{width:40px;height:40px;border-radius:50%;margin:0 auto;background:radial-gradient(circle at 45% 35%,#59432a 0 13px,#1d1814 14px 27px,#7c5500 28px);border:2px solid #8a5a08;position:relative}
+.avatar:after{content:"";position:absolute;right:-8px;bottom:1px;width:15px;height:15px;background:#71551b;border-radius:50%}
+
+.page{position:absolute;left:86px;top:0;width:1964px;height:968px;padding:37px 0 0 24px}
+.title{font-size:26px;font-weight:700;color:#e8e8e8;line-height:1}
+.invite{position:absolute;right:27px;top:38px;color:#6d6f75;font-size:15px;display:flex;align-items:center;gap:8px}
+.gift{width:25px;height:25px;border-radius:3px;background:linear-gradient(135deg,#c7b12d,#5a7e19);display:inline-block;position:relative;transform:rotate(-10deg)}
+.gift:before{content:"";position:absolute;left:11px;top:0;width:3px;height:25px;background:#1f5714}.gift:after{content:"";position:absolute;left:0;top:10px;width:25px;height:3px;background:#1f5714}
+
+.hero{position:absolute;left:468px;top:95px;width:1024px;height:276px;border-radius:23px;background:linear-gradient(100deg,#101012 0%,#0b0e10 44%,#022a2d 100%);overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 18%,rgba(58,205,210,.23),transparent 16%),radial-gradient(circle at 93% 70%,rgba(18,147,152,.19),transparent 22%)}
+.hero .num{position:absolute;left:65px;top:26px;font-size:90px;font-weight:900;color:#efefef;letter-spacing:-8px;line-height:1}
+.hero .coinmark{font-size:37px;margin-left:8px;color:#dcdcdc;letter-spacing:0}
+.hero .desc{position:absolute;left:65px;top:140px;font-size:16px;line-height:27px;color:#8b9199}
+.hero .btn{position:absolute;left:65px;top:199px;width:160px;height:40px;border-radius:22px;background:#f5a623;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.hero .btn2{position:absolute;left:245px;top:199px;width:152px;height:40px;border-radius:22px;border:1px solid #d68b19;color:#d68b19;display:flex;align-items:center;justify-content:center;font-size:15px}
+.coin{position:absolute;border-radius:50%;border:7px solid #1a4c50;background:linear-gradient(115deg,#123b3e,#0b2023);box-shadow:inset 0 0 0 4px rgba(255,255,255,.05),12px 8px 18px rgba(0,0,0,.35);transform:rotate(-18deg)}
+.c1{right:175px;top:20px;width:78px;height:116px}.c2{right:267px;top:105px;width:62px;height:84px}.c3{right:82px;top:148px;width:64px;height:105px}.c4{right:214px;top:216px;width:74px;height:124px}.c5{right:18px;top:225px;width:50px;height:96px}
+
+.tasks{position:absolute;left:468px;top:409px;color:#9aa0a9;font-size:15px}
+.taskcard{position:absolute;left:468px;top:439px;width:760px;height:165px;border-radius:9px;background:#111214;border:1px solid #17181b;padding:31px 32px}
+.task-icon{width:31px;height:31px;border:1px solid #555861;border-radius:5px;color:#777;display:flex;align-items:center;justify-content:center;font-size:19px}
+.task-title{margin-top:18px;font-size:22px;font-weight:700;color:#d5d7db}.task-desc{margin-top:8px;color:#70757e;font-size:15px}.task-btn{position:absolute;right:27px;top:54px;width:112px;height:38px;border-radius:20px;border:1px solid #f2a51e;color:#f2a51e;display:flex;align-items:center;justify-content:center;font-size:15px}
+.tabs{position:absolute;left:468px;top:638px;height:35px;background:#15161a;border-radius:5px;padding:3px;display:flex}
+.tab{width:57px;height:29px;border-radius:4px;color:#7c8189;display:flex;align-items:center;justify-content:center;font-size:15px}.tab.on{background:#d2d2d2;color:#111}
+.table{position:absolute;left:468px;top:692px;width:1024px;height:108px;background:#101112;border-radius:8px;color:#737780}
+.th{position:absolute;top:17px;font-size:16px;color:#8c929b;font-weight:600}.th.name{left:32px}.th.time{right:31px}
+.td{position:absolute;top:64px;font-size:16px}.td.name{left:32px}.td.time{right:31px;color:#8a8d93}
+
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.72);z-index:5}
+.modal{position:absolute;left:812px;top:140px;width:424px;height:686px;background:#1c1d21;border-radius:5px;z-index:10;box-shadow:0 18px 60px rgba(0,0,0,.65);overflow:hidden}
+.m-head{padding:29px 24px 0}
+.m-title{font-size:20px;font-weight:800;color:#fff;line-height:1}
+.m-sub{margin-top:8px;font-size:14px;color:#687486;white-space:nowrap}.m-sub b{color:#fff;font-weight:700;margin-left:8px}
+.plans{position:absolute;left:24px;top:86px;width:376px}
+.plan{position:relative;width:376px;height:148px;background:#000;border-radius:8px;margin-bottom:18px;overflow:hidden}
+.plan:after{content:"";position:absolute;right:-12px;bottom:-37px;width:116px;height:116px;border-radius:50%;background:conic-gradient(from 20deg,#7be5c7,#1e5464,#ea6ba4,#0b0b0b,#7be5c7);opacity:.82;filter:blur(1px)}
+.plan:before{content:"";position:absolute;right:40px;bottom:26px;width:78px;height:78px;border-radius:50%;border:5px solid rgba(52,179,184,.5);transform:rotate(-25deg);z-index:1}
+.price{position:absolute;left:16px;top:17px;font-size:42px;font-weight:900;color:#ffd765;letter-spacing:-1px}.price small{font-size:14px;color:#fff;margin-left:4px;font-weight:500}
+.unit{position:absolute;left:17px;top:65px;color:#fff;font-size:13px;font-weight:700}.unit b{font-size:14px}
+.original{position:absolute;right:0;top:0;width:104px;height:39px;background:#1c1d21;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border-bottom-left-radius:10px}
+.total{position:absolute;right:27px;bottom:29px;font-size:12px;color:#fff;z-index:2}.total b{font-size:34px;line-height:1;margin-left:5px}
+.old{position:absolute;right:35px;bottom:68px;color:#fff;font-size:12px;text-decoration:line-through;z-index:2;opacity:.9}
+.badge{position:absolute;left:0;bottom:0;height:39px;padding:0 12px;background:#00c985;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;border-top-right-radius:6px;z-index:3}
+.agree{position:absolute;left:24px;bottom:78px;color:#d6d7da;font-size:14px;display:flex;align-items:center;gap:8px}
+.check{width:14px;height:14px;border:1px solid #d7d7d7;border-radius:2px}
+.actions{position:absolute;right:24px;bottom:18px;display:flex;gap:18px;align-items:center}
+.cancel{color:#fff;font-size:15px}
+.pay{width:59px;height:39px;border-radius:5px;background:#8f9093;color:#161616;display:flex;align-items:center;justify-content:center;font-size:14px}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="logo">S</div>
+    <div class="nav">
+      <div class="ico">▧</div><div class="ico">⚒</div><div class="ico">▥</div>
+      <div class="line"></div>
+      <div class="ico">⌾</div><div class="ico">♨</div><div class="ico">◇</div>
+      <div class="ico active"><span>▣</span></div>
+      <div class="ico">♧</div><div class="ico">⚙</div>
+    </div>
+    <div class="bottom"><div class="points">1000<small>◎</small></div><div class="avatar"></div></div>
+  </aside>
+
+  <main class="page">
+    <div class="title">剧点</div>
+    <div class="invite"><span class="gift"></span>邀请有礼</div>
+    <section class="hero">
+      <div class="num">1000<span class="coinmark">◎</span></div>
+      <div class="desc">大约还能生成 0 篇剧本<br>查看剧点说明</div>
+      <div class="btn">充值剧点</div><div class="btn2">剧点说明</div>
+      <i class="coin c1"></i><i class="coin c2"></i><i class="coin c3"></i><i class="coin c4"></i><i class="coin c5"></i>
+    </section>
+    <div class="tasks">剧点任务</div>
+    <div class="taskcard">
+      <div class="task-icon">♙</div>
+      <div class="task-title">新人注册</div>
+      <div class="task-desc">新注册用户赠送1000剧点，自动到账</div>
+      <div class="task-btn">点击领取</div>
+    </div>
+    <div class="tabs"><div class="tab on">收入</div><div class="tab">消费</div></div>
+    <div class="table">
+      <div class="th name">名称</div><div class="th time">发生时间</div>
+      <div class="td name">领取1000剧点</div><div class="td time">2026年06月05日 19:48</div>
+    </div>
+  </main>
+
+  <div class="dim"></div>
+
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title">充值剧点</div>
+      <div class="m-sub">已获得剧点充值6.7折优惠，更多权益请前往 <b>会员权益</b></div>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <div class="price">20<small>元</small></div>
+        <div class="unit">单价约 <b>0.01</b> 元/剧点</div>
+        <div class="original">原价 30 元</div>
+        <div class="total">总获得 <b>2000</b> ◎</div>
+      </div>
+      <div class="plan">
+        <div class="price">100<small>元</small></div>
+        <div class="unit">单价约 <b>0.0095</b> 元/剧点</div>
+        <div class="original">原价 150 元</div>
+        <div class="old">10000 ◎</div>
+        <div class="total">总获得 <b>10500</b> ◎</div>
+        <div class="badge">多送500剧点</div>
+      </div>
+      <div class="plan">
+        <div class="price">300<small>元</small></div>
+        <div class="unit">单价约 <b>0.0091</b> 元/剧点</div>
+        <div class="original">原价 450 元</div>
+        <div class="old">30000 ◎</div>
+        <div class="total">总获得 <b>33000</b> ◎</div>
+        <div class="badge">多送3000剧点</div>
+      </div>
+    </div>
+    <div class="agree"><span class="check"></span>我已阅读并同意《充值协议》</div>
+    <div class="actions"><div class="cancel">取消</div><div class="pay">充值</div></div>
+  </div>
+</div>
+</body>
+</html>
