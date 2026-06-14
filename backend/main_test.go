@@ -1,6 +1,10 @@
 package main
 
 import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -119,8 +123,19 @@ func novelChapterBody() string {
 	return strings.Repeat("主角进入新的冲突现场，人物关系继续升级，反派压迫不断加深。\n", 8)
 }
 
+func nonEmptyLines(value string) []string {
+	lines := []string{}
+	for _, line := range strings.Split(value, "\n") {
+		line = strings.TrimSpace(line)
+		if line != "" {
+			lines = append(lines, line)
+		}
+	}
+	return lines
+}
+
 func TestStatePersistenceRoundTrip(t *testing.T) {
-	t.Setenv("DB_PATH", filepath.Join(t.TempDir(), "storyplay.db"))
+	t.Setenv("DB_PATH", filepath.Join(t.TempDir(), "jubengongfang.db"))
 	db, err := openAppDB()
 	if err != nil {
 		t.Fatalf("openAppDB failed: %v", err)
@@ -160,7 +175,7 @@ func TestStatePersistenceRoundTrip(t *testing.T) {
 }
 
 func TestDatabaseMigrationCreatesTables(t *testing.T) {
-	t.Setenv("DB_PATH", filepath.Join(t.TempDir(), "storyplay.db"))
+	t.Setenv("DB_PATH", filepath.Join(t.TempDir(), "jubengongfang.db"))
 	db, err := openAppDB()
 	if err != nil {
 		t.Fatalf("openAppDB failed: %v", err)
@@ -189,6 +204,33 @@ func TestDatabaseMigrationCreatesTables(t *testing.T) {
 	}
 }
 
+func TestAppDatabasePathUsesLegacyDBWhenRenamedDBMissing(t *testing.T) {
+	t.Setenv("DB_PATH", "")
+	dir := t.TempDir()
+	oldWD, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("getwd failed: %v", err)
+	}
+	if err := os.Chdir(dir); err != nil {
+		t.Fatalf("chdir failed: %v", err)
+	}
+	defer func() {
+		if err := os.Chdir(oldWD); err != nil {
+			t.Fatalf("restore wd failed: %v", err)
+		}
+	}()
+	if err := os.MkdirAll("data", 0o755); err != nil {
+		t.Fatalf("mkdir data failed: %v", err)
+	}
+	legacyPath := legacyDatabasePath()
+	if err := os.WriteFile(legacyPath, []byte("legacy"), 0o644); err != nil {
+		t.Fatalf("write legacy db failed: %v", err)
+	}
+	if got := appDatabasePath(); got != legacyPath {
+		t.Fatalf("appDatabasePath = %q, want %q", got, legacyPath)
+	}
+}
+
 func TestNormalizeBeatLinesSplitsInlineBeats(t *testing.T) {
 	got := normalizeBeatLines("情节1：开局受辱 情节2：主角反击 情节3：反派加压")
 	want := "情节1：开局受辱\n情节2：主角反击\n情节3：反派加压"
@@ -207,5 +249,65 @@ func TestOutlineBeatsHasAtLeastTenItems(t *testing.T) {
 	}
 	if count < 10 {
 		t.Fatalf("expected at least 10 beats, got %d: %s", count, got)
+	}
+}
+
+func TestParseEvaluationResultFallsBackForPlainText(t *testing.T) {
+	got := parseEvaluationResult("综合评分：82\n建议：强化主线冲突。\n建议：优化人物动机。")
+	if got.Score != 82 {
+		t.Fatalf("score = %d, want 82", got.Score)
+	}
+	if len(got.Dimensions) == 0 || len(got.Suggestions) < 2 {
+		t.Fatalf("unexpected fallback evaluation: %#v", got)
+	}
+}
+
+func TestBuildExportContentUsesWordHTML(t *testing.T) {
+	project := ScriptProject{
+		Title: "测试剧本",
+		Settings: map[string]any{
+			"audience": "男频",
+			"genres":   []any{"都市", "逆袭"},
+			"synopsis": "主角逆袭。",
+		},
+		Characters: []Character{{Name: "秦川", Role: "主角", Bio: "被误解后反击。"}},
+		Episodes:   []Episode{{No: 1, Outline: "开局受辱", Body: "△1-1 日 内 大厅\n秦川：（冷静）该结束了。"}},
+	}
+	got := buildExportContent(project, nil)
+	for _, want := range []string{"<!doctype html>", "<h1>测试剧本</h1>", "一、故事设定", "秦川", "第1集"} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("export missing %q: %s", want, got)
+		}
+	}
+}
+
+func TestEvaluationsHandlerDeletesRecord(t *testing.T) {
+	state.mu.Lock()
+	oldEvaluations := state.evaluations
+	oldDB := state.db
+	state.db = nil
+	state.evaluations = []Evaluation{{ID: 77, Title: "待删除"}}
+	state.mu.Unlock()
+	defer func() {
+		state.mu.Lock()
+		state.evaluations = oldEvaluations
+		state.db = oldDB
+		state.mu.Unlock()
+	}()
+
+	req := httptest.NewRequest(http.MethodDelete, "/api/evaluations?id=77", nil)
+	rec := httptest.NewRecorder()
+	evaluationsHandler(rec, req)
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d body=%s", rec.Code, rec.Body.String())
+	}
+	var body map[string]any
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil || body["ok"] != true {
+		t.Fatalf("bad body %#v err=%v", body, err)
+	}
+	state.mu.Lock()
+	defer state.mu.Unlock()
+	if len(state.evaluations) != 0 {
+		t.Fatalf("evaluations not deleted: %#v", state.evaluations)
 	}
 }

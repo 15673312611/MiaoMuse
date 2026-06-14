@@ -2629,6 +2629,103 @@ textarea {
   justify-self: start;
 }
 
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.provider-grid button {
+  min-height: 72px;
+  border: 1px solid #2d3038;
+  border-radius: 8px;
+  color: #dfe3ec;
+  background: #15171d;
+  text-align: left;
+  padding: 12px;
+}
+
+.provider-grid button.active {
+  color: #111318;
+  border-color: #f4f4f4;
+  background: #f3f4f6;
+  box-shadow: 0 12px 28px rgba(0,0,0,.22);
+}
+
+.provider-grid b,
+.provider-grid span {
+  display: block;
+}
+
+.provider-grid b {
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.provider-grid span {
+  color: #8f939c;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.provider-grid button.active span {
+  color: #5b606b;
+}
+
+.provider-help {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #292c34;
+  border-radius: 8px;
+  background: #14161b;
+  padding: 9px 12px;
+}
+
+.provider-help span {
+  min-width: 0;
+  overflow: hidden;
+  color: #8f939c;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.provider-help a {
+  flex: 0 0 auto;
+  color: #f2d17b;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.provider-guide {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 12px 14px 12px 30px;
+  border: 1px solid #292c34;
+  border-radius: 8px;
+  color: #a7adb8;
+  background: rgba(255,255,255,.035);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.custom-model-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.custom-model-row .top-btn {
+  height: 42px;
+  border-radius: 6px;
+}
+
 .modal-layer {
   position: fixed;
   inset: 0;
@@ -3835,11 +3932,10 @@ textarea {
   margin: 40px 0 18px;
   border: 1px dashed #d5d8df;
   border-radius: 8px;
-  display: grid;
-  place-items: center;
+  display: block;
   color: #8f939c;
   padding: 20px;
-  text-align: center;
+  text-align: left;
   color: #20232a;
   background: #fff;
   outline: 0;
@@ -4779,6 +4875,36 @@ textarea {
   font-size: 15px;
   font-weight: 800;
   color: #f4f4f4;
+}
+
+.eval-record-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.eval-record-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.eval-record-actions button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #ffb8c0;
+  background: rgba(255,255,255,.04);
+}
+
+.eval-record-actions button:hover {
+  border-color: rgba(255,98,120,.28);
+  background: rgba(255,80,104,.13);
 }
 
 .evaluation-record span {
@@ -7682,10 +7808,6 @@ body,
   50% { opacity: 0; }
 }
 
-.idea-box {
-  text-align: left !important;
-}
-
 .inspiration-modal.active .planning-compose {
   left: clamp(300px, 18vw, 360px) !important;
   bottom: 24px !important;
@@ -8339,12 +8461,50 @@ body,
 }
 
 .export-select-modal {
-  width: min(420px, calc(100vw - 48px)) !important;
+  width: min(400px, calc(100vw - 48px)) !important;
 }
 
-.export-select-modal p {
+.export-project-name {
   margin: -4px 0 18px;
   color: #9098a8;
+  font-size: 13px;
+}
+
+.export-option-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.export-opt-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  color: #9098a8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+  text-align: left;
+}
+
+.export-opt-card.active {
+  border-color: rgba(142,162,255,.45);
+  background: rgba(142,162,255,.12);
+  color: #c5ceff;
+}
+
+.opt-check {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  color: #8ea2ff;
 }
 
 .export-option-list {

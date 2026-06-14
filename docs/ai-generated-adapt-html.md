@@ -325,7 +325,7 @@ import SideNav from './SideNav.vue'
 ```vue
 <template>
   <aside class="side-nav">
-    <div class="side-logo">S</div>
+    <div class="side-logo">剧</div>
 
     <nav class="side-menu">
       <button class="side-icon">▧</button>

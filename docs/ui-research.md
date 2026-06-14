@@ -1,10 +1,10 @@
-# StoryPlay UI Research
+# 剧本工坊 UI Research
 
 Research date: 2026-06-05
 
 ## 2026-06-06 Reshoot And HTML Reference
 
-The valid screenshot set for the rebuild is `screenshots/reshoot-2048/`. It contains 34 viewport screenshots, all captured from the logged-in StoryPlay session at CSS viewport `2050x968`, `devicePixelRatio=1.25`, producing PNG files of `2563x1210`. The earlier smaller/old screenshot set should not be used for layout matching.
+The valid screenshot set for the rebuild is `screenshots/reshoot-2048/`. It contains 34 viewport screenshots, all captured from the logged-in 剧本工坊 session at CSS viewport `2050x968`, `devicePixelRatio=1.25`, producing PNG files of `2563x1210`. The earlier smaller/old screenshot set should not be used for layout matching.
 
 Generated HTML references are in `docs/generated-html-reshoot/`. Each HTML file was produced from exactly one original PNG request using a local OpenAI-compatible API config file and the required prompt. PNG files were sent as original PNG bytes in data URLs; no compression, resizing, conversion, or multi-image bundling was used.
 
@@ -107,7 +107,7 @@ The likely shared pipeline is: upload file, store object, create parse task, val
 
 ## Script Evaluation
 
-Evaluation is a marketing and form page. It highlights a `SCRIPTCOVERAGESYSTEM V1.0` style evaluation engine and shows example graphs. Form fields include culture, target audience, script type, audience preference, and upload. The file guidance is explicit: docx/txt, under 100k words, under 10M, including character/settings, outline, and at least 10 episodes.
+Evaluation is a marketing and form page. It highlights a `剧本评估系统 V1.0` style evaluation engine and shows example graphs. Form fields include culture, target audience, script type, audience preference, and upload. The file guidance is explicit: docx/txt, under 100k words, under 10M, including character/settings, outline, and at least 10 episodes.
 
 `开始剧本评估` costs 2500 points and promises a 3-6 minute result. History opens as a right drawer with title, search box, and empty state. This implies evaluations are long-running jobs with status and report artifacts.
 

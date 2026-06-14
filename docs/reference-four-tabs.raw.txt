@@ -152,7 +152,7 @@ label{display:block;color:#f1f1f3;font-size:11px;margin-bottom:8px;font-weight:6
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="logo">S</div>
+    <div class="logo">剧</div>
     <div class="side-icons">
       <div class="ico active"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
       <div class="ico"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/><circle cx="12" cy="12" r="9"/></svg></div>

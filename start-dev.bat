@@ -7,10 +7,10 @@ set "FRONTEND_DIR=%ROOT%frontend"
 set "BACKEND_PORT=18080"
 set "FRONTEND_PORT=5173"
 
-title StoryPlay Dev
+title 剧本工坊 Dev
 
 echo ========================================
-echo StoryPlay dev startup
+echo 剧本工坊 dev startup
 echo ========================================
 echo.
 

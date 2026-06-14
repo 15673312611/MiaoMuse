@@ -903,7 +903,7 @@ AI 需要从小说章节中生成：
 ```html
 <div class="app-shell theme-dark">
   <aside class="app-sidebar">
-    <div class="sidebar-logo" aria-label="应用标识">S</div>
+    <div class="sidebar-logo" aria-label="应用标识">剧</div>
 
     <nav class="sidebar-nav">
       <button class="sidebar-nav__item" type="button" aria-label="剧本工具">

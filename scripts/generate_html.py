@@ -112,7 +112,7 @@ def parse_response(raw: str) -> dict:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate a one-file HTML reference from StoryPlay screenshots.")
+    parser = argparse.ArgumentParser(description="Generate a one-file HTML reference from 剧本工坊 screenshots.")
     parser.add_argument("--api", default=str(ROOT / "api.example.txt"), help="Path to local API config file")
     parser.add_argument("--out", default=str(ROOT / "docs" / "generated-reference.html"), help="Output HTML path")
     parser.add_argument("--screenshot", action="append", help="Screenshot path. Can be repeated.")

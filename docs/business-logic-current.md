@@ -1,4 +1,4 @@
-# StoryPlay Clone Current Business Logic
+# 剧本工坊 Current Business Logic
 
 Date: 2026-06-06
 
@@ -47,7 +47,7 @@ Real interaction details captured on 2026-06-06:
 - The planning button is disabled until the user enters free text or selects at least one option.
 - During generation, the underlying editor fields and script title are disabled.
 - The editor top action changes from `灵感策划` to `生成中`.
-- The modal shows a `StoryPlay` status block and progressive copy: first plan completed, second running, then third running/completed.
+- The modal shows a `剧本工坊` status block and progressive copy: first plan completed, second running, then third running/completed.
 - The AI returns three planning cards. Each card contains title, target audience, genre, core setting, style elements, highlights, world view, and synopsis.
 - Each card has `再次策划` and `引用`. Generation consumes points, but it does not immediately overwrite the editor. `引用` first shows `处理中，请稍后...`, then writes that card into the story settings form and saves the draft without a second point debit.
 - `人物小传` empty state shows `点击右侧按钮创建新角色，自定义角色信息 / 或由AI一键生成所有角色`. `AI生成 50` and `一键生成50` trigger the same paid task. During generation, the title and character fields are disabled and the button text changes to `生成中`. The result is a role-detail workspace rather than a flat list: current role fields include `姓名`, `定位`, `年龄`, `性格` tags, tag input placeholder `空格添加标签，双击删除`, and `背景`; other generated role names are listed as a side index for switching.

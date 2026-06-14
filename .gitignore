@@ -11,6 +11,7 @@ target-upload/
 dummy-script.txt
 
 backend/*.exe
+backend/*.exe~
 backend/data/
 backend/*.db
 backend/*.db-*

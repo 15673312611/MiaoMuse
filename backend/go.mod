@@ -1,4 +1,4 @@
-module storyplay-clone/backend
+module jubengongfang-clone/backend
 
 go 1.22
 

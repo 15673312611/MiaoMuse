@@ -1,7 +1,7 @@
 <template>
   <div class="app-frame">
     <aside class="rail">
-      <button class="logo-mark" title="StoryPlay" @click="go('creation')">S</button>
+      <button class="logo-mark" title="剧本工坊" @click="go('creation')">剧</button>
       <nav class="rail-nav">
         <button v-for="item in workNav" :key="item.key" :class="{ active: activeWorkKey === item.key }" :title="item.label" @click="go(item.key)">
           <component :is="item.icon" :size="25" />
@@ -60,8 +60,8 @@
                 <MoreVertical :size="18" />
               </button>
               <div v-if="rowMenuOpen === card.id" class="script-menu">
-                <button @click="exportListProject(card)"><Download :size="15" />导出</button>
-                <button class="danger" @click="deleteListProject(card)"><Trash2 :size="15" />删除</button>
+                <button @click.stop="exportListProject(card)"><Download :size="15" />导出</button>
+                <button class="danger" @click.stop="deleteListProject(card)"><Trash2 :size="15" />删除</button>
               </div>
             </span>
           </article>
@@ -97,8 +97,8 @@
                   <MoreVertical :size="18" />
                 </button>
                 <div v-if="rowMenuOpen === item.id" class="script-menu">
-                  <button @click="exportListProject(item)"><Download :size="15" />导出</button>
-                  <button class="danger" @click="deleteListProject(item)"><Trash2 :size="15" />删除</button>
+                  <button @click.stop="exportListProject(item)"><Download :size="15" />导出</button>
+                  <button class="danger" @click.stop="deleteListProject(item)"><Trash2 :size="15" />删除</button>
                 </div>
               </span>
             </article>
@@ -110,7 +110,7 @@
             <div class="coverage-header">
               <div class="coverage-badge">
                 <ShieldCheck :size="14" />
-                <span>SCRIPTCOVERAGESYSTEM V1.0</span>
+                <span>剧本评估系统 V1.0</span>
               </div>
               <h2>核心评估维度</h2>
               <p>结合 AI 从多维度、图形化等视角完成剧本评估。涵盖剧情逻辑、人物塑造、商业价值、市场适配等维度，全方位洞察剧本潜力。</p>
@@ -367,11 +367,40 @@
                     <small>大模型接口</small>
                     <h2>API 配置</h2>
                   </div>
-                  <b :class="{ ready: aiConfig.configured }">{{ aiConfig.configured ? '已配置' : '未配置' }}</b>
+                  <b :class="{ ready: selectedProviderConfigured }">{{ selectedProviderConfigured ? '已配置' : '未配置' }}</b>
                 </header>
-                <label><span>API 地址</span><input v-model="aiConfigForm.baseURL" placeholder="https://api.openai.com" /></label>
-                <label><span>模型</span><input v-model="aiConfigForm.model" placeholder="gpt-4o-mini" /></label>
-                <label><span>API Key</span><input v-model="aiConfigForm.apiKey" type="password" :placeholder="aiConfig.configured ? '已保存，留空不修改' : 'sk-...'" /></label>
+                <div class="provider-grid">
+                  <button
+                    v-for="provider in aiProviders"
+                    :key="provider.key"
+                    type="button"
+                    :class="{ active: aiConfigForm.provider === provider.key }"
+                    @click="selectAIProvider(provider.key)"
+                  >
+                    <b>{{ provider.label }}</b>
+                    <span>{{ provider.hint }}</span>
+                  </button>
+                </div>
+                <div class="provider-help">
+                  <span>官方接口：{{ selectedAIProvider.baseURL }}</span>
+                  <a :href="selectedAIProvider.consoleURL" target="_blank" rel="noreferrer">打开 {{ selectedAIProvider.label }} API Key 页面</a>
+                </div>
+                <ol class="provider-guide">
+                  <li>选择服务商后，点击右侧链接去官方控制台创建 API Key。</li>
+                  <li>复制 Key 回来粘贴到下方输入框。</li>
+                  <li>选择模型；如果官方新模型还没出现在列表里，就手动添加模型 ID。</li>
+                </ol>
+                <label>
+                  <span>模型</span>
+                  <select v-model="aiConfigForm.model">
+                    <option v-for="model in selectedProviderModels" :key="model" :value="model">{{ model }}</option>
+                  </select>
+                </label>
+                <div class="custom-model-row">
+                  <input v-model.trim="customModelName" placeholder="手动添加模型名，例如官方新发布的模型 ID" @keydown.enter.prevent="addCustomModel" />
+                  <button type="button" class="top-btn" @click="addCustomModel">添加模型</button>
+                </div>
+                <label><span>API Key</span><input v-model="aiConfigForm.apiKey" type="password" :placeholder="selectedProviderConfigured ? `${selectedAIProvider.label} 已保存，留空不修改` : 'sk-...'" /></label>
                 <button class="primary-btn" :disabled="busy" @click="saveAIConfig">保存 API 配置</button>
               </section>
               <h2>我的资料</h2>
@@ -439,15 +468,17 @@
       <section v-else-if="modal === 'exportProject'" class="info-modal export-select-modal">
         <button class="modal-close" @click="closeModal"><X :size="18" /></button>
         <h2>选择导出内容</h2>
-        <p>{{ exportProjectDraft?.title || '未命名剧本' }}</p>
-        <div class="export-option-list">
-          <label><input type="checkbox" v-model="exportOptions.settings" />故事设定</label>
-          <label><input type="checkbox" v-model="exportOptions.characters" />人物小传</label>
-          <label><input type="checkbox" v-model="exportOptions.outlines" />粗纲</label>
-          <label><input type="checkbox" v-model="exportOptions.episodes" />集纲</label>
-          <label><input type="checkbox" v-model="exportOptions.body" />正文</label>
+        <p class="export-project-name">{{ exportProjectDraft?.title || '未命名剧本' }}</p>
+        <div class="export-option-grid">
+          <button v-for="opt in exportOptionDefs" :key="opt.key"
+            :class="['export-opt-card', { active: exportOptions[opt.key] }]"
+            @click="exportOptions[opt.key] = !exportOptions[opt.key]">
+            <component :is="opt.icon" :size="16" />
+            <span>{{ opt.label }}</span>
+            <CheckCircle2 v-if="exportOptions[opt.key]" :size="13" class="opt-check" />
+          </button>
         </div>
-        <button class="primary-btn" :disabled="busy" @click="confirmExportProject"><Download :size="16" />确认导出</button>
+        <button class="primary-btn" :disabled="busy" @click="confirmExportProject"><Download :size="16" />导出 Word</button>
       </section>
 
       <section v-else-if="modal === 'coverageHistory'" class="drawer">
@@ -457,7 +488,10 @@
         <article v-for="item in filteredEvaluations" :key="item.id" class="evaluation-record">
           <div class="eval-record-head">
             <b>{{ item.title }}</b>
-            <span :class="['eval-status', item.status === 'completed' ? 'eval-done' : 'eval-pending']">{{ item.status === 'completed' ? '已完成' : '评估中' }}</span>
+            <div class="eval-record-actions">
+              <span :class="['eval-status', item.status === 'completed' ? 'eval-done' : 'eval-pending']">{{ item.status === 'completed' ? '已完成' : '评估中' }}</span>
+              <button type="button" title="删除评估" @click="deleteEvaluationRecord(item)"><Trash2 :size="14" /></button>
+            </div>
           </div>
           <div class="eval-record-meta">
             <small>{{ item.createdAt }}</small>
@@ -655,11 +689,63 @@ const agreement = ref(true)
 const rowMenuOpen = ref(null)
 const exportProjectDraft = ref(null)
 const exportOptions = reactive({ settings: true, characters: true, outlines: true, episodes: true, body: true })
+const exportOptionDefs = [
+  { key: 'settings',   label: '故事设定', icon: BookOpen },
+  { key: 'characters', label: '人物小传', icon: Circle },
+  { key: 'outlines',   label: '粗纲',     icon: ListFilter },
+  { key: 'episodes',   label: '集纲',     icon: History },
+  { key: 'body',       label: '正文',     icon: FilePenLine },
+]
 
 const profile = reactive({ id: 1, phone: '未绑定', nickname: '创作者', memberUntil: '2026-06-06 19:48', membership: '剧本专家' })
 const profileForm = reactive({ nickname: '创作者' })
-const aiConfig = reactive({ baseURL: '', model: '', configured: false })
-const aiConfigForm = reactive({ baseURL: '', model: '', apiKey: '' })
+const aiProviders = [
+  {
+    key: 'deepseek',
+    label: 'DeepSeek',
+    hint: '推理与通用写作',
+    baseURL: 'https://api.deepseek.com',
+    consoleURL: 'https://platform.deepseek.com/api_keys',
+    models: ['deepseek-v4-pro', 'deepseek-v4-flash']
+  },
+  {
+    key: 'kimi',
+    label: 'Kimi',
+    hint: '长文本与创作',
+    baseURL: 'https://api.moonshot.ai/v1',
+    consoleURL: 'https://platform.moonshot.cn/console/api-keys',
+    models: ['kimi-k2.7-code', 'kimi-k2.6', 'kimi-k2.5', 'moonshot-v1-128k']
+  },
+  {
+    key: 'doubao',
+    label: '豆包',
+    hint: '火山方舟',
+    baseURL: 'https://ark.cn-beijing.volces.com/api/v3',
+    consoleURL: 'https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey',
+    models: ['doubao-seed-2-0-pro-260215', 'doubao-seed-2-0-lite-260215', 'doubao-seed-2-0-mini-260428', 'doubao-seed-code']
+  },
+  {
+    key: 'zhipu',
+    label: '智谱',
+    hint: 'GLM 系列',
+    baseURL: 'https://open.bigmodel.cn/api/paas/v4',
+    consoleURL: 'https://bigmodel.cn/usercenter/proj-mgmt/apikeys',
+    models: ['glm-5.1', 'glm-5-turbo', 'glm-5', 'glm-4.7']
+  },
+  {
+    key: 'qwen',
+    label: '通义千问',
+    hint: '阿里百炼',
+    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    consoleURL: 'https://bailian.console.aliyun.com/?tab=model#/api-key',
+    models: ['qwen3.7-max', 'qwen3.7-plus', 'qwen3.6-flash']
+  }
+]
+const aiConfig = reactive({ provider: 'deepseek', baseURL: '', model: '', configured: false })
+const aiConfigForm = reactive({ provider: 'deepseek', model: '', apiKey: '' })
+const aiProviderConfigs = reactive({})
+const customModels = reactive({})
+const customModelName = ref('')
 const wallet = reactive({ balance: 1000, frozen: 0, items: [], packs: [], tasks: [], serviceCosts: {} })
 const scripts = ref([])
 const evaluations = ref([])
@@ -730,6 +816,14 @@ const latestEvaluation = computed(() => evaluations.value[0] || null)
 const filteredEvaluations = computed(() => evaluations.value.filter((item) => !historySearch.value || item.title.includes(historySearch.value)))
 const uploadOverlay = computed(() => uploadBusy.value && ['rewrite', 'adapt'].includes(route.value))
 const currentChapter = computed(() => chapterRange.chapters.find((chapter) => chapter.no === chapterRange.start) || chapterRange.chapters[0] || null)
+const selectedAIProvider = computed(() => aiProviders.find((item) => item.key === aiConfigForm.provider) || aiProviders[0])
+const selectedProviderModels = computed(() => {
+  const defaults = selectedAIProvider.value.models || []
+  const added = customModels[aiConfigForm.provider] || []
+  return [...new Set([...defaults, ...added].filter(Boolean))]
+})
+const selectedProviderConfig = computed(() => aiProviderConfigs[aiConfigForm.provider] || {})
+const selectedProviderConfigured = computed(() => Boolean(selectedProviderConfig.value.apiKeySet))
 
 const settingsTabs = [
   { key: 'profile', label: '我的资料' },
@@ -821,12 +915,67 @@ async function loadApp() {
 }
 
 function syncAIConfig(data = {}) {
+  const provider = aiProviders.some((item) => item.key === data.provider) ? data.provider : inferAIProvider(data.baseURL)
+  Object.keys(aiProviderConfigs).forEach((key) => delete aiProviderConfigs[key])
+  Object.entries(data.providers || {}).forEach(([key, value]) => {
+    if (aiProviders.some((item) => item.key === key)) {
+      aiProviderConfigs[key] = {
+        provider: key,
+        baseURL: value?.baseURL || '',
+        model: value?.model || '',
+        apiKeySet: Boolean(value?.apiKeySet)
+      }
+    }
+  })
+  if (!aiProviderConfigs[provider]) {
+    aiProviderConfigs[provider] = {
+      provider,
+      baseURL: data.baseURL || selectedAIProvider.value.baseURL || '',
+      model: data.model || '',
+      apiKeySet: Boolean(data.apiKeySet)
+    }
+  }
   aiConfig.baseURL = data.baseURL || ''
   aiConfig.model = data.model || ''
+  aiConfig.provider = provider
   aiConfig.configured = Boolean(data.configured)
-  aiConfigForm.baseURL = aiConfig.baseURL
-  aiConfigForm.model = aiConfig.model
+  aiConfigForm.provider = provider
+  applyProviderConfig(provider)
+}
+
+function inferAIProvider(baseURL = '') {
+  const value = String(baseURL).toLowerCase()
+  if (value.includes('moonshot') || value.includes('kimi')) return 'kimi'
+  if (value.includes('volces') || value.includes('volcengine')) return 'doubao'
+  if (value.includes('bigmodel')) return 'zhipu'
+  if (value.includes('dashscope')) return 'qwen'
+  return 'deepseek'
+}
+
+function selectAIProvider(key) {
+  if (!aiProviders.some((item) => item.key === key)) return
+  aiConfigForm.provider = key
+  customModelName.value = ''
+  applyProviderConfig(key)
+}
+
+function applyProviderConfig(provider) {
+  const savedModel = aiProviderConfigs[provider]?.model || ''
+  const models = [
+    ...(aiProviders.find((item) => item.key === provider)?.models || []),
+    ...(customModels[provider] || [])
+  ]
+  aiConfigForm.model = models.includes(savedModel) ? savedModel : (models[0] || '')
   aiConfigForm.apiKey = ''
+}
+
+function addCustomModel() {
+  const value = customModelName.value.trim()
+  if (!value) return
+  const key = aiConfigForm.provider
+  customModels[key] = [...new Set([...(customModels[key] || []), value])]
+  aiConfigForm.model = value
+  customModelName.value = ''
 }
 
 function syncWallet(data) {
@@ -933,11 +1082,27 @@ async function deleteListProject(project) {
   try {
     await api(`/api/scripts/${project.id}`, { method: 'DELETE' })
     scripts.value = scripts.value.filter((item) => item.id !== project.id)
+    if (currentProject.value?.id === project.id) {
+      currentProject.value = null
+      route.value = project.source === 'rewriting' ? 'rewrite' : (project.source === 'adaptation' ? 'adapt' : 'creation')
+    }
     toast('项目已删除')
   } catch (err) {
     toast(`删除失败：${cleanError(err)}`)
   } finally {
     busy.value = false
+  }
+}
+
+async function deleteEvaluationRecord(item) {
+  if (!item?.id) return
+  if (!window.confirm(`确认删除评估《${item.title || '未命名评估'}》？`)) return
+  try {
+    await api(`/api/evaluations?id=${encodeURIComponent(item.id)}`, { method: 'DELETE' })
+    evaluations.value = evaluations.value.filter((record) => record.id !== item.id)
+    toast('评估记录已删除')
+  } catch (err) {
+    toast(`删除失败：${cleanError(err)}`)
   }
 }
 
@@ -1529,7 +1694,6 @@ async function submitEvaluation() {
         evalStreamText.value += data.text
       } else if (event === 'done' && data?.evaluation) {
         evaluations.value.unshift(data.evaluation)
-        modal.value = 'coverageHistory'
         toast('评估完成，已生成报告')
       } else if (event === 'error') {
         toast(`评估失败：${data?.message || '未知错误'}`)
@@ -1586,8 +1750,12 @@ async function saveProfile() {
 }
 
 async function saveAIConfig() {
-  if (!aiConfigForm.baseURL.trim() || !aiConfigForm.model.trim()) {
-    toast('请填写 API 地址和模型')
+  if (!aiConfigForm.provider || !aiConfigForm.model.trim()) {
+    toast('请选择服务商和模型')
+    return
+  }
+  if (!selectedProviderConfigured.value && !aiConfigForm.apiKey.trim()) {
+    toast(`请填写 ${selectedAIProvider.value.label} API Key`)
     return
   }
   busy.value = true
@@ -1635,7 +1803,7 @@ function cleanError(err) {
 
 function cleanAiError(err) {
   const text = cleanError(err)
-  if (/StoryPlay clone API|大模型|model|stream|流式|connection|timeout|fetch/i.test(text)) {
+  if (/剧本工坊 API|大模型|model|stream|流式|connection|timeout|fetch/i.test(text)) {
     return '生成暂时不可用，请稍后重试'
   }
   return text || '生成暂时不可用，请稍后重试'
@@ -1654,10 +1822,10 @@ async function readTextFile(file) {
   if (!/\.(txt|doc|docx|pdf)$/.test(lower)) {
     throw new Error('仅支持 txt、doc、docx、pdf 文件')
   }
-  if (lower.endsWith('.txt')) {
+  if (lower.endsWith('.txt') || lower.endsWith('.doc')) {
     return file.text()
   }
-  return `${file.name} 已上传。浏览器端无法直接解析该二进制格式，服务端将进入对象存储解析流程；本地实现先用文件名创建解析任务。`
+  return `${file.name} 已上传，服务端将解析该文件内容。`
 }
 
 function downloadTextFile(fileName, content, mime = 'text/plain;charset=utf-8') {
@@ -1712,7 +1880,7 @@ const EditorView = defineComponent({
     const bodyRangeOpen = ref(false)
     const bodyRangeStart = ref(1)
     const bodyRangeEnd = ref(1)
-    const guideSeen = ref(window.localStorage?.getItem('storyplay:outlineGuideSeen') === '1')
+    const guideSeen = ref(window.localStorage?.getItem('jubengongfang:outlineGuideSeen') === '1')
     const characterTagDraft = ref('')
     const novelOutlineRefs = ref([])
     const historyStack = ref([])
@@ -1920,7 +2088,7 @@ const EditorView = defineComponent({
       editorTab.value = key
       if (key === 'outline' && !guideSeen.value && !(local.value.outlines || []).length) {
         guideSeen.value = true
-        window.localStorage?.setItem('storyplay:outlineGuideSeen', '1')
+        window.localStorage?.setItem('jubengongfang:outlineGuideSeen', '1')
         guide.value = 'coarse'
       } else {
         guide.value = ''
@@ -2343,7 +2511,7 @@ const EditorView = defineComponent({
       recordHistory()
       local.value.characters = []
       characterTagDraft.value = ''
-      ai('characters', 50, '基于当前故事概梗和已有设定，生成主要人物小传。')
+      ai('characters', 50, '基于当前故事概梗、世界观设定和已有全部设定，为本项目生成8-12个主要人物的完整小传。每个人物必须有独特的性格标签、说话方式、行为模式和记忆点。第一个角色是主角，后续按剧情重要性排序。反派要有合理动机和逐级递增的压迫感，助攻角色要为主角的爽点时刻服务。所有角色构成完整的人物关系网。')
     }
 
     function openOutlineGeneration() {
@@ -2353,7 +2521,7 @@ const EditorView = defineComponent({
 
     function generateCurrentEpisodeOutline() {
       if (!canGenerateEpisodeOutline()) return
-      ai('episode', 60, `只生成或优化第${currentPhaseRange().start}-${currentPhaseRange().end}集集纲，必须贴合“${currentPhaseRange().phase}”阶段粗纲。注意：“起、承、转、合”只代表当前阶段的大方向，不要在每一集里套写起承转合结构；每集只写本集核心事件、人物目标、冲突推进、关键反转或爽点、结尾追看钩子。`)
+      ai('episode', 60, `只生成或优化第${currentPhaseRange().start}-${currentPhaseRange().end}集集纲，必须严格贴合”${currentPhaseRange().phase}”阶段粗纲中的剧情规划。注意：”起、承、转、合”只代表当前阶段的大方向，不要在每一集里套写起承转合结构。每集集纲必须包含五要素：①本集核心事件（发生了什么）②人物目标（谁想要什么）③冲突推进（遇到什么阻力、如何对抗）④关键反转或爽点（预期被打破或情绪释放）⑤结尾追看钩子（为什么必须看下一集）。前后集之间要有因果衔接，不能割裂；每集的爽点要有变化和升级，不能千篇一律。`)
     }
 
     function ai(taskType, cost, prompt = '') {
@@ -2521,7 +2689,7 @@ const EditorView = defineComponent({
       seedEmptyEpisodeOutlines(selectedEpisodeCount.value)
       selectedOutlinePhase.value = 0
       outlineCollapsed.value = false
-      ai('outline', 80, `预计创作 ${selectedEpisodeCount.value} 集。请只生成四个阶段粗纲（起、承、转、合），每个阶段内部规划对应的 x-x 集区间；不要生成任何单集集纲或 episodes，页面会先创建空集纲输入框，后续由用户按阶段点击生成本阶段集纲。每个阶段粗纲必须是对该区间多集剧情的详细概括，要有连续因果、人物目标、反派压力、爽点反转、情绪场面和阶段钩子；不要太短，不要空泛，每段建议 350-700 字。`)
+      ai('outline', 80, `预计创作 ${selectedEpisodeCount.value} 集。请只生成四个阶段粗纲（起、承、转、合），每个阶段内部规划对应的 x-x 集区间；不要生成任何单集集纲或 episodes，页面会先创建空集纲输入框，后续由用户按阶段点击生成本阶段集纲。每个阶段粗纲必须是对该区间多集剧情的详细概括（400-800字），要有：①具体事件名称和人物行动②连续因果链（前一阶段的结果是后一阶段的原因）③反派压力逐级递增④爽点层层递进⑤情绪场面和可拍的高光场景⑥阶段钩子（驱动观众追看下一阶段的悬念）。不要太短，不要空泛，不要写"主角成长、矛盾升级"等方向性空话。`)
     }
 
     function seedInspiration() {
@@ -2739,7 +2907,7 @@ const EditorView = defineComponent({
     }
 
     function bodyPrompt(rangeText = bodyGenerateRange()) {
-      return `一键生成${rangeText}正文。请严格按下面本次集纲顺序逐集生成：\n${bodyOutlineContext(bodyRangeStart.value, bodyRangeEnd.value)}\n生成后一集时，把上一集正文结尾和人物状态作为上下文，保持情绪、人物动机和信息连续；不要让相邻集割裂。只生成当前已有集纲对应的正文，不要新增无关集数。`
+      return `一键生成${rangeText}正文。请严格按下面本次集纲顺序逐集生成：\n${bodyOutlineContext(bodyRangeStart.value, bodyRangeEnd.value)}\n\n创作要求：\n1. 正文必须使用专业剧本格式（场景头→人物→动作→台词）\n2. 台词要短而有力，符合人物性格和当前情绪，善用潜台词\n3. 动作描写要精确到可拍摄——谁、做什么、怎么做、什么表情\n4. 生成后一集时，必须承接上一集正文结尾的人物状态、情绪和未解决冲突，保持连贯\n5. 每集结尾必须有追看钩子——最后30秒决定观众是否点下一集\n6. 每场都有存在的戏剧理由，没有"废场"和"日常场"\n7. 只生成当前已有集纲对应的正文，不要新增无关集数`
     }
 
     function bodyOutlineContext(start, end) {
@@ -2864,18 +3032,18 @@ const EditorView = defineComponent({
 
     function regenerateBodyPrompt(episode, index) {
       const previous = (local.value.episodes || [])[index - 1]
-      return `只重新生成第${episode.no || index + 1}集正文。本集集纲：${String(episode?.outline || '').trim()}。必须参考本集集纲、故事梗概、人物小传${previous?.body ? '，并承接上一集正文结尾：' + previous.body.slice(-500) : ''}。不要改其他集。`
+      return `只重新生成第${episode.no || index + 1}集正文。本集集纲：${String(episode?.outline || '').trim()}。必须参考本集集纲、故事梗概、人物小传${previous?.body ? '，并承接上一集正文结尾：\n' + previous.body.slice(-500) : ''}。创作要求：①使用专业剧本格式②台词短而有力、符合人物性格③动作描写精确到可拍摄④每集结尾留追看钩子⑤不要改其他集。`
     }
 
     function useBenchmark(item) {
-      ideaPrompt.value = `参考爆款《${item[1]}》的高热度结构，保留强反转、快节奏和连续钩子，重新策划一个原创短剧方向。`
+      ideaPrompt.value = `深度分析爆款《${item[1]}》的成功要素——它的核心爽点机制是什么、节奏设计有什么特点、人物塑造为什么让人上头、钩子设计为什么让人停不下来。然后保留这些爆款基因，重新策划一个全新的原创短剧方向。要求：①核心设定要有记忆点②强反转、快节奏、连续钩子③要有明确的受众定位④标题要有短剧感和吸引力。`
       rankingOpen.value = false
       startPlanning()
     }
 
     function parsePlanningText(text) {
       const source = String(text || '').replace(/\r\n/g, '\n')
-      const matches = [...source.matchAll(/【策划\s*([123])】/g)]
+      const matches = [...source.matchAll(/【\s*(?:策划|方案)\s*([123１２３一二三])(?:\s*[：:｜|·—_、\s（(\-][^】]*)?】/g)]
       if (!matches.length) {
         return []
       }
@@ -3130,10 +3298,10 @@ const EditorView = defineComponent({
             ? filledInfoflowOutlines().map((item) => h('p', [h('b', `${item.range || ''} ${item.phase || ''}`), ` ${item.content || item.summary || ''}`]))
             : h('p', '待生成')
         ]),
-        filledInfoflowEpisodes().length && h('article', { class: 'infoflow-block' }, [
+        filledInfoflowEpisodes().length > 0 ? h('article', { class: 'infoflow-block' }, [
           h('h2', '集纲'),
           filledInfoflowEpisodes().map((item, index) => h('p', [h('b', `第${item.no || index + 1}集`), ` ${item.outline || item.summary || ''}`]))
-        ])
+        ]) : null
       ].filter(Boolean)),
       editorTab.value === 'novelOutline' && h('section', { class: 'novel-outline-editor' }, [
         h('div', { class: 'novel-outline-main' }, [
@@ -3335,7 +3503,7 @@ const EditorView = defineComponent({
           ]),
           (planningGenerating.value || brainstormPlans().length > 0) && h('div', { class: 'planning-stream-head' }, [
             h('h3', planningGenerating.value ? '策划中' : '策划完成'),
-            planningPlans.value.length && h('p', '选择一个策划后，将写入故事概梗页'),
+            planningPlans.value.length > 0 ? h('p', '选择一个策划后，将写入故事概梗页') : null,
             planningGenerating.value && h('div', { class: 'planning-motion', 'aria-hidden': 'true' }, [
               h('span'), h('span'), h('span'), h('span')
             ]),
