@@ -62,7 +62,7 @@
 | --- | --- |
 | 前端 | Vue 3、Vite、lucide-vue-next |
 | 后端 | Go HTTP Server |
-| 数据 | 本地 SQLite / 运行时数据文件 |
+| 数据 | MySQL |
 | AI 接入 | OpenAI 兼容的 Chat Completions / Responses 风格接口 |
 
 ## 快速启动
@@ -77,7 +77,7 @@ go run .
 后端默认监听：
 
 ```text
-http://localhost:18080
+http://localhost:19180
 ```
 
 ### 2. 启动前端
@@ -94,11 +94,35 @@ npm run dev
 http://localhost:5173
 ```
 
+## 数据库配置
+
+项目通过根目录 `.env` 读取本地 MySQL 配置。开发时通常只需要改 `DB_PASSWORD`，如果你的库名不是默认值，再改 `DB_NAME`。
+
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+
+如果你已经有完整 DSN，也可以直接设置：
+
+```text
+DB_DSN=user:pass@tcp(127.0.0.1:3306)/miao_muse?parseTime=true&charset=utf8mb4
+```
+
+`.env.example` 已提供模板，`.env` 用于本机实际配置。
+
+首次使用前需要先在 MySQL 中创建数据库，程序启动后会自动创建业务表：
+
+```sql
+CREATE DATABASE IF NOT EXISTS miao_muse CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+如果你确认 `.env` 里的账号有 `CREATE DATABASE` 权限，也可以临时设置 `DB_CREATE_DATABASE=true`，让程序启动时尝试创建数据库。
+
 ## AI 配置
 
-项目不内置生产 API Key，需要使用你自己的大模型服务。支持两种配置方式。
-
-### 方式一：在页面配置
+项目不内置生产 API Key，需要使用你自己的大模型服务。直接在页面配置：
 
 进入应用后打开：
 
@@ -112,16 +136,23 @@ http://localhost:5173
 - 模型：例如 `gpt-4o-mini`
 - API Key：你的服务商密钥
 
-### 方式二：通过环境变量配置
+页面保存的 API 配置会写入 `ai-config.local.json`，该文件已被 Git 忽略，避免误提交密钥。
 
-```powershell
-$env:OPENAI_BASE_URL="https://api.openai.com/v1"
-$env:OPENAI_MODEL="gpt-4o-mini"
-$env:OPENAI_API_KEY="your-api-key"
-go run .
+## Linux 打包
+
+运行 Windows 打包脚本，脚本会重新构建前端、刷新后端内嵌资源、运行后端测试，再生成 Linux 二进制：
+
+```bat
+build-linux.bat
 ```
 
-页面保存的 API 配置会写入 `ai-config.local.json`，该文件已被 Git 忽略，避免误提交密钥。
+产物默认输出到：
+
+```text
+dist/miaoMuse
+```
+
+运行时会自动读取根目录 `.env`，并内嵌 `frontend/dist` 作为静态页面资源。
 
 ## 常用命令
 
@@ -129,6 +160,7 @@ go run .
 | --- | --- |
 | 构建前端 | `cd frontend && npm run build` |
 | 构建后端 | `cd backend && go build ./...` |
+| 构建 Linux 二进制 | `build-linux.bat` |
 | 运行后端测试 | `cd backend && go test ./...` |
 
 PowerShell 中也可以分两行执行：
@@ -165,7 +197,7 @@ scripts/      文档与参考资源生成脚本
 - `api.txt`
 - `ai-config.local.json`
 - `*.local.json`
-- `backend/data/`
+- `backend/web/dist/`
 - `backend/*.exe`
 - `frontend/dist/`
 - `frontend/node_modules/`

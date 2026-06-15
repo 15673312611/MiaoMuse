@@ -1,16 +1,18 @@
 @echo off
-setlocal
+setlocal EnableExtensions
 
 set "ROOT=%~dp0"
 set "BACKEND_DIR=%ROOT%backend"
 set "FRONTEND_DIR=%ROOT%frontend"
-set "BACKEND_PORT=18080"
+set "ENV_FILE=%ROOT%.env"
+set "ENV_EXAMPLE=%ROOT%.env.example"
+set "BACKEND_PORT=19180"
 set "FRONTEND_PORT=5173"
 
-title 剧本工坊 Dev
+title miaoMuse Dev
 
 echo ========================================
-echo 剧本工坊 dev startup
+echo miaoMuse dev startup
 echo ========================================
 echo.
 
@@ -40,6 +42,15 @@ if not exist "%FRONTEND_DIR%\package.json" (
   exit /b 1
 )
 
+if not exist "%ENV_FILE%" (
+  if exist "%ENV_EXAMPLE%" (
+    echo [ENV] Creating .env from .env.example
+    copy "%ENV_EXAMPLE%" "%ENV_FILE%" >nul
+  ) else (
+    echo [WARN] .env.example not found. Backend will use built-in environment defaults.
+  )
+)
+
 if not exist "%FRONTEND_DIR%\node_modules" (
   echo [FRONTEND] Installing dependencies...
   pushd "%FRONTEND_DIR%"
@@ -54,6 +65,7 @@ if not exist "%FRONTEND_DIR%\node_modules" (
 )
 
 echo [BACKEND] Starting http://localhost:%BACKEND_PORT%
+echo [BACKEND] Database config: %ENV_FILE%
 pushd "%BACKEND_DIR%"
 start /b "" cmd /c "set PORT=%BACKEND_PORT%&& go run ."
 popd

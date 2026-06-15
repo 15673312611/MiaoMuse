@@ -6,7 +6,7 @@
 
 打开平台后，先进入工作台。
 
-![剧本原创工作台](../screenshots/user-guide/01-workbench.png)
+![剧本原创工作台](D:/code/剧本ai/screenshots/user-guide/01-workbench.png)
 
 ## 一、从零创建一个原创剧本
 
@@ -14,7 +14,7 @@
 
 在「剧本原创」页面，点右上角的 **新建剧本**。
 
-![新建剧本类型选择](../screenshots/user-guide/02-new-script-type.png)
+![新建剧本类型选择](D:/code/剧本ai/screenshots/user-guide/02-new-script-type.png)
 
 这里有两个选择：
 
@@ -27,7 +27,7 @@
 
 进入后，默认会来到「故事梗概」里的故事设定页面。
 
-![空白故事设定](../screenshots/user-guide/03-story-settings-empty.png)
+![空白故事设定](D:/code/剧本ai/screenshots/user-guide/03-story-settings-empty.png)
 
 这里要填的是这部剧的底子：
 
@@ -49,7 +49,7 @@
 
 点右上角 **灵感策划** 后，右侧会打开一个策划面板。
 
-![灵感策划空白面板](../screenshots/user-guide/04-inspiration-panel-empty.png)
+![灵感策划空白面板](D:/code/剧本ai/screenshots/user-guide/04-inspiration-panel-empty.png)
 
 中间的大输入框里，写你想做的故事。不用写得很正式，像跟编剧交代需求一样就行。
 
@@ -74,11 +74,11 @@
 - 题材类型：悬疑反转、逆袭爽剧
 - 核心设定：隐藏身份、真假继承人
 
-![灵感策划选择标签](../screenshots/user-guide/05-inspiration-tags.png)
+![灵感策划选择标签](D:/code/剧本ai/screenshots/user-guide/05-inspiration-tags.png)
 
 选完后，标签会同步出现在右侧面板，也会同步写到左边的故事设定里。
 
-![灵感策划准备生成](../screenshots/user-guide/06-inspiration-ready.png)
+![灵感策划准备生成](D:/code/剧本ai/screenshots/user-guide/06-inspiration-ready.png)
 
 标签会直接影响 AI 给你的故事方向。
 
@@ -90,7 +90,7 @@
 
 确认输入和标签没问题后，点 **开始策划**。
 
-![灵感策划生成中](../screenshots/user-guide/07-inspiration-generating.png)
+![灵感策划生成中](D:/code/剧本ai/screenshots/user-guide/07-inspiration-generating.png)
 
 生成时页面会暂时锁住，等它跑完再操作。
 
@@ -98,7 +98,7 @@
 
 生成完成后，会出现几个策划方案。
 
-![灵感策划结果](../screenshots/user-guide/08-inspiration-results.png)
+![灵感策划结果](D:/code/剧本ai/screenshots/user-guide/08-inspiration-results.png)
 
 每个方案通常会包含：
 
@@ -115,7 +115,7 @@
 
 点完后，平台会自动把方案写回故事设定页面：
 
-![故事设定已填好](../screenshots/user-guide/09-story-settings-filled.png)
+![故事设定已填好](D:/code/剧本ai/screenshots/user-guide/09-story-settings-filled.png)
 
 这一步很关键。它会自动填好：
 
@@ -130,15 +130,15 @@
 
 故事梗概确定后，点顶部的 **AI生成人物**。
 
-![人物页面空白状态](../screenshots/user-guide/10-characters-empty.png)
+![人物页面空白状态](D:/code/剧本ai/screenshots/user-guide/10-characters-empty.png)
 
 这里会提示你先完成故事梗概。前面用过灵感策划后，这一步就可以直接点 **AI生成人物**。
 
-![人物生成中](../screenshots/user-guide/11-characters-generating.png)
+![人物生成中](D:/code/剧本ai/screenshots/user-guide/11-characters-generating.png)
 
 生成时会先出现角色表单，输入框会暂时锁住。等生成完，角色内容会自动填进去。
 
-![人物生成完成](../screenshots/user-guide/12-characters-filled.png)
+![人物生成完成](D:/code/剧本ai/screenshots/user-guide/12-characters-filled.png)
 
 生成后重点检查这几块：
 
@@ -157,7 +157,7 @@
 
 人物确认后，点顶部 **分集大纲**。
 
-![分集大纲空白状态](../screenshots/user-guide/13-outline-empty.png)
+![分集大纲空白状态](D:/code/剧本ai/screenshots/user-guide/13-outline-empty.png)
 
 这里分两步：
 
@@ -168,7 +168,7 @@
 
 点 **AI生成粗纲** 后，会弹出总集数。
 
-![设置总集数](../screenshots/user-guide/14-outline-count-modal.png)
+![设置总集数](D:/code/剧本ai/screenshots/user-guide/14-outline-count-modal.png)
 
 默认可能是 40 集。你可以按实际项目改。
 
@@ -184,7 +184,7 @@
 
 生成完成后，粗纲会写进上面的文本框。
 
-![粗纲生成完成](../screenshots/user-guide/15-outline-rough-filled.png)
+![粗纲生成完成](D:/code/剧本ai/screenshots/user-guide/15-outline-rough-filled.png)
 
 下面会出现阶段按钮，比如：
 
@@ -201,7 +201,7 @@
 
 生成完成后，第 1 集、第 2 集会自动写好。
 
-![阶段集纲生成完成](../screenshots/user-guide/16-episode-outline-filled.png)
+![阶段集纲生成完成](D:/code/剧本ai/screenshots/user-guide/16-episode-outline-filled.png)
 
 集纲里会写清楚：
 
@@ -219,7 +219,7 @@
 
 集纲有了以后，点顶部 **剧本正文**。
 
-![剧本正文空白状态](../screenshots/user-guide/17-script-body-empty.png)
+![剧本正文空白状态](D:/code/剧本ai/screenshots/user-guide/17-script-body-empty.png)
 
 第一次进来，如果还没有正文，会看到 **创建新集**。
 
@@ -227,7 +227,7 @@
 
 点 **创建新集** 后，会出现第 1 集正文编辑框。
 
-![创建第1集正文](../screenshots/user-guide/18-script-episode-created.png)
+![创建第1集正文](D:/code/剧本ai/screenshots/user-guide/18-script-episode-created.png)
 
 右侧几个按钮的意思：
 
@@ -242,7 +242,7 @@
 
 等生成完成后，按钮会变成 **重新生成本集**。
 
-![第1集正文生成完成](../screenshots/user-guide/19-script-body-filled.png)
+![第1集正文生成完成](D:/code/剧本ai/screenshots/user-guide/19-script-body-filled.png)
 
 正文会按剧本格式写出来，比如：
 
@@ -289,7 +289,7 @@
 
 点左侧 **剧本改写**。
 
-![剧本改写列表](../screenshots/user-guide/20-rewrite-list.png)
+![剧本改写列表](D:/code/剧本ai/screenshots/user-guide/20-rewrite-list.png)
 
 这里的核心操作是 **导入剧本**。
 
@@ -303,7 +303,7 @@
 
 进入后会看到「信息流」页面。
 
-![剧本改写信息流](../screenshots/user-guide/21-rewrite-editor.png)
+![剧本改写信息流](D:/code/剧本ai/screenshots/user-guide/21-rewrite-editor.png)
 
 信息流会集中展示平台从原剧本里解析出来的内容：
 
@@ -327,7 +327,7 @@
 
 点左侧 **网文改编**。
 
-![网文改编列表](../screenshots/user-guide/22-adapt-list.png)
+![网文改编列表](D:/code/剧本ai/screenshots/user-guide/22-adapt-list.png)
 
 这里的核心操作是 **导入小说**。
 
@@ -342,7 +342,7 @@
 
 进入后，第一屏是 **小说章纲**。
 
-![小说章纲](../screenshots/user-guide/23-adapt-chapter-outline.png)
+![小说章纲](D:/code/剧本ai/screenshots/user-guide/23-adapt-chapter-outline.png)
 
 这里会把小说按章节拆开，每章一般包括：
 
@@ -458,3 +458,4 @@ AI 能帮你快速出初稿，但最后一定要看：
 19. 全部整理完后点 **导出Word**。
 
 照这个流程走，就能从一个想法生成到可编辑的剧本正文。
+

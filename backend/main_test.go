@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -135,7 +134,11 @@ func nonEmptyLines(value string) []string {
 }
 
 func TestStatePersistenceRoundTrip(t *testing.T) {
-	t.Setenv("DB_PATH", filepath.Join(t.TempDir(), "jubengongfang.db"))
+	dsn := os.Getenv("TEST_MYSQL_DSN")
+	if dsn == "" {
+		t.Skip("set TEST_MYSQL_DSN to run MySQL persistence integration test")
+	}
+	t.Setenv("DB_DSN", dsn)
 	db, err := openAppDB()
 	if err != nil {
 		t.Fatalf("openAppDB failed: %v", err)
@@ -175,7 +178,11 @@ func TestStatePersistenceRoundTrip(t *testing.T) {
 }
 
 func TestDatabaseMigrationCreatesTables(t *testing.T) {
-	t.Setenv("DB_PATH", filepath.Join(t.TempDir(), "jubengongfang.db"))
+	dsn := os.Getenv("TEST_MYSQL_DSN")
+	if dsn == "" {
+		t.Skip("set TEST_MYSQL_DSN to run MySQL migration integration test")
+	}
+	t.Setenv("DB_DSN", dsn)
 	db, err := openAppDB()
 	if err != nil {
 		t.Fatalf("openAppDB failed: %v", err)
@@ -184,9 +191,9 @@ func TestDatabaseMigrationCreatesTables(t *testing.T) {
 	if err := migrateAppDB(db); err != nil {
 		t.Fatalf("migrateAppDB failed: %v", err)
 	}
-	rows, err := db.Query(`SELECT name FROM sqlite_master WHERE type = 'table'`)
+	rows, err := db.Query(`SHOW TABLES`)
 	if err != nil {
-		t.Fatalf("query sqlite_master failed: %v", err)
+		t.Fatalf("show tables failed: %v", err)
 	}
 	defer rows.Close()
 	got := map[string]bool{}
@@ -204,30 +211,44 @@ func TestDatabaseMigrationCreatesTables(t *testing.T) {
 	}
 }
 
-func TestAppDatabasePathUsesLegacyDBWhenRenamedDBMissing(t *testing.T) {
-	t.Setenv("DB_PATH", "")
-	dir := t.TempDir()
-	oldWD, err := os.Getwd()
+func TestMySQLAppDSNFromEnvParts(t *testing.T) {
+	t.Setenv("DB_DSN", "")
+	t.Setenv("MYSQL_DSN", "")
+	t.Setenv("DB_HOST", "db.example.test")
+	t.Setenv("DB_PORT", "3307")
+	t.Setenv("DB_USER", "writer")
+	t.Setenv("DB_PASSWORD", "secret")
+	t.Setenv("DB_NAME", "jubentest")
+	t.Setenv("DB_LOC", "UTC")
+	dsn, dbName, err := mysqlAppDSN()
 	if err != nil {
-		t.Fatalf("getwd failed: %v", err)
+		t.Fatalf("mysqlAppDSN failed: %v", err)
 	}
-	if err := os.Chdir(dir); err != nil {
-		t.Fatalf("chdir failed: %v", err)
+	if dbName != "jubentest" {
+		t.Fatalf("dbName = %q", dbName)
 	}
-	defer func() {
-		if err := os.Chdir(oldWD); err != nil {
-			t.Fatalf("restore wd failed: %v", err)
+	for _, want := range []string{"writer:secret@tcp(db.example.test:3307)/jubentest", "charset=utf8mb4", "parseTime=true"} {
+		if !strings.Contains(dsn, want) {
+			t.Fatalf("dsn %q missing %q", dsn, want)
 		}
-	}()
-	if err := os.MkdirAll("data", 0o755); err != nil {
-		t.Fatalf("mkdir data failed: %v", err)
 	}
-	legacyPath := legacyDatabasePath()
-	if err := os.WriteFile(legacyPath, []byte("legacy"), 0o644); err != nil {
-		t.Fatalf("write legacy db failed: %v", err)
+}
+
+func TestLoadDotEnvFileDoesNotOverrideExistingEnv(t *testing.T) {
+	dir := t.TempDir()
+	file := dir + string(os.PathSeparator) + ".env"
+	if err := os.WriteFile(file, []byte("DB_HOST=from-file\nDB_USER=\"file-user\"\n"), 0o600); err != nil {
+		t.Fatalf("write .env failed: %v", err)
 	}
-	if got := appDatabasePath(); got != legacyPath {
-		t.Fatalf("appDatabasePath = %q, want %q", got, legacyPath)
+	t.Setenv("DB_HOST", "existing")
+	if err := loadDotEnvFile(file); err != nil {
+		t.Fatalf("loadDotEnvFile failed: %v", err)
+	}
+	if got := os.Getenv("DB_HOST"); got != "existing" {
+		t.Fatalf("DB_HOST = %q", got)
+	}
+	if got := os.Getenv("DB_USER"); got != "file-user" {
+		t.Fatalf("DB_USER = %q", got)
 	}
 }
 
@@ -236,6 +257,70 @@ func TestNormalizeBeatLinesSplitsInlineBeats(t *testing.T) {
 	want := "情节1：开局受辱\n情节2：主角反击\n情节3：反派加压"
 	if got != want {
 		t.Fatalf("normalizeBeatLines = %q, want %q", got, want)
+	}
+}
+
+func TestParsePlanningStreamPlansAcceptsAdaptationFieldAliases(t *testing.T) {
+	input := `【策划1】
+方案标题：《重生后我把宗门踩在脚下》
+受众定位：男频
+题材：玄幻逆袭、复仇虐渣
+创意设定：废脉重铸、宗门审判
+改编亮点：把原文慢热成长线压缩成开局受辱、当场反杀的短剧强钩子
+故事背景：灵脉为尊的宗门世界，废脉弟子被当成替罪羊逐出山门。
+改编梗概：少年被宗门诬陷偷盗秘宝，废去灵脉后丢入寒潭。濒死之际，他觉醒古碑传承，发现所谓秘宝正是宗门长老掩盖血祭真相的关键证据。他回到宗门审判台，从外门杂役开始逐层打脸，逼出长老、少宗主和幕后掌门。每一次反击都揭开一层真相，也让观众看到从废物到审判者的爽感升级。`
+
+	plans := parsePlanningStreamPlans(input)
+	if len(plans) != 1 {
+		t.Fatalf("expected 1 plan, got %d: %#v", len(plans), plans)
+	}
+	plan := plans[0]
+	if plan["audience"] != "男频" {
+		t.Fatalf("audience = %#v", plan["audience"])
+	}
+	if strings.TrimSpace(plan["highlights"].(string)) == "" || strings.TrimSpace(plan["worldView"].(string)) == "" || strings.TrimSpace(plan["synopsis"].(string)) == "" {
+		t.Fatalf("plan has empty fields: %#v", plan)
+	}
+	if got := plan["genres"].([]string); len(got) != 2 || got[0] != "玄幻逆袭" {
+		t.Fatalf("genres = %#v", got)
+	}
+}
+
+func TestParsePlanningStreamPlansAcceptsJSONPlans(t *testing.T) {
+	input := `{"plans":[{"title":"《真假千金审判夜》","audience":"女频","genres":["真假千金","复仇虐渣"],"core":["证据翻盘"],"highlights":"开局订婚宴公开处刑","worldView":"现代豪门直播审判场","synopsis":"女主被假千金夺走身份后，在订婚宴被全网嘲笑。她拿出母亲留下的旧手机，逐步放出证据，让豪门、未婚夫和假千金的谎言当场崩塌。"}]}`
+
+	plans := parsePlanningStreamPlans(input)
+	if len(plans) != 1 {
+		t.Fatalf("expected 1 JSON plan, got %d: %#v", len(plans), plans)
+	}
+	if plans[0]["title"] != "《真假千金审判夜》" {
+		t.Fatalf("title = %#v", plans[0]["title"])
+	}
+	if got := plans[0]["core"].([]string); len(got) != 1 || got[0] != "证据翻盘" {
+		t.Fatalf("core = %#v", got)
+	}
+}
+
+func TestTaskContextProjectTrimsAdaptationPlanningPayload(t *testing.T) {
+	project := ScriptProject{
+		Source: "adaptation",
+		Settings: map[string]any{
+			"synopsis":            "已有梗概",
+			"chapterCount":        200,
+			"chapterBreakdown":    []map[string]any{{"chapter": 1, "title": "开局", "summary": strings.Repeat("长内容", 100)}},
+			"novelChapterOutline": []map[string]any{{"column": "1", "title": "第一章", "summary": strings.Repeat("剧情", 100)}},
+		},
+	}
+
+	trimmed := taskContextProject(project, "planning")
+	if _, ok := trimmed.Settings["chapterCount"]; ok {
+		t.Fatalf("chapterCount should be removed: %#v", trimmed.Settings)
+	}
+	if _, ok := trimmed.Settings["novelChapterOutline"]; ok {
+		t.Fatalf("novelChapterOutline should be removed: %#v", trimmed.Settings)
+	}
+	if sample, ok := trimmed.Settings["novelChapterOutlineSample"].([]map[string]any); !ok || len(sample) != 1 {
+		t.Fatalf("missing compact novel sample: %#v", trimmed.Settings)
 	}
 }
 

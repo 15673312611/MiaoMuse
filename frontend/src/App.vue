@@ -1,7 +1,7 @@
 <template>
   <div class="app-frame">
     <aside class="rail">
-      <button class="logo-mark" title="剧本工坊" @click="go('creation')">剧</button>
+      <button class="logo-mark" title="miaoMuse" @click="go('creation')">剧</button>
       <nav class="rail-nav">
         <button v-for="item in workNav" :key="item.key" :class="{ active: activeWorkKey === item.key }" :title="item.label" @click="go(item.key)">
           <component :is="item.icon" :size="25" />
@@ -33,7 +33,7 @@
             <Search :size="20" />
           </div>
           <div v-if="showsSearch" class="page-head-actions">
-            <button class="tutorial" @click="toast('使用教程为外部飞书文档入口')">使用教程</button>
+            <button class="tutorial" @click="openTutorial">使用教程</button>
             <button v-if="route === 'creation'" class="top-btn" @click="modal = 'newScript'">
               <FilePlus2 :size="18" />新建剧本
             </button>
@@ -47,7 +47,14 @@
         <section v-if="route === 'creation'" class="creation-screen">
           <div class="sort-row"><ListFilter :size="16" />排序方式</div>
           <p v-if="loading" class="center-empty">正在加载数据...</p>
-          <p v-else-if="visibleScripts.length === 0" class="center-empty">暂无原创剧本</p>
+          <article v-else-if="visibleScripts.length === 0" class="creation-empty">
+            <div class="creation-empty-icon"><FilePlus2 :size="34" /></div>
+            <h2>创建第一个原创剧本</h2>
+            <p>从 AI 短剧或真人实拍开始，先搭好故事设定，再继续生成人物、粗纲、集纲和正文。</p>
+            <button class="primary-btn" @click="modal = 'newScript'">
+              <Sparkles :size="17" />创建原创剧本
+            </button>
+          </article>
           <article v-for="card in visibleScripts" :key="card.id" class="script-row" tabindex="0" @click="openEditor(card)" @keydown.enter="openEditor(card)">
             <span :class="['script-cover', projectCoverClass(card)]">
               <b>{{ projectBadge(card) }}</b>
@@ -558,6 +565,20 @@
         <button class="primary-btn" @click="savePassword">确认修改</button>
       </section>
 
+      <section v-else-if="modal === 'confirm'" class="confirm-modal">
+        <button class="modal-close" :disabled="confirmDialog.busy" @click="closeModal"><X :size="18" /></button>
+        <div class="confirm-icon"><AlertTriangle :size="26" /></div>
+        <h2>{{ confirmDialog.title }}</h2>
+        <p>{{ confirmDialog.message }}</p>
+        <footer>
+          <button :disabled="confirmDialog.busy" @click="closeModal">取消</button>
+          <button class="primary-btn danger" :disabled="confirmDialog.busy" @click="runConfirmAction">
+            <LoaderCircle v-if="confirmDialog.busy" :size="16" class="spin-loader" />
+            {{ confirmDialog.confirmText }}
+          </button>
+        </footer>
+      </section>
+
       <section v-else-if="modal === 'adaptType'" class="adapt-type-modal">
         <button class="modal-close" @click="closeModal"><X :size="18" /></button>
         <h2>选择改编方式</h2>
@@ -672,7 +693,8 @@ import {
   X
 } from 'lucide-vue-next'
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:18080'
+const API_BASE = import.meta.env.VITE_API_BASE || ''
+const TUTORIAL_URL = 'https://my.feishu.cn/docx/MhIMd2iO2obMBIxmFLccJZ1Nn9N?from=from_copylink'
 
 const route = ref('creation')
 const modal = ref('')
@@ -746,7 +768,7 @@ const aiConfigForm = reactive({ provider: 'deepseek', model: '', apiKey: '' })
 const aiProviderConfigs = reactive({})
 const customModels = reactive({})
 const customModelName = ref('')
-const wallet = reactive({ balance: 1000, frozen: 0, items: [], packs: [], tasks: [], serviceCosts: {} })
+const wallet = reactive({ balance: 999999, frozen: 0, items: [], packs: [], tasks: [], serviceCosts: {} })
 const scripts = ref([])
 const evaluations = ref([])
 const currentProject = ref(null)
@@ -759,6 +781,7 @@ const evaluationForm = reactive({ title: '未命名评估', culture: '国内', a
 const generalSettings = reactive({ autosave: true, guides: true })
 const passwordForm = reactive({ code: '', password: '', confirm: '' })
 const chapterRange = reactive({ projectId: 0, start: 1, end: 1, total: 0, totalWords: 0, chapters: [] })
+const confirmDialog = reactive({ title: '', message: '', confirmText: '确认', busy: false, action: null })
 
 const workNav = [
   { key: 'creation', label: '剧本原创', icon: FilePenLine },
@@ -998,10 +1021,16 @@ function go(next) {
   rowMenuOpen.value = null
 }
 
+function openTutorial() {
+  window.open(TUTORIAL_URL, '_blank', 'noopener,noreferrer')
+}
+
 function closeModal() {
+  if (modal.value === 'confirm' && confirmDialog.busy) return
   if (modal.value === 'rewriteType') pendingRewriteUpload.value = null
   if (modal.value === 'adaptType' || modal.value === 'chapterRange') pendingAdaptUpload.value = null
   if (modal.value === 'exportProject') exportProjectDraft.value = null
+  if (modal.value === 'confirm') resetConfirmDialog()
   modal.value = ''
 }
 
@@ -1077,32 +1106,55 @@ async function confirmExportProject() {
 async function deleteListProject(project) {
   rowMenuOpen.value = null
   if (!project?.id) return
-  if (!window.confirm(`确认删除《${project.title || '未命名'}》？`)) return
-  busy.value = true
-  try {
-    await api(`/api/scripts/${project.id}`, { method: 'DELETE' })
-    scripts.value = scripts.value.filter((item) => item.id !== project.id)
-    if (currentProject.value?.id === project.id) {
-      currentProject.value = null
-      route.value = project.source === 'rewriting' ? 'rewrite' : (project.source === 'adaptation' ? 'adapt' : 'creation')
+  requestConfirm({
+    title: '删除剧本',
+    message: `删除《${project.title || '未命名'}》后，故事设定、人物、粗纲、集纲和正文都会一并移除。`,
+    confirmText: '删除',
+    action: async () => {
+      await api(`/api/scripts/${project.id}`, { method: 'DELETE' })
+      scripts.value = scripts.value.filter((item) => item.id !== project.id)
+      if (currentProject.value?.id === project.id) {
+        currentProject.value = null
+        route.value = project.source === 'rewriting' ? 'rewrite' : (project.source === 'adaptation' ? 'adapt' : 'creation')
+      }
+      toast('项目已删除')
     }
-    toast('项目已删除')
-  } catch (err) {
-    toast(`删除失败：${cleanError(err)}`)
-  } finally {
-    busy.value = false
-  }
+  })
 }
 
 async function deleteEvaluationRecord(item) {
   if (!item?.id) return
-  if (!window.confirm(`确认删除评估《${item.title || '未命名评估'}》？`)) return
+  requestConfirm({
+    title: '删除评估记录',
+    message: `确认删除评估《${item.title || '未命名评估'}》？评分、维度点评和改进建议将从历史记录中移除。`,
+    confirmText: '删除',
+    action: async () => {
+      await api(`/api/evaluations?id=${encodeURIComponent(item.id)}`, { method: 'DELETE' })
+      evaluations.value = evaluations.value.filter((record) => record.id !== item.id)
+      toast('评估记录已删除')
+    }
+  })
+}
+
+function requestConfirm({ title, message, confirmText = '确认', action }) {
+  Object.assign(confirmDialog, { title, message, confirmText, action, busy: false })
+  modal.value = 'confirm'
+}
+
+function resetConfirmDialog() {
+  Object.assign(confirmDialog, { title: '', message: '', confirmText: '确认', busy: false, action: null })
+}
+
+async function runConfirmAction() {
+  if (confirmDialog.busy || typeof confirmDialog.action !== 'function') return
+  confirmDialog.busy = true
   try {
-    await api(`/api/evaluations?id=${encodeURIComponent(item.id)}`, { method: 'DELETE' })
-    evaluations.value = evaluations.value.filter((record) => record.id !== item.id)
-    toast('评估记录已删除')
+    await confirmDialog.action()
+    resetConfirmDialog()
+    modal.value = ''
   } catch (err) {
-    toast(`删除失败：${cleanError(err)}`)
+    confirmDialog.busy = false
+    toast(`操作失败：${cleanError(err)}`)
   }
 }
 
@@ -1803,7 +1855,7 @@ function cleanError(err) {
 
 function cleanAiError(err) {
   const text = cleanError(err)
-  if (/剧本工坊 API|大模型|model|stream|流式|connection|timeout|fetch/i.test(text)) {
+  if (/miaoMuse API|大模型|model|stream|流式|connection|timeout|fetch/i.test(text)) {
     return '生成暂时不可用，请稍后重试'
   }
   return text || '生成暂时不可用，请稍后重试'
@@ -1880,7 +1932,7 @@ const EditorView = defineComponent({
     const bodyRangeOpen = ref(false)
     const bodyRangeStart = ref(1)
     const bodyRangeEnd = ref(1)
-    const guideSeen = ref(window.localStorage?.getItem('jubengongfang:outlineGuideSeen') === '1')
+    const guideSeen = ref(window.localStorage?.getItem('miaoMuse:outlineGuideSeen') === '1')
     const characterTagDraft = ref('')
     const novelOutlineRefs = ref([])
     const historyStack = ref([])
@@ -2088,7 +2140,7 @@ const EditorView = defineComponent({
       editorTab.value = key
       if (key === 'outline' && !guideSeen.value && !(local.value.outlines || []).length) {
         guideSeen.value = true
-        window.localStorage?.setItem('jubengongfang:outlineGuideSeen', '1')
+        window.localStorage?.setItem('miaoMuse:outlineGuideSeen', '1')
         guide.value = 'coarse'
       } else {
         guide.value = ''
@@ -3058,11 +3110,12 @@ const EditorView = defineComponent({
       const fields = {}
       let current = ''
       String(block || '').split('\n').forEach((raw) => {
-        const line = raw.trim()
+        const line = raw.trim().replace(/^[-*•]\s*/, '').replace(/^\d+[.、]\s*/, '').replace(/^[#*`]+|[#*`]+$/g, '').trim()
         if (!line) return
         const matched = line.match(/^([^：:]{2,8})[：:]\s*(.*)$/)
-        if (matched && ['标题', '目标受众', '时代背景', '题材类型', '核心设定', '风格元素', '核心亮点', '世界观', '核心梗概'].includes(matched[1].trim())) {
-          current = matched[1].trim()
+        const key = matched ? normalizePlanningFieldKey(matched[1]) : ''
+        if (matched && key) {
+          current = key
           fields[current] = matched[2].trim()
           return
         }
@@ -3079,6 +3132,20 @@ const EditorView = defineComponent({
         worldView: fields['世界观'] || '',
         synopsis: fields['核心梗概'] || fields['世界观'] || ''
       }
+    }
+
+    function normalizePlanningFieldKey(key) {
+      const normalized = String(key || '').trim().replace(/^[#*`]+|[#*`]+$/g, '').replace(/^方案/, '').replace(/^短剧/, '')
+      if (['标题', '方案标题', '剧名', '名称'].includes(normalized)) return '标题'
+      if (['目标受众', '受众定位', '受众', '观众定位'].includes(normalized)) return '目标受众'
+      if (['时代背景', '时代', '时空背景', '年代背景'].includes(normalized)) return '时代背景'
+      if (['题材类型', '题材', '类型', '剧集类型'].includes(normalized)) return '题材类型'
+      if (['核心设定', '设定', '核心创意', '创意设定'].includes(normalized)) return '核心设定'
+      if (['风格元素', '风格标签', '风格', '调性'].includes(normalized)) return '风格元素'
+      if (['核心亮点', '亮点', '改编亮点', '短剧亮点', '核心卖点', '卖点', '追剧动力', '爽点机制', '爽点'].includes(normalized)) return '核心亮点'
+      if (['世界观', '故事背景', '背景设定', '人物处境', '改编背景'].includes(normalized)) return '世界观'
+      if (['核心梗概', '故事梗概', '剧情梗概', '改编梗概', '短剧梗概', '梗概'].includes(normalized)) return '核心梗概'
+      return ''
     }
 
     function scrollPlanningToActive() {

@@ -4,15 +4,17 @@ import (
 	"bufio"
 	"bytes"
 	"database/sql"
+	"embed"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"html"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -20,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	_ "github.com/glebarez/go-sqlite"
+	"github.com/go-sql-driver/mysql"
 )
 
 type User struct {
@@ -140,7 +142,10 @@ type persistedAppState struct {
 	NextEval    int64           `json:"nextEval"`
 }
 
-var state = loadState()
+var state = newState()
+
+//go:embed web/dist
+var embeddedFrontend embed.FS
 
 func newState() *AppState {
 	return &AppState{
@@ -149,7 +154,7 @@ func newState() *AppState {
 			MemberUntil: "2026-06-06 19:48", Membership: "剧本专家", CanClaimPoint: false,
 		},
 		wallet: Wallet{
-			Balance: 1000,
+			Balance: 999999,
 			Items:   []WalletTxn{{Title: "领取1000剧点", Delta: 1000, Time: "2026年06月05日 19:48"}},
 			ServiceCosts: map[string]int{
 				"evaluation": 2500,
@@ -207,38 +212,92 @@ func loadState() *AppState {
 }
 
 func openAppDB() (*sql.DB, error) {
-	path := appDatabasePath()
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-		return nil, err
-	}
-	db, err := sql.Open("sqlite", path)
+	dsn, dbName, err := mysqlAppDSN()
 	if err != nil {
 		return nil, err
 	}
-	db.SetMaxOpenConns(1)
-	if _, err := db.Exec(`PRAGMA busy_timeout = 5000`); err != nil {
-		_ = db.Close()
+	if dbName != "" && envBool("DB_CREATE_DATABASE", false) {
+		if err := createMySQLDatabase(dbName); err != nil {
+			return nil, err
+		}
+	}
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
 		return nil, err
 	}
-	if _, err := db.Exec(`PRAGMA journal_mode = WAL`); err != nil {
+	db.SetMaxOpenConns(envInt("DB_MAX_OPEN_CONNS", 10))
+	db.SetMaxIdleConns(envInt("DB_MAX_IDLE_CONNS", 5))
+	db.SetConnMaxLifetime(time.Duration(envInt("DB_CONN_MAX_LIFETIME_MINUTES", 30)) * time.Minute)
+	if err := db.Ping(); err != nil {
 		_ = db.Close()
 		return nil, err
 	}
 	return db, nil
 }
 
-func appDatabasePath() string {
-	if path := strings.TrimSpace(os.Getenv("DB_PATH")); path != "" {
-		return path
+func mysqlAppDSN() (string, string, error) {
+	if dsn := envFirst("DB_DSN", "MYSQL_DSN"); dsn != "" {
+		return dsn, "", nil
 	}
-	nextPath := filepath.Join("data", "jubengongfang.db")
-	legacyPath := legacyDatabasePath()
-	if _, err := os.Stat(nextPath); errors.Is(err, os.ErrNotExist) {
-		if _, legacyErr := os.Stat(legacyPath); legacyErr == nil {
-			return legacyPath
-		}
+	dbName := envFirst("DB_NAME", "MYSQL_DATABASE")
+	if dbName == "" {
+		dbName = "miao_muse"
 	}
-	return nextPath
+	cfg, err := mysqlConfig(dbName)
+	if err != nil {
+		return "", "", err
+	}
+	return cfg.FormatDSN(), dbName, nil
+}
+
+func mysqlConfig(dbName string) (*mysql.Config, error) {
+	host := envFirst("DB_HOST", "MYSQL_HOST")
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	port := envFirst("DB_PORT", "MYSQL_PORT")
+	if port == "" {
+		port = "3306"
+	}
+	locName := envDefault("DB_LOC", "Local")
+	loc, err := time.LoadLocation(locName)
+	if err != nil {
+		return nil, fmt.Errorf("invalid DB_LOC %q: %w", locName, err)
+	}
+	cfg := mysql.NewConfig()
+	cfg.User = envDefault("DB_USER", "root")
+	cfg.Passwd = os.Getenv("DB_PASSWORD")
+	cfg.Net = "tcp"
+	cfg.Addr = host + ":" + port
+	cfg.DBName = dbName
+	cfg.ParseTime = true
+	cfg.Loc = loc
+	cfg.Params = map[string]string{
+		"charset": envDefault("DB_CHARSET", "utf8mb4"),
+	}
+	return cfg, nil
+}
+
+func createMySQLDatabase(dbName string) error {
+	cfg, err := mysqlConfig("")
+	if err != nil {
+		return err
+	}
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	charset := envDefault("DB_CHARSET", "utf8mb4")
+	statement := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET %s COLLATE %s_unicode_ci", escapeMySQLIdentifier(dbName), charset, charset)
+	if _, err := db.Exec(statement); err != nil {
+		return err
+	}
+	return nil
+}
+
+func escapeMySQLIdentifier(value string) string {
+	return strings.ReplaceAll(value, "`", "``")
 }
 
 func legacyDatabasePath() string {
@@ -247,74 +306,77 @@ func legacyDatabasePath() string {
 
 func migrateAppDB(db *sql.DB) error {
 	statements := []string{
-		`CREATE TABLE IF NOT EXISTS app_meta (name TEXT PRIMARY KEY, value TEXT NOT NULL)`,
+		`CREATE TABLE IF NOT EXISTS app_meta (
+			name VARCHAR(64) PRIMARY KEY,
+			value TEXT NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS users (
-			id INTEGER PRIMARY KEY,
-			phone TEXT NOT NULL,
-			nickname TEXT NOT NULL,
-			avatar TEXT NOT NULL,
-			member_until TEXT NOT NULL,
-			membership TEXT NOT NULL,
-			can_claim_point INTEGER NOT NULL
-		)`,
+			id BIGINT PRIMARY KEY,
+			phone VARCHAR(64) NOT NULL,
+			nickname VARCHAR(128) NOT NULL,
+			avatar VARCHAR(255) NOT NULL,
+			member_until VARCHAR(64) NOT NULL,
+			membership VARCHAR(64) NOT NULL,
+			can_claim_point TINYINT(1) NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS wallet_state (
-			id INTEGER PRIMARY KEY CHECK (id = 1),
-			balance INTEGER NOT NULL,
-			frozen INTEGER NOT NULL
-		)`,
+			id BIGINT PRIMARY KEY,
+			balance INT NOT NULL,
+			frozen INT NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS wallet_transactions (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			ordinal INTEGER NOT NULL,
+			id BIGINT PRIMARY KEY AUTO_INCREMENT,
+			ordinal INT NOT NULL,
 			title TEXT NOT NULL,
-			delta INTEGER NOT NULL,
-			time_text TEXT NOT NULL
-		)`,
+			delta INT NOT NULL,
+			time_text VARCHAR(64) NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS wallet_tasks (
-			title TEXT PRIMARY KEY,
+			title VARCHAR(128) PRIMARY KEY,
 			description TEXT NOT NULL,
-			claimed INTEGER NOT NULL,
-			ordinal INTEGER NOT NULL
-		)`,
+			claimed TINYINT(1) NOT NULL,
+			ordinal INT NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS recharge_packs (
-			code TEXT PRIMARY KEY,
-			price INTEGER NOT NULL,
-			original INTEGER NOT NULL,
-			points INTEGER NOT NULL,
-			bonus INTEGER NOT NULL,
-			unit_price REAL NOT NULL,
-			enterprise INTEGER NOT NULL,
-			ordinal INTEGER NOT NULL
-		)`,
+			code VARCHAR(64) PRIMARY KEY,
+			price INT NOT NULL,
+			original INT NOT NULL,
+			points INT NOT NULL,
+			bonus INT NOT NULL,
+			unit_price DOUBLE NOT NULL,
+			enterprise TINYINT(1) NOT NULL,
+			ordinal INT NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS service_costs (
-			name TEXT PRIMARY KEY,
-			cost INTEGER NOT NULL
-		)`,
+			name VARCHAR(64) PRIMARY KEY,
+			cost INT NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS script_projects (
-			id INTEGER PRIMARY KEY,
-			ordinal INTEGER NOT NULL,
+			id BIGINT PRIMARY KEY,
+			ordinal INT NOT NULL,
 			title TEXT NOT NULL,
-			script_type TEXT NOT NULL,
-			source TEXT NOT NULL,
-			status TEXT NOT NULL,
-			updated_at TEXT NOT NULL,
-			settings_json TEXT NOT NULL,
-			characters_json TEXT NOT NULL,
-			outlines_json TEXT NOT NULL,
-			episodes_json TEXT NOT NULL
-		)`,
+			script_type VARCHAR(64) NOT NULL,
+			source VARCHAR(64) NOT NULL,
+			status VARCHAR(64) NOT NULL,
+			updated_at VARCHAR(64) NOT NULL,
+			settings_json LONGTEXT NOT NULL,
+			characters_json LONGTEXT NOT NULL,
+			outlines_json LONGTEXT NOT NULL,
+			episodes_json LONGTEXT NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 		`CREATE TABLE IF NOT EXISTS evaluations (
-			id INTEGER PRIMARY KEY,
-			ordinal INTEGER NOT NULL,
+			id BIGINT PRIMARY KEY,
+			ordinal INT NOT NULL,
 			title TEXT NOT NULL,
-			status TEXT NOT NULL,
-			created_at TEXT NOT NULL,
-			score INTEGER NOT NULL,
+			status VARCHAR(64) NOT NULL,
+			created_at VARCHAR(64) NOT NULL,
+			score INT NOT NULL,
 			summary TEXT NOT NULL,
-			dimensions_json TEXT NOT NULL,
-			suggestions_json TEXT NOT NULL,
-			cost INTEGER NOT NULL,
-			report_no TEXT NOT NULL
-		)`,
+			dimensions_json LONGTEXT NOT NULL,
+			suggestions_json LONGTEXT NOT NULL,
+			cost INT NOT NULL,
+			report_no VARCHAR(64) NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 	}
 	for _, statement := range statements {
 		if _, err := db.Exec(statement); err != nil {
@@ -496,6 +558,9 @@ func loadUserFromDB(db *sql.DB, state *AppState) error {
 func loadWalletFromDB(db *sql.DB, state *AppState) error {
 	if err := db.QueryRow(`SELECT balance, frozen FROM wallet_state WHERE id = 1`).Scan(&state.wallet.Balance, &state.wallet.Frozen); err != nil && !errorsIsNoRows(err) {
 		return err
+	}
+	if state.wallet.Balance == 1000 && state.wallet.Frozen == 0 {
+		state.wallet.Balance = 999999
 	}
 	items, err := queryWalletTransactions(db)
 	if err != nil {
@@ -721,6 +786,96 @@ func boolToInt(value bool) int {
 	return 0
 }
 
+func loadDotEnv() {
+	for _, file := range []string{".env", filepath.Join("..", ".env")} {
+		if err := loadDotEnvFile(file); err == nil {
+			return
+		}
+	}
+}
+
+func loadDotEnvFile(file string) error {
+	raw, err := os.ReadFile(file)
+	if err != nil {
+		return err
+	}
+	lines := strings.Split(string(raw), "\n")
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		if strings.HasPrefix(line, "export ") {
+			line = strings.TrimSpace(strings.TrimPrefix(line, "export "))
+		}
+		key, value, ok := strings.Cut(line, "=")
+		if !ok {
+			continue
+		}
+		key = strings.TrimSpace(key)
+		if key == "" {
+			continue
+		}
+		if _, exists := os.LookupEnv(key); exists {
+			continue
+		}
+		_ = os.Setenv(key, unquoteEnvValue(strings.TrimSpace(value)))
+	}
+	return nil
+}
+
+func unquoteEnvValue(value string) string {
+	if len(value) >= 2 {
+		if (value[0] == '"' && value[len(value)-1] == '"') || (value[0] == '\'' && value[len(value)-1] == '\'') {
+			if unquoted, err := strconv.Unquote(value); err == nil {
+				return unquoted
+			}
+			return value[1 : len(value)-1]
+		}
+	}
+	return value
+}
+
+func envFirst(names ...string) string {
+	for _, name := range names {
+		if value := strings.TrimSpace(os.Getenv(name)); value != "" {
+			return value
+		}
+	}
+	return ""
+}
+
+func envDefault(name, fallback string) string {
+	if value := strings.TrimSpace(os.Getenv(name)); value != "" {
+		return value
+	}
+	return fallback
+}
+
+func envBool(name string, fallback bool) bool {
+	value := strings.TrimSpace(os.Getenv(name))
+	if value == "" {
+		return fallback
+	}
+	parsed, err := strconv.ParseBool(value)
+	if err != nil {
+		return fallback
+	}
+	return parsed
+}
+
+func envInt(name string, fallback int) int {
+	value := strings.TrimSpace(os.Getenv(name))
+	if value == "" {
+		return fallback
+	}
+	parsed, err := strconv.Atoi(value)
+	if err != nil {
+		return fallback
+	}
+	return parsed
+}
+
 func errorsIsNoRows(err error) bool {
 	return err == sql.ErrNoRows
 }
@@ -753,6 +908,12 @@ func nextID(saved, maxExisting int64) int64 {
 }
 
 func main() {
+	loadDotEnv()
+	aiConfigMu.Lock()
+	runtimeAIConfig = readAIConfigFromEnvAndFile()
+	aiConfigMu.Unlock()
+	state = loadState()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/profile", getProfile)
 	mux.HandleFunc("/api/wallet", getWallet)
@@ -771,12 +932,12 @@ func main() {
 	mux.HandleFunc("/api/settings/password", updatePassword)
 	mux.HandleFunc("/api/settings/ai-config", aiConfigHandler)
 	mux.HandleFunc("/api/export", exportHandler)
-	mux.HandleFunc("/", staticFallback)
+	mux.HandleFunc("/", frontendHandler)
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "18080"
+		port = "19180"
 	}
-	log.Println("剧本工坊 API listening on :" + port)
+	log.Println("miaoMuse API listening on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, cors(mux)))
 }
 
@@ -2979,6 +3140,9 @@ func parseBodyStreamBlock(no int, block string) Episode {
 
 func parsePlanningStreamPlans(text string) []map[string]any {
 	normalized := strings.ReplaceAll(text, "\r\n", "\n")
+	if plans := parsePlanningJSONPlans(normalized); len(plans) > 0 {
+		return limitPlanningPlans(plans)
+	}
 	re := regexp.MustCompile(`【\s*(?:策划|方案)\s*([123１２３一二三])(?:\s*[：:｜|·—_、\s（(\-][^】]*)?】`)
 	matches := re.FindAllStringSubmatchIndex(normalized, -1)
 	plans := []map[string]any{}
@@ -2993,7 +3157,7 @@ func parsePlanningStreamPlans(text string) []map[string]any {
 			continue
 		}
 		plan := parsePlanningBlock(block)
-		if strings.TrimSpace(fmt.Sprint(plan["title"])) == "" && strings.TrimSpace(fmt.Sprint(plan["synopsis"])) == "" {
+		if !hasPlanningPlanContent(plan) {
 			continue
 		}
 		plans = append(plans, plan)
@@ -3003,10 +3167,47 @@ func parsePlanningStreamPlans(text string) []map[string]any {
 		plan := map[string]any{"title": firstNonEmpty(firstFieldLine(lines, "标题"), "策划方案"), "synopsis": strings.TrimSpace(normalized)}
 		plans = append(plans, plan)
 	}
+	return limitPlanningPlans(plans)
+}
+
+func parsePlanningJSONPlans(text string) []map[string]any {
+	raw := extractJSONObject(text)
+	var payload struct {
+		Plans []map[string]any `json:"plans"`
+	}
+	if err := json.Unmarshal([]byte(raw), &payload); err != nil || len(payload.Plans) == 0 {
+		return nil
+	}
+	plans := []map[string]any{}
+	for _, item := range payload.Plans {
+		plan := normalizePlanningPlan(item)
+		if hasPlanningPlanContent(plan) {
+			plans = append(plans, plan)
+		}
+	}
+	return plans
+}
+
+func limitPlanningPlans(plans []map[string]any) []map[string]any {
 	if len(plans) > 3 {
 		plans = plans[:3]
 	}
 	return plans
+}
+
+func hasPlanningPlanContent(plan map[string]any) bool {
+	for _, key := range []string{"audience", "highlights", "worldView", "synopsis"} {
+		if strings.TrimSpace(fmt.Sprint(plan[key])) != "" {
+			return true
+		}
+	}
+	for _, key := range []string{"genres", "era", "core", "style"} {
+		if len(splitChineseList(fmt.Sprint(plan[key]))) > 0 {
+			return true
+		}
+	}
+	title := strings.TrimSpace(fmt.Sprint(plan["title"]))
+	return title != "" && title != "未命名策划" && title != "策划方案"
 }
 
 func parsePlanningBlock(block string) map[string]any {
@@ -3026,7 +3227,7 @@ func parsePlanningBlock(block string) map[string]any {
 			fields[current] = strings.TrimSpace(fields[current] + "\n" + line)
 		}
 	}
-	return map[string]any{
+	return normalizePlanningPlan(map[string]any{
 		"title":      firstNonEmpty(fields["标题"], "未命名策划"),
 		"audience":   fields["目标受众"],
 		"genres":     splitChineseList(fields["题材类型"]),
@@ -3036,21 +3237,105 @@ func parsePlanningBlock(block string) map[string]any {
 		"highlights": fields["核心亮点"],
 		"worldView":  fields["世界观"],
 		"synopsis":   fields["核心梗概"],
+	})
+}
+
+func normalizePlanningPlan(input map[string]any) map[string]any {
+	field := func(names ...string) string {
+		for _, name := range names {
+			if value, ok := input[name]; ok {
+				text := strings.TrimSpace(fmt.Sprint(value))
+				if text != "" && text != "<nil>" {
+					return text
+				}
+			}
+		}
+		return ""
+	}
+	list := func(names ...string) []string {
+		for _, name := range names {
+			if value, ok := input[name]; ok {
+				if items := decodeStringSlice(value); len(items) > 0 {
+					return items
+				}
+				if items := splitChineseList(fmt.Sprint(value)); len(items) > 0 {
+					return items
+				}
+			}
+		}
+		return []string{}
+	}
+	return map[string]any{
+		"title":      firstNonEmpty(field("title", "标题", "方案标题", "短剧标题", "剧名"), "未命名策划"),
+		"audience":   field("audience", "目标受众", "受众定位", "受众"),
+		"genres":     list("genres", "题材类型", "题材", "类型"),
+		"era":        list("era", "时代背景", "风格元素", "时代", "时空背景"),
+		"core":       list("core", "核心设定", "核心创意", "创意设定", "设定"),
+		"style":      list("style", "风格元素", "风格标签", "风格"),
+		"highlights": field("highlights", "核心亮点", "改编亮点", "短剧亮点", "核心卖点", "卖点", "追剧动力", "爽点机制", "爽点"),
+		"worldView":  field("worldView", "世界观", "故事背景", "背景设定", "人物处境", "改编背景"),
+		"synopsis":   field("synopsis", "核心梗概", "故事梗概", "剧情梗概", "改编梗概", "短剧梗概", "梗概"),
 	}
 }
 
+func decodeStringSlice(value any) []string {
+	switch typed := value.(type) {
+	case []string:
+		return typed
+	case []any:
+		items := []string{}
+		for _, item := range typed {
+			text := strings.TrimSpace(fmt.Sprint(item))
+			if text != "" {
+				items = append(items, text)
+			}
+		}
+		return items
+	}
+	return nil
+}
+
 func splitChineseField(line string) (string, string, bool) {
+	line = strings.TrimSpace(line)
+	line = strings.Trim(line, "*#` ")
+	line = regexp.MustCompile(`^\s*(?:[-*•]\s*|\d+[\.、]\s*)`).ReplaceAllString(line, "")
 	for _, sep := range []string{"：", ":"} {
 		if idx := strings.Index(line, sep); idx > 0 {
 			key := strings.TrimSpace(line[:idx])
 			value := strings.TrimSpace(line[idx+len(sep):])
-			switch key {
-			case "标题", "目标受众", "时代背景", "题材类型", "核心设定", "风格元素", "核心亮点", "世界观", "核心梗概":
-				return key, value, true
+			if normalized := normalizePlanningFieldKey(key); normalized != "" {
+				return normalized, value, true
 			}
 		}
 	}
 	return "", "", false
+}
+
+func normalizePlanningFieldKey(key string) string {
+	key = strings.TrimSpace(strings.Trim(key, "*#` "))
+	key = strings.TrimPrefix(key, "方案")
+	key = strings.TrimPrefix(key, "短剧")
+	switch key {
+	case "标题", "方案标题", "剧名", "名称":
+		return "标题"
+	case "目标受众", "受众定位", "受众", "观众定位":
+		return "目标受众"
+	case "时代背景", "时代", "时空背景", "年代背景":
+		return "时代背景"
+	case "题材类型", "题材", "类型", "剧集类型":
+		return "题材类型"
+	case "核心设定", "设定", "核心创意", "创意设定":
+		return "核心设定"
+	case "风格元素", "风格标签", "风格", "调性":
+		return "风格元素"
+	case "核心亮点", "亮点", "改编亮点", "短剧亮点", "核心卖点", "卖点", "追剧动力", "爽点机制", "爽点":
+		return "核心亮点"
+	case "世界观", "故事背景", "背景设定", "人物处境", "改编背景":
+		return "世界观"
+	case "核心梗概", "故事梗概", "剧情梗概", "改编梗概", "短剧梗概", "梗概":
+		return "核心梗概"
+	}
+	return ""
 }
 
 func splitChineseList(value string) []string {
@@ -3074,7 +3359,7 @@ func firstFieldLine(lines []string, key string) string {
 }
 
 func taskContextProject(project ScriptProject, taskType string) ScriptProject {
-	if taskType != "outline" && taskType != "body" {
+	if taskType != "planning" && taskType != "outline" && taskType != "body" {
 		return project
 	}
 	if fmt.Sprint(project.Settings["adaptationMode"]) == "original" && taskType == "body" {
@@ -3089,9 +3374,73 @@ func taskContextProject(project ScriptProject, taskType string) ScriptProject {
 			}
 			settings[key] = value
 		}
+		if taskType == "planning" && project.Source == "adaptation" {
+			if outline := compactNovelChapterOutline(project.Settings["novelChapterOutline"]); len(outline) > 0 {
+				settings["novelChapterOutlineSample"] = outline
+			}
+			if breakdown := compactChapterBreakdown(project.Settings["chapterBreakdown"]); len(breakdown) > 0 {
+				settings["chapterBreakdownSample"] = breakdown
+			}
+		}
 		next.Settings = settings
 	}
 	return next
+}
+
+func compactNovelChapterOutline(value any) []map[string]any {
+	items := decodeSlice[map[string]any](value)
+	if len(items) == 0 {
+		return nil
+	}
+	if len(items) > 8 {
+		items = items[:8]
+	}
+	out := []map[string]any{}
+	for _, item := range items {
+		out = append(out, map[string]any{
+			"column":   fmt.Sprint(item["column"]),
+			"title":    trimForPrompt(fmt.Sprint(item["title"]), 80),
+			"synopsis": trimForPrompt(fmt.Sprint(firstNonNil(item["synopsis"], item["summary"])), 180),
+		})
+	}
+	return out
+}
+
+func compactChapterBreakdown(value any) []map[string]any {
+	items := decodeSlice[map[string]any](value)
+	if len(items) == 0 {
+		return nil
+	}
+	if len(items) > 8 {
+		items = items[:8]
+	}
+	out := []map[string]any{}
+	for _, item := range items {
+		out = append(out, map[string]any{
+			"chapter":  fmt.Sprint(firstNonNil(item["chapter"], item["column"])),
+			"title":    trimForPrompt(fmt.Sprint(item["title"]), 80),
+			"synopsis": trimForPrompt(fmt.Sprint(firstNonNil(item["synopsis"], item["summary"])), 180),
+		})
+	}
+	return out
+}
+
+func firstNonNil(values ...any) any {
+	for _, value := range values {
+		if strings.TrimSpace(fmt.Sprint(value)) != "" && fmt.Sprint(value) != "<nil>" {
+			return value
+		}
+	}
+	return ""
+}
+
+func trimForPrompt(value string, limit int) string {
+	value = strings.TrimSpace(value)
+	runes := []rune(value)
+	if len(runes) <= limit {
+		return value
+	}
+	return string(runes[:limit]) + "..."
 }
 
 func extractJSONObject(content string) string {
@@ -6078,7 +6427,7 @@ table.meta th{width:108px;background:#f3f5fb;color:#374151;text-align:left;font-
 table.meta th,table.meta td{border:1px solid #e5e7eb;padding:9px 11px;vertical-align:top;}
 </style></head><body>`)
 	b.WriteString(`<h1>` + escapeHTML(title) + `</h1>`)
-	b.WriteString(`<div class="subtitle">剧本工坊 剧本导出 · ` + html.EscapeString(time.Now().Format("2006-01-02 15:04")) + `</div>`)
+	b.WriteString(`<div class="subtitle">miaoMuse 剧本导出 · ` + html.EscapeString(time.Now().Format("2006-01-02 15:04")) + `</div>`)
 }
 
 func writeExportRow(b *strings.Builder, label, value string) {
@@ -6156,8 +6505,27 @@ func sanitizeFileName(value string) string {
 	return name
 }
 
-func staticFallback(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "剧本工坊 API. Run frontend dev server for UI.", http.StatusNotFound)
+func frontendHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	dist, err := fs.Sub(embeddedFrontend, "web/dist")
+	if err != nil {
+		http.Error(w, "frontend assets are not embedded; run frontend build before backend build", http.StatusNotFound)
+		return
+	}
+	requestPath := path.Clean("/" + r.URL.Path)
+	filePath := strings.TrimPrefix(requestPath, "/")
+	if filePath == "" {
+		filePath = "index.html"
+	}
+	if file, err := dist.Open(filePath); err == nil {
+		_ = file.Close()
+		http.ServeFileFS(w, r, dist, filePath)
+		return
+	}
+	http.ServeFileFS(w, r, dist, "index.html")
 }
 
 func writeJSON(w http.ResponseWriter, v any) {

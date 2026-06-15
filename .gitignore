@@ -1,6 +1,8 @@
 api.txt
 ai-config.local.json
 *.local.json
+.env
+!.env.example
 
 frontend/dist/
 frontend/node_modules/
@@ -15,3 +17,9 @@ backend/*.exe~
 backend/data/
 backend/*.db
 backend/*.db-*
+!backend/web/
+!backend/web/dist/
+backend/web/dist/*
+!backend/web/dist/.gitkeep
+!backend/web/dist/placeholder.txt
+/dist/

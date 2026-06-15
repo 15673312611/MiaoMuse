@@ -632,6 +632,61 @@ button:not(:disabled):active {
   background: linear-gradient(180deg, #030303 0%, rgba(3,3,3,.92) 72%, rgba(3,3,3,0) 100%);
 }
 
+.creation-empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(470px, calc(100vw - 180px));
+  min-height: 254px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  padding: 30px 34px;
+  text-align: center;
+  color: #f4f6fb;
+  background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025)), #121318;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 22px 80px rgba(0,0,0,.32);
+  transform: translate(-50%, -50%);
+}
+
+.creation-empty-icon {
+  width: 66px;
+  height: 66px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #181a20;
+  background: #f3f4f7;
+  box-shadow: 0 16px 34px rgba(0,0,0,.28);
+}
+
+.creation-empty h2,
+.creation-empty p {
+  margin: 0;
+}
+
+.creation-empty h2 {
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.creation-empty p {
+  max-width: 360px;
+  color: #aeb3c0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.creation-empty .primary-btn {
+  min-width: 150px;
+  margin-top: 2px;
+}
+
 .script-row {
   position: relative;
   left: var(--creation-left);
@@ -2814,6 +2869,78 @@ textarea {
 
 .info-modal.wide {
   width: 820px;
+}
+
+.confirm-modal {
+  position: relative;
+  width: min(440px, calc(100vw - 48px));
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 32px 30px 26px;
+  text-align: center;
+  color: #f3f6fb;
+  background: rgba(18,19,23,.98);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 28px 90px rgba(0,0,0,.58);
+}
+
+.confirm-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #ffd18a;
+  background: rgba(255,160,68,.13);
+  box-shadow: inset 0 0 0 1px rgba(255,200,120,.18);
+}
+
+.confirm-modal h2,
+.confirm-modal p {
+  margin: 0;
+}
+
+.confirm-modal h2 {
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.confirm-modal p {
+  max-width: 340px;
+  color: #aeb5c4;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.confirm-modal footer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.confirm-modal footer button {
+  min-width: 94px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #e4e8f2;
+  background: rgba(255,255,255,.06);
+  font-weight: 850;
+}
+
+.confirm-modal footer .danger {
+  border-color: rgba(255,94,110,.34);
+  color: #fff;
+  background: #8c2f3b;
 }
 
 .price-grid button {
